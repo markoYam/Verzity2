@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "252788071760",
+    "firebase_url": "https://uniconekt.firebaseio.com",
+    "project_id": "uniconekt",
+    "storage_bucket": "uniconekt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252788071760:android:bbaae599e357df19",
+        "android_client_info": {
+          "package_name": "com.dwmedios.uniconekt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252788071760-a9s9brlhph3h7l59hcmqenn4cq5jlni7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dwmedios.uniconekt",
+            "certificate_hash": "49cbb2d80bfc7f85073a9edb5d60852a3db2ad55"
+          }
+        },
+        {
+          "client_id": "252788071760-8mgf9vj80eig6mrnr26040rbaqngnlpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFYuKCP7vHXPsYdTiKxwgWanTQDYafgEs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252788071760-8mgf9vj80eig6mrnr26040rbaqngnlpg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activity.Universitario.VideoViewActivity">
+
+  <!--  <include layout="@layout/tolbar"></include> !-->
+
+    <TextView
+        android:id="@+id/textViewDescripcionVideo"
+        style="@style/TextAppearance.AppCompat.Body2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descripción"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/contenedorView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:background="@color/uvv_black"
+            android:layout_height="match_parent">
+            <!--<ImageView
+                android:layout_width="match_parent"
+
+                android:scaleType="fitXY"
+                android:layout_height="match_parent" />
+            <View
+                android:layout_width="match_parent"
+                android:background="@drawable/fondo_video"
+                android:layout_height="match_parent"></View> !-->
+        </FrameLayout>
+
+        <VideoView
+            android:id="@+id/VideoView"
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_height="match_parent" />
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:padding="0dp"
+            android:visibility="gone"
+            android:id="@+id/VideoYoutube"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.youtube.player.YouTubePlayerView>
+        <ImageView
+            android:id="@+id/imageviewFrmme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:src="@drawable/defaultt" />
+        <ImageView
+            android:id="@+id/imageviewPlay"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_pause" />
+
+    </RelativeLayout>
+
+</LinearLayout>

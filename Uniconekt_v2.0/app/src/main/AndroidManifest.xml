@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dwmedios.uniconekt">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:name=".UniconektApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:label="demo"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".view.activity.RegistroActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".data.service.firebase.FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".data.service.firebase.FirebaseMessaging">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".view.activity.RestorePasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDialog" />
+        <activity
+            android:name=".view.activity.Universitario.MainUniversitarioActivity"
+            android:label="@string/title_activity_main_universitario"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".view.activity.Universitario.SearchUniversidadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.ViewUniversidadesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.Universitario.DetalleUniversidadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.SearchLicenciaturasActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.ActivityMaps.MapsUniversityActivity"
+            android:label="@string/title_activity_maps_university"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.VideosActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.VideoViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".view.activity.Universitario.BecasActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.DetalleBecasActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.DatosUniversitarioActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.activity.Universitario.FinanciamientoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario.DetalleFinanciamientoActivity"
+            android:label="@string/title_activity_detalle_financiamiento"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.Universitario.CuponesViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universidad.PaquetesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universidad.DatosUniversidadActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.activity.Universidad.PostuladosActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universidad.UbicacionUniversidadActivity"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".data.service.firebase.Notifications.FirebaseMesassingReciver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_action_ic_school" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryDark" />
+
+        <receiver android:name=".view.widgets.NotificatiosAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/notificatios_app_widget_info" />
+        </receiver>
+
+        <activity android:name=".view.widgets.NotificatiosAppWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.Universidad.DetalleNotificacionActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="ACTIVITY_NOTIFICATIONS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.Universitario.DetalleCuponActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PDFViewerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universidad.SearchUbicacionUniActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.ActivityFtP" />
+        <activity
+            android:name=".view.activity.View_Utils.Dialog_user"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDialog" />
+        <activity
+            android:name=".view.activity.View_Utils.ConfirmBuyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDialog" />
+        <activity
+            android:name=".data.service.firebase.Notifications.NotHanActivity"
+            android:theme="@style/transaparente" />
+        <activity android:name=".view.activity.demo_upload_image.UploadActivity" />
+        <activity
+            android:name=".view.activity.Universitario_v2.RegistroUniversitarioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario_v2.LoginActivity2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universidad_v2.NotificacionesUniversidadActivity"
+            android:label="@string/title_activity_notificaciones_universidad"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.activity.Universitario_v2.FiltrarEstadosActivity"></activity>
+    </application>
+
+</manifest>

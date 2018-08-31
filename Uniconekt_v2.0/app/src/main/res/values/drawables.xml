@@ -1,0 +1,4 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="ic_action_ic_home" type="drawable">@drawable/ic_action_ic_home</item>
+    <item name="ic_action_close" type="drawable">@drawable/ic_action_close</item>
+</resources>

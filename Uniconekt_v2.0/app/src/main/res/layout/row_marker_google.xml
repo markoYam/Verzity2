@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="250dp"
+    android:layout_height="150dp"
+    android:background="#ffff">
+
+    <RelativeLayout
+        android:layout_width="252dp"
+        android:layout_height="150dp"
+        android:background="@color/colorPrimaryDark">
+        <RelativeLayout
+            android:id="@+id/contenedor"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/imageUniversidad"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerHorizontal="true"
+                android:padding="3dp"
+                android:src="@drawable/defaultt"
+                app:civ_border_color="#FFff"
+                app:civ_border_width="2dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contenedor2"
+            android:layout_width="250dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/contenedor"
+            android:background="#ffff">
+
+            <TextView
+                android:id="@+id/nombreuniversidadMaker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:paddingLeft="5dp"
+                android:text="Dw medios"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contenedor2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="#fff">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/row_mapa" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

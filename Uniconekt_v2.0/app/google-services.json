@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "221744733819",
+    "firebase_url": "https://verziti.firebaseio.com",
+    "project_id": "verziti",
+    "storage_bucket": "verziti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221744733819:android:bbaae599e357df19",
+        "android_client_info": {
+          "package_name": "com.dwmedios.uniconekt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221744733819-v7vnbr4f3al3ae4a7dp5un3724bu60hs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbQGybp5lzx90sGPgHc_a5WhhJyVP-80o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_inicio"
+            android:icon="@drawable/ic_action_ic_home"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/menu_perfil"
+            android:icon="@drawable/ic_action_ic_school"
+            android:title="Ver perfil universidad" />
+        <item
+            android:id="@+id/menu_perfil_universitario"
+            android:icon="@drawable/ic_action_user_profile"
+            android:title="Ver perfil Universitario" />
+
+        <item
+            android:id="@+id/menu_mensajes"
+            android:icon="@drawable/ic_action_notifications"
+            android:title="Notificaciones"
+            app:actionViewClass="android.widget.TextView" />
+    </group>
+
+    <item
+        android:id="@+id/navigation_subheader"
+        android:title="Sesión">
+        <menu>
+            <item
+                android:id="@+id/menu_opcion_cerrar"
+                android:icon="@drawable/ic_action_close"
+                android:title="Cerrar sesión" />
+        </menu>
+    </item>
+</menu>

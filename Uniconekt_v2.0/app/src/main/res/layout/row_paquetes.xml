@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardviewBeca"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contenedor3"
+                android:background="@color/colorPrimaryDark">
+
+                <LinearLayout
+                    android:id="@+id/contenedor4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:background="#fff"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="5dp"
+                        android:layout_marginBottom="15dp">
+
+
+                        <TextView
+                            android:id="@+id/textViewCostoPaquete"
+                            style="@style/TextAppearance.AppCompat.Headline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MX$0.00"
+                            android:textAlignment="center"
+                            android:textColor="#000"
+                            android:textSize="30dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/VigenciaPaquete"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_horizontal"
+                        android:text="0 dias"
+                        android:textAlignment="center"
+                        android:textColor="#000" />
+
+                    <TextView
+                        android:id="@+id/textViewDescripcionPaquete"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Plan de alojamiento  casi ilimitado para variAS universidades medianos y en crecimiento."
+                        android:textAlignment="center"
+                        android:textColor="#000"
+                        android:visibility="visible" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:background="@color/colorPrimary">
+
+                        <TextView
+                            style="@style/TextAppearance.AppCompat.Widget.PopupMenu.Header"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text=" Características"
+                            android:textColor="#ffff" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <CheckBox
+                                android:id="@+id/checkboxFinanciamiento"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:background="@null"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+
+                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:button="@drawable/check_fondo"
+                                android:clickable="false"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" Aplica financiamiento. "
+                                android:textColor="#000" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <CheckBox
+                                android:id="@+id/checkboxBeca"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:background="@null"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:button="@drawable/check_fondo"
+                                android:clickable="false"
+                               ></CheckBox>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Aplica becas."
+                                android:textColor="#000" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <CheckBox
+                                android:id="@+id/checkboxPostulacion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:background="@null"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:button="@drawable/check_fondo"
+                                android:clickable="false"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Aplica postulación "
+                                android:textColor="#000" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/paypal" />
+
+                        <Button
+                            android:id="@+id/buttonVerMas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/contenedor4"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:text="Comprar"
+                            android:theme="@style/buttonDesingPrimary"
+                            android:visibility="visible" />
+
+                        <Button
+                            android:id="@+id/buttonVerMas2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/contenedor4"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:text="Paquete actual"
+                            android:theme="@style/buttonDesingPrimary2"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contenedor3"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+
+                android:background="@color/colorPrimaryDark">
+
+                <TextView
+                    android:id="@+id/textViewNombrePaquete"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="PAQUETE PREMIUM"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

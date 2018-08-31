@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#388e3c</color>
+    <color name="colorPrimaryDark">#00600f</color>
+    <color name="colorPrimaryDark2">#32cb00</color>
+    <color name="colorAccent">#76ff03 </color>
+    <color name="colorVerdeFuerte">#388E3C</color>
+    <color name="colorCard">#d1d1d4</color>
+    <color name="colorBlanco">#ffffff</color>
+    <color name="colorGris">#58595B</color>
+    <color name="colorText">#828282</color>
+    <color name="colorGrisBajo">#BCBEC0</color>
+    <color name="colorGrisBajo2">#e3e7e7e7</color>
+    <color name="colorTextBlue">#0e2fb6</color>
+    <color name="colorTrasparente">#00ffffff</color>
+    <color name="colorLink">#275ac1</color>
+    <color name="colorrojo">#ff0008</color>
+    <color name="colorFondoMapa">#3949ea5f</color>
+    <color name="colorStyle">#d06c6e6c</color>
+    <color name="uvv_black">#000000</color>
+
+    <color name="Color_buscarUniversidad">#388E3C</color>
+    <color name="Color_financiamientos">#0a47e2</color>
+    <color name="Color_examen">#ff7b25</color>
+    <color name="Color_BotonInicio">#ff7b25</color>
+    <color name="Color_becas">#32cb00</color>
+    <color name="Color_cupones">#800406</color>
+    <color name="Color_extranjero">#F7BF25</color>
+    <color name="Color_favoritos">#F7BF25</color>
+    <color name="Color_videos">#ff0106</color>
+    <color name="Color_location">#ff0106</color>
+    <color name="Color_mail">#1d47f1</color>
+    <color name="Color_web">#1d47f1</color>
+    <color name="Color_programas">#1d47f1</color>
+    <color name="Color_euu">#b47102</color>
+</resources>
