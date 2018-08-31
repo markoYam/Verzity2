@@ -36,11 +36,13 @@ public class PaquetesHolder extends RecyclerView.ViewHolder {
     CheckBox mCheckBoxPostulacion;
     @BindView(R.id.buttonVerMas2)
     Button mButton2;
+    @BindView(R.id.checkboxProspectus)
+    CheckBox mCheckBoxProspectus;
 
     public PaquetesHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-       // this.setIsRecyclable(false);
+        // this.setIsRecyclable(false);
     }
 
     public void Configure(final Paquetes mPaquetes, final PaquetesAdapter.onclick mOnclick) {
@@ -49,16 +51,15 @@ public class PaquetesHolder extends RecyclerView.ViewHolder {
         java.text.NumberFormat format = java.text.NumberFormat.getCurrencyInstance();
 
 
-        if (mPaquetes.costo != null)
-        {
+        if (mPaquetes.costo != null) {
             format.setCurrency(moneda);
-            String costo=format.format(mPaquetes.costo).toString();
-            costo= costo.replace("MXN","");
-            costo= costo.replace("MX","");
-            costo= costo.replace("$","");
-            mTextViewCosto.setText("$"+costo +" MXN");
+            String costo = format.format(mPaquetes.costo).toString();
+            costo = costo.replace("MXN", "");
+            costo = costo.replace("MX", "");
+            costo = costo.replace("$", "");
+            mTextViewCosto.setText("$" + costo + " MXN");
 
-          //  mTextViewCosto.setText(mPaquetes.costo+"");
+            //  mTextViewCosto.setText(mPaquetes.costo+"");
             System.out.println(format.format(23));
         }
         if (mPaquetes.descripcion != null) mTextViewDescripcion.setText(mPaquetes.descripcion);
@@ -79,19 +80,23 @@ public class PaquetesHolder extends RecyclerView.ViewHolder {
         } else {
             mCheckBoxFinanciamiento.setChecked(false);
         }
+        if (mPaquetes.aplica_Prospectus) {
+            mCheckBoxProspectus.setChecked(true);
+        } else {
+            mCheckBoxProspectus.setChecked(false);
+        }
         if (mPaquetes.actual) {
             mButton.setVisibility(View.GONE);
             mButton2.setVisibility(View.VISIBLE);
             //mButton.setBackgroundColor(Color.parseColor("#F12D24"));
-        }else
-        {
+        } else {
             mButton.setVisibility(View.VISIBLE);
             mButton2.setVisibility(View.GONE);
         }
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    if (mOnclick != null) mOnclick.onclickButton(mPaquetes);
+                if (mOnclick != null) mOnclick.onclickButton(mPaquetes);
             }
         });
         mButton2.setOnClickListener(new View.OnClickListener() {

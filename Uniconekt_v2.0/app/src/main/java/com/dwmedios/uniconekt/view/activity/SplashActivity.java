@@ -40,8 +40,9 @@ public class SplashActivity extends BaseActivity implements SplashViewController
             });
         }
     }
+
     public void tryDownloadConfig() {
-        Log.e("Configuraciones","Error al descargar");
+        Log.e("Configuraciones", "Error al descargar");
         showdialogMaterialConfig("Error", "Ocurrio un error al descargar las configuraciones. ¿Intentar nuevamente? ", R.drawable.ic_action_information, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +50,7 @@ public class SplashActivity extends BaseActivity implements SplashViewController
             }
         });
     }
+
     @Override
     public void Userloggedin() {
         if (SharePrefManager.getInstance(getApplicationContext()).getTypeUser() == 2) {
@@ -121,9 +123,9 @@ public class SplashActivity extends BaseActivity implements SplashViewController
             }, 500);
         }
     }
-    private void cancelValidateInfo()
-    {
-        String contenido=getString(R.string.universidad_desactivada);
+
+    private void cancelValidateInfo() {
+        String contenido = getString(R.string.universidad_desactivada);
         showdialogMaterial2("Atención", contenido, R.drawable.ic_action_information, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

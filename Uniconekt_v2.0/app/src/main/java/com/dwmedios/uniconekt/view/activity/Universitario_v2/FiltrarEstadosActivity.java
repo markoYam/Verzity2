@@ -1,5 +1,6 @@
 package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,12 +24,14 @@ import com.dwmedios.uniconekt.model.CodigoPostal;
 import com.dwmedios.uniconekt.model.Estados;
 import com.dwmedios.uniconekt.model.Paises;
 import com.dwmedios.uniconekt.model.Persona;
+import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.presenter.GetPaisesPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario.SearchUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.GetPaisesViewController;
 
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 
 public class FiltrarEstadosActivity extends BaseActivity implements GetPaisesViewController {
@@ -211,6 +215,10 @@ public class FiltrarEstadosActivity extends BaseActivity implements GetPaisesVie
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SearchUniversidades mUniversidades = new SearchUniversidades();
+                    mUniversidades.estado = mEstados.nombre;
+                    Utils.tipoBusqueda_Universidad = 3;
+                    startActivity(new Intent(getApplicationContext(), VisualizarUniversidadesActivity.class).putExtra(KEY_BUSQUEDA, mUniversidades));
                     showMessage("Ola " + mEstados.nombre);
                 }
             });

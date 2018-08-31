@@ -110,15 +110,15 @@
                                 android:id="@+id/checkboxFinanciamiento"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:background="@null"
-                                android:textColor="@color/colorPrimaryDark"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
-
+                                android:background="@null"
                                 android:backgroundTint="@color/colorPrimaryDark"
                                 android:button="@drawable/check_fondo"
-                                android:clickable="false"/>
+
+                                android:checked="true"
+                                android:clickable="false"
+                                android:textColor="@color/colorPrimaryDark" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -141,15 +141,14 @@
                                 android:id="@+id/checkboxBeca"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:background="@null"
-                                android:textColor="@color/colorPrimaryDark"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:background="@null"
                                 android:backgroundTint="@color/colorPrimaryDark"
                                 android:button="@drawable/check_fondo"
+                                android:checked="true"
                                 android:clickable="false"
-                               ></CheckBox>
+                                android:textColor="@color/colorPrimaryDark"></CheckBox>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -157,6 +156,7 @@
                                 android:text="Aplica becas."
                                 android:textColor="#000" />
                         </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -172,19 +172,43 @@
                                 android:id="@+id/checkboxPostulacion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:background="@null"
-                                android:textColor="@color/colorPrimaryDark"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:background="@null"
                                 android:backgroundTint="@color/colorPrimaryDark"
                                 android:button="@drawable/check_fondo"
-                                android:clickable="false"/>
+                                android:checked="true"
+                                android:clickable="false"
+                                android:textColor="@color/colorPrimaryDark" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Aplica postulación "
+                                android:textColor="#000" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <CheckBox
+                                android:id="@+id/checkboxProspectus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:background="@null"
+                                android:backgroundTint="@color/colorPrimaryDark"
+                                android:button="@drawable/check_fondo"
+                                android:checked="true"
+                                android:clickable="false"
+                                android:textColor="@color/colorPrimaryDark" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Aplica prospectus"
                                 android:textColor="#000" />
                         </LinearLayout>
 
@@ -219,6 +243,7 @@
                             android:visibility="gone" />
 
                     </LinearLayout>
+
                 </LinearLayout>
             </RelativeLayout>
 

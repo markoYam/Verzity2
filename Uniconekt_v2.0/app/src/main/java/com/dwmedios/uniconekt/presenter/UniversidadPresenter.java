@@ -87,7 +87,7 @@ public class UniversidadPresenter {
 
     }
 
-    private Persona getDatosPersona() {
+    public Persona getDatosPersona() {
         return mAllController.getDatosPersona();
     }
 
@@ -97,7 +97,7 @@ public class UniversidadPresenter {
         if (json != null) {
             mClientService
                     .getAPI()
-                    .getFavoritos(json,SharePrefManager.getInstance(mContext).isSeachExtranjero())
+                    .getFavoritos(json, SharePrefManager.getInstance(mContext).isSeachExtranjero())
                     .enqueue(new Callback<UniversidadResponse>() {
                         @Override
                         public void onResponse(Call<UniversidadResponse> call, Response<UniversidadResponse> response) {

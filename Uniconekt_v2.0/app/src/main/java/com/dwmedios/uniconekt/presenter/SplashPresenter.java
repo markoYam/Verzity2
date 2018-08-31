@@ -44,12 +44,16 @@ public class SplashPresenter {
     public void LoadMenu() {
         int type = SharePrefManager.getInstance(mContext).getTypeUser();
         if (type == 1 || type == 2) {
-            mSplashViewController.Userloggedin();
+            if (mAllController.getDatosPersona() == null) {
+                SharePrefManager.getInstance(mContext).saveTypeUser(0);
+                mSplashViewController.userNotLoggedIn();
+            } else
+                mSplashViewController.Userloggedin();
         } else {
             SharePrefManager.getInstance(mContext).saveTypeUser(0);
             mSplashViewController.userNotLoggedIn();
         }
-       /* if (mAllController.ExisteSesionUniversidad()) {
+     /*   if (mAllController.ExisteSesionUniversidad()) {
             SharePrefManager.getInstance(mContext).saveTypeUser(2);
             mSplashViewController.Userloggedin();
         } else if (mAllController.ExisteSesionUniversiTario()) {
