@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.util.Log;
+
+import com.dwmedios.uniconekt.model.Licenciaturas;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,6 +29,7 @@ public class SharePrefManager {
     private static final String INFOUSER = "infouser_mgs";
     private static final String TYPE_USER_LOGIN = "user_temp";
     private static final String IME_USER_SAVE = "USER_IME";
+    private static final String KEY_GUARDAR_LICEN = "USER_IMSSSSSSSSSSSSSSSSSSSSSSSSSE";
     private static final String BUSCAR_EXTRANJERO = "BUSCAR EXTRANJERO-YTNGJGFJGRJGGFDSCFD524";
 
     private static Context mCxt;
@@ -56,18 +59,19 @@ public class SharePrefManager {
         SharedPreferences mSharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
         return mSharedPreferences.getString(KEY_TOKEN, null);
     }
+
     public boolean saveTypeUser(int user) {
         SharedPreferences sharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPreferences.edit();
         mEditor.putInt(TYPE_USER_LOGIN, user);
         mEditor.apply();
-        Log.e("Type user saved", user+"");
+        Log.e("Type user saved", user + "");
         return true;
     }
 
     public int getTypeUser() {
         SharedPreferences mSharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
-        Log.e("Type user saved", mSharedPreferences.getInt(TYPE_USER_LOGIN, 0)+"");
+        Log.e("Type user saved", mSharedPreferences.getInt(TYPE_USER_LOGIN, 0) + "");
         return mSharedPreferences.getInt(TYPE_USER_LOGIN, 1);
     }
 
@@ -79,6 +83,7 @@ public class SharePrefManager {
         Log.e("buscar Extranjero", String.valueOf(isExtranjero));
         return true;
     }
+
     public boolean isSeachExtranjero() {
         SharedPreferences mSharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
         Log.e("buscar Extranjero", String.valueOf(mSharedPreferences.getBoolean(BUSCAR_EXTRANJERO, false)));
@@ -90,14 +95,14 @@ public class SharePrefManager {
         SharedPreferences.Editor mEditor = sharedPreferences.edit();
         mEditor.putString(IME_USER_SAVE, imei);
         mEditor.apply();
-        Log.e("IMEI user saved", imei+"");
+        Log.e("IMEI user saved", imei + "");
         return true;
     }
 
 
     public String getImei() {
         SharedPreferences mSharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
-        Log.e("IMEI user saved", mSharedPreferences.getString(IME_USER_SAVE, null)+"");
+        Log.e("IMEI user saved", mSharedPreferences.getString(IME_USER_SAVE, null) + "");
         return mSharedPreferences.getString(IME_USER_SAVE, null);
     }
 
@@ -138,19 +143,40 @@ public class SharePrefManager {
         Log.e("status save noti", "yes");
         Log.e("content not send", (json == null ? "null" : json));
     }*/
-
-/*
-    public List<notificacion> getnotification() {
+    public void saveLicenciaturas(List<Licenciaturas> mLicenciaturas) {
         Gson mGson = new Gson();
-        List<notificacion> mNotificacions = new ArrayList<>();
+        String json = mGson.toJson(mLicenciaturas);
+        SharedPreferences sharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = sharedPreferences.edit();
+        mEditor.putString(KEY_GUARDAR_LICEN, json);
+        mEditor.apply();
+        Log.e("SAVE LICEN", "yes");
+        Log.e("content ", (json == null ? "null" : json));
+    }
+
+    public List<Licenciaturas> getLicenciaturas() {
+        Gson mGson = new Gson();
+        List<Licenciaturas> mLicenciaturas = new ArrayList<>();
         SharedPreferences mSharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
-        String json = mSharedPreferences.getString(NOTIFICATIONOBJECT, null);
-        Type mType = new TypeToken<List<notificacion>>() {
+        String json = mSharedPreferences.getString(KEY_GUARDAR_LICEN, null);
+        Type mType = new TypeToken<List<Licenciaturas>>() {
         }.getType();
         Log.e("content not return", (json == null ? "null" : json));
-        return (mNotificacions = mGson.fromJson(json, mType));
+        return (mGson.fromJson(json, mType));
     }
-*/
+
+    /*
+        public List<notificacion> getnotification() {
+            Gson mGson = new Gson();
+            List<notificacion> mNotificacions = new ArrayList<>();
+            SharedPreferences mSharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
+            String json = mSharedPreferences.getString(NOTIFICATIONOBJECT, null);
+            Type mType = new TypeToken<List<notificacion>>() {
+            }.getType();
+            Log.e("content not return", (json == null ? "null" : json));
+            return (mNotificacions = mGson.fromJson(json, mType));
+        }
+    */
     public void saveIdNotification(List<Integer> mIdNotificacion) {
         Gson mGson = new Gson();
         String json = mGson.toJson(mIdNotificacion);

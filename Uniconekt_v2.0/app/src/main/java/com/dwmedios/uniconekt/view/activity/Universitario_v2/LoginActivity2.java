@@ -77,9 +77,9 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
         mLoginPresenter = new LoginPresenter(this, getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         onclickControls();
-        validatePermison(Manifest.permission.READ_PHONE_STATE, LoginActivity2.this, 2);
+        if (validatePermison(Manifest.permission.READ_PHONE_STATE, LoginActivity2.this, 2))
+            SharePrefManager.getInstance(getApplicationContext()).saveImei(getImei(getApplicationContext()));
 
-        // getImei(getApplicationContext());
     }
 
     @Override

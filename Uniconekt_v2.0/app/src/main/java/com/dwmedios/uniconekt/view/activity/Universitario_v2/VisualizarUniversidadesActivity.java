@@ -1,14 +1,20 @@
 package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
@@ -43,7 +49,9 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
 
     private UniversidadAdapter mUniversidadAdapter;
     private UniversidadPresenter mUniversidadPresenter;
-    List<Universidad> mUniversidads = null;
+    List<Universidad> mUniversidadsList = null;
+    private SearchView mSearchView;
+    private String criterio = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +62,22 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mUniversidadPresenter = new UniversidadPresenter(this, getApplicationContext());
-        loadData();
+        //falta el swipe
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(true);
+                loadData();
+            }
+        });
+
     }
 
+    SearchUniversidades mUniversidades;
+
     public void loadData() {
-        SearchUniversidades mUniversidades = getIntent().getExtras().getParcelable(KEY_BUSQUEDA);
+        if (mUniversidades == null)
+            mUniversidades = getIntent().getExtras().getParcelable(KEY_BUSQUEDA);
         if (mUniversidades != null) {
             mUniversidades.extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
             if (isNullOrEmpty(mUniversidades.pais))
@@ -70,15 +89,17 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
                     break;
                 case 2:
                     //programas academicos
+                    mUniversidades.licenciaturas = SharePrefManager.getInstance(getApplicationContext()).getLicenciaturas();
                     mUniversidadPresenter.Search(mUniversidades);
                     break;
                 case 3:
                     //estados
-                    getSupportActionBar().setTitle("Estados");
+                    getSupportActionBar().setTitle("Universidades en " + mUniversidades.estado);
                     mUniversidadPresenter.Search(mUniversidades);
                     break;
                 case 4:
                     //favoritos
+                    getSupportActionBar().setTitle("Favoritos");
                     mUniversidadPresenter.getFavoritos();
                     break;
                 default:
@@ -86,11 +107,77 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
                     break;
             }
         } else {
-            showMessage("upss" +
-                    "");
+            showMessage("upss");
             finish();
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.busqueda, menu);
+        MenuItem menuItem = menu.findItem(R.id.search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                criterio = query;
+                if (!isNullOrEmpty(query)) {
+                    mUniversidadPresenter.searchUniversidades(mUniversidadsList, query);
+                } else
+                    loadData();
+                mSearchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                criterio = newText;
+                if (!isNullOrEmpty(newText)) {
+                    mUniversidadPresenter.searchUniversidades(mUniversidadsList, newText);
+                } else
+                    loadData();
+
+                return true;
+            }
+        });
+        mSearchView.setQueryHint("Buscar universidad");
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSearchView.setFocusable(true);
+                mSearchView.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mSearchView, InputMethodManager.SHOW_IMPLICIT);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                Utils.busqueda_universidades = true;
+            }
+        });
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                if (mSearchView.isIconified()) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    Utils.busqueda_universidades = false;
+                } else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    Utils.busqueda_universidades = false;
+                    mSearchView.onActionViewCollapsed();
+                }
+                return true;
+            }
+        });
+
+        mSearchView.requestFocus();
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -101,6 +188,25 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mSearchView.isIconified()) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mSearchView.onActionViewCollapsed();
+        } else {
+            super.onBackPressed();
+            finish();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Utils.tipoBusqueda_Universidad = 1;
+        Utils.busqueda_universidades = false;
     }
 
     @Override
@@ -159,12 +265,25 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
 
     @Override
     public void OnSuccessSeach(List<Universidad> mUniversidadList, int type) {
+        mSwipeRefreshLayout.setRefreshing(false);
+        mTextViewEmpty.setVisibility(View.GONE);
+        if (type == 1) {
+            this.mUniversidadsList = mUniversidadList;
+            if (Utils.busqueda_universidades) {
+                mUniversidadPresenter.searchUniversidades(mUniversidadList, criterio);
+            } else {
+                configureRecyclerView(mUniversidadList);
+            }
+        } else {
+            configureRecyclerView(mUniversidadList);
+        }
+
 
     }
 
     @Override
     public void Onfailed(String mensaje) {
-        showMessage(mensaje);
+        //showMessage(mensaje);
         mTextViewEmpty.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(false);
         EmpyRecycler();

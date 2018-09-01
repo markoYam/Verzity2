@@ -30,9 +30,12 @@ import com.dwmedios.uniconekt.model.VisitasBanners;
 import com.dwmedios.uniconekt.presenter.SearchUniversidadesPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario.ActivityMaps.MapsUniversityActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.FiltrarEstadosActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.FiltrarNivelAcademicoActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.util.demo.CustoViewPager;
 import com.dwmedios.uniconekt.view.viewmodel.SearchUniversidadViewController;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -46,6 +49,7 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.SEARCH_KEY;
 import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.UNIVERSIDAD_KEY;
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderDark;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
@@ -166,20 +170,23 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
             ClasViewModel.tipoMenu validate = ClasViewModel.tipoMenu.valueOf(menu.tipo.toString());
             switch (validate) {
                 case nombre:
-                    Intent mIntent = new Intent(SearchUniversidadActivity.this, ViewUniversidadesActivity.class);
-                    SEARCH_KEY = 1;
+                    Utils.tipoBusqueda_Universidad = 1;
+                    Intent mIntent = new Intent(SearchUniversidadActivity.this, VisualizarUniversidadesActivity.class);
+                    mIntent.putExtra(KEY_BUSQUEDA, new SearchUniversidades());
+                    //  SEARCH_KEY = 1;
                     startActivity(mIntent);
                     break;
                 case academicos:
-                    startActivity(new Intent(SearchUniversidadActivity.this, SearchLicenciaturasActivity.class));
+                    startActivity(new Intent(SearchUniversidadActivity.this, FiltrarNivelAcademicoActivity.class));
                     break;
                 case cercaMi:
                     abrirMapa();
                     TYPE_VIEW_MAPS = 1;
                     break;
                 case favoritos:
-                    Intent mIntent2 = new Intent(SearchUniversidadActivity.this, ViewUniversidadesActivity.class);
-                    SEARCH_KEY = 3;
+                    Utils.tipoBusqueda_Universidad = 4;
+                    Intent mIntent2 = new Intent(SearchUniversidadActivity.this, VisualizarUniversidadesActivity.class);
+                    mIntent2.putExtra(KEY_BUSQUEDA, new SearchUniversidades());
                     startActivity(mIntent2);
                     break;
                 case buscar_pais:

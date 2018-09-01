@@ -39,6 +39,7 @@ import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.presenter.UniversidadDetallePresenter;
 import com.dwmedios.uniconekt.view.activity.Universidad.UbicacionUniversidadActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.ProspectusActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.AdapterViewPager.UniversidadesAdapterViewPager;
 import com.dwmedios.uniconekt.view.animation_demo.demoAnimation;
@@ -66,6 +67,7 @@ import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleBecasAct
 import static com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity.TYPE_VIEW_F;
 import static com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity.KEY_FINANCIAMIENTOS;
 import static com.dwmedios.uniconekt.view.activity.Universitario.VideosActivity.KEY_VIDEO;
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.ProspectusActivity.KEY_PROSPECTUS;
 import static com.dwmedios.uniconekt.view.util.Utils.getDrawable;
 import static com.dwmedios.uniconekt.view.util.Utils.getDrawable2;
 import static com.facebook.internal.Utility.isNullOrEmpty;
@@ -331,11 +333,8 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.imageButtonVideos:
-                    if (mUniversidad != null) {
-                        Intent mIntent = new Intent(getApplicationContext(), VideosActivity.class);
-                        mIntent.putExtra(KEY_VIDEO, mUniversidad);
-                        startActivity(mIntent);
-                    }
+                    if (mUniversidad != null)
+                        startActivity(new Intent(getApplicationContext(), ProspectusActivity.class).putExtra(KEY_PROSPECTUS, mUniversidad));
                     break;
                 case R.id.imageButtonBecas:
                     if (mUniversidad != null) {
@@ -614,13 +613,6 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
                 public void onclick(Object m) {
 
                     Licenciaturas temp = (Licenciaturas) m;
-                /*    // PostuladosUniversidades mPostuladosUniversidades = new PostuladosUniversidades();
-                    mPostuladosUniversidades.id_universidad = mUniversidad.id;
-                    mPostuladosUniversidades.id_licenciatura = temp.id;
-                    mCustomDialogReyclerView2.dismisDialog();
-                    //mUniversidadDetallePresenter.PostularseUniversidad(mPostuladosUniversidades);
-                    mUniversidadDetallePresenter.validateUser();
-*/
                     id_licenciatura = temp.id;
                     mCustomDialogReyclerView2.dismisDialog();
                     mUniversidadDetallePresenter.validateUser();

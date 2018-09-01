@@ -28,6 +28,7 @@ public class Universidad implements Parcelable {
     public static final String VENTAS = "VentasPaquetes";
     public static final String LICENCIATURAS = "Licenciaturas";
     public static final String PERSONAS = "Personas";
+    public static final String FOLLETOS = "urlFolletosDigitales";
 
 
     @SerializedName(ID)
@@ -68,6 +69,9 @@ public class Universidad implements Parcelable {
     @SerializedName(DIRECCION)
     public Direccion mDireccion;
 
+    @SerializedName(FOLLETOS)
+    public String folleto;
+
     @SerializedName(PERSONAS)
     public Persona mPersona;
 
@@ -93,6 +97,7 @@ public class Universidad implements Parcelable {
         mFotosUniversidades = in.createTypedArrayList(FotosUniversidades.CREATOR);
         logo = in.readString();
         mDireccion = in.readParcelable(Direccion.class.getClassLoader());
+        folleto = in.readString();
         mPersona = in.readParcelable(Persona.class.getClassLoader());
         mVentasPaquetesList = in.createTypedArrayList(VentasPaquetes.CREATOR);
         id_direccion = in.readInt();
@@ -114,6 +119,7 @@ public class Universidad implements Parcelable {
         dest.writeTypedList(mFotosUniversidades);
         dest.writeString(logo);
         dest.writeParcelable(mDireccion, flags);
+        dest.writeString(folleto);
         dest.writeParcelable(mPersona, flags);
         dest.writeTypedList(mVentasPaquetesList);
         dest.writeInt(id_direccion);

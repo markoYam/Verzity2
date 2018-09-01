@@ -1,6 +1,10 @@
 package com.dwmedios.uniconekt.view.activity.Universidad_v2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
@@ -135,12 +141,15 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
         RecyclerView mRecyclerView;
         //@BindView(R.id.textView_empyRecycler)
         TextView mTextView;
-        Button mButtonTodos;
-        Button mButtonVisto;
-        Button mButtonPendientes;
-        View mViewTodos;
-        View mViewVisto;
-        View mViewPendiente;
+        //ImageButton mButtonTodos;
+        ImageButton mButtonVisto;
+        ImageButton mButtonPendientes;
+        TextView mTextViewTodos;
+        TextView mTextViewVisto;
+        TextView mTextViewPendientes;
+        LinearLayout layoutTodos;
+        LinearLayout layoutVistos;
+        LinearLayout layoutPendietentes;
         private NotificacionAdapter mNotificacionAdapter;
 
         public PlaceholderFragment() {
@@ -163,16 +172,24 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
             //ButterKnife.bind(getContext(), rootView);
             mRecyclerView = rootView.findViewById(R.id.recyclerview_utils);
             mTextView = rootView.findViewById(R.id.textView_empyRecycler);
-            mButtonTodos = rootView.findViewById(R.id.buttonTodos);
+            //mButtonTodos = rootView.findViewById(R.id.buttonTodos);
             mButtonVisto = rootView.findViewById(R.id.buttonVisto);
             mButtonPendientes = rootView.findViewById(R.id.buttonPendiente);
-            mViewTodos = rootView.findViewById(R.id.viewIndicadorTodos);
-            mViewVisto = rootView.findViewById(R.id.viewIndicadorVisto);
-            mViewPendiente = rootView.findViewById(R.id.viewIndicadorPendiente);
+            mTextViewTodos = rootView.findViewById(R.id.textViewTodos);
+            mTextViewVisto = rootView.findViewById(R.id.textViewVisto);
+            mTextViewPendientes = rootView.findViewById(R.id.textviewPenditente);
+
+            layoutTodos = rootView.findViewById(R.id.layoutTodos);
+            layoutVistos = rootView.findViewById(R.id.LayoutVisto);
+            layoutPendietentes = rootView.findViewById(R.id.LayoutPenditentes);
+
             configureRecyclerView(mNotificacionUniversidads.mNotificacionesList);
-            mButtonVisto.setOnClickListener(mOnClickListener);
-            mButtonTodos.setOnClickListener(mOnClickListener);
-            mButtonPendientes.setOnClickListener(mOnClickListener);
+
+            layoutVistos.setOnClickListener(mOnClickListener);
+            layoutTodos.setOnClickListener(mOnClickListener);
+            layoutPendietentes.setOnClickListener(mOnClickListener);
+
+
             return rootView;
         }
 
@@ -197,19 +214,20 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.buttonTodos:
+                    case R.id.layoutTodos:
                         buscar(1);
                         break;
-                    case R.id.buttonVisto:
+                    case R.id.LayoutVisto:
                         buscar(2);
                         break;
-                    case R.id.buttonPendiente:
+                    case R.id.LayoutPenditentes:
                         buscar(3);
                         break;
                 }
             }
         };
 
+        @SuppressLint("ResourceAsColor")
         public void buscar(int tipo) {
 
             switch (mNotificacionUniversidads.nombreSeccion) {
@@ -226,15 +244,47 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
 
             switch (tipo) {
                 case 1:
+                    //color de fondo principal
+                    layoutTodos.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    layoutVistos.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
+                    layoutPendietentes.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
+
+                    //Color text boton
+                    /*mButtonTodos.setColorFilter(getResources().getColor(R.color.colorBlanco),
+                            PorterDuff.Mode.SRC_ATOP);*/
+                    mButtonVisto.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
+                            PorterDuff.Mode.SRC_ATOP);
+                    mButtonPendientes.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
+                            PorterDuff.Mode.SRC_ATOP);
+
+                    //icono
+                    mTextViewTodos.setTextColor(getResources().getColor(R.color.colorBlanco));
+                    mTextViewVisto.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    mTextViewPendientes.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
                     configureRecyclerView(mNotificacionUniversidads.mNotificacionesList);
-                    mViewTodos.setVisibility(View.VISIBLE);
-                    mViewVisto.setVisibility(View.GONE);
-                    mViewPendiente.setVisibility(View.GONE);
                     break;
                 case 2:
-                    mViewTodos.setVisibility(View.GONE);
-                    mViewVisto.setVisibility(View.VISIBLE);
-                    mViewPendiente.setVisibility(View.GONE);
+
+                    layoutVistos.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    layoutTodos.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
+                    layoutPendietentes.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
+
+                    //Color text boton
+                    mButtonVisto.setColorFilter(getResources().getColor(R.color.colorBlanco),
+                            PorterDuff.Mode.SRC_ATOP);
+                    mButtonVisto.setBackgroundColor(getResources().getColor(R.color.colorTrasparente));
+                    /*mButtonTodos.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
+                            PorterDuff.Mode.SRC_ATOP);*/
+                    mButtonPendientes.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
+                            PorterDuff.Mode.SRC_ATOP);
+
+                    //icono
+                    mTextViewVisto.setTextColor(getResources().getColor(R.color.colorBlanco));
+                    mTextViewTodos.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    mTextViewPendientes.setTextColor(getResources().getColor(R.color.colorPrimary));
+
                     listVisto = new ArrayList<>();
                     for (Notificaciones notificaciones : mNotificacionUniversidads.mNotificacionesList) {
                         if (notificaciones.mNotificacionEstatusList.get(0).mEstatus.estatusNot.equals("VISTO")) {
@@ -245,9 +295,24 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
                     break;
 
                 case 3:
-                    mViewTodos.setVisibility(View.GONE);
-                    mViewVisto.setVisibility(View.GONE);
-                    mViewPendiente.setVisibility(View.VISIBLE);
+                    layoutPendietentes.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    layoutTodos.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
+                    layoutVistos.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
+
+                    //Color text boton
+                    mButtonPendientes.setColorFilter(getResources().getColor(R.color.colorBlanco),
+                            PorterDuff.Mode.SRC_ATOP);
+                    mButtonPendientes.setBackgroundColor(getResources().getColor(R.color.colorTrasparente));
+                   /* mButtonTodos.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
+                            PorterDuff.Mode.SRC_ATOP);*/
+                    mButtonVisto.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
+                            PorterDuff.Mode.SRC_ATOP);
+
+                    //icono
+                    mTextViewPendientes.setTextColor(getResources().getColor(R.color.colorBlanco));
+                    mTextViewTodos.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    mTextViewVisto.setTextColor(getResources().getColor(R.color.colorPrimary));
+
 
                     lisPendientes = new ArrayList<>();
                     for (Notificaciones notificaciones : mNotificacionUniversidads.mNotificacionesList) {

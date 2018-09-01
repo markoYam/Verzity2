@@ -11,6 +11,7 @@ import com.dwmedios.uniconekt.data.service.response.EstadosResponse;
 import com.dwmedios.uniconekt.data.service.response.FavoritosResponse;
 import com.dwmedios.uniconekt.data.service.response.FinanciamientoResponse;
 import com.dwmedios.uniconekt.data.service.response.LicenciaturasResponse;
+import com.dwmedios.uniconekt.data.service.response.NivelAcademicoResponse;
 import com.dwmedios.uniconekt.data.service.response.NotificacionesResponse;
 import com.dwmedios.uniconekt.data.service.response.NotificacionesUniResponse;
 import com.dwmedios.uniconekt.data.service.response.PaisesResponse;
@@ -49,8 +50,6 @@ public interface ClientAPI {
     @GET("GetBannersVigentes")
     Call<BannersResponse> getBannersVigentes();
 
-    @GET("GetProgramasAcademicos")
-    Call<LicenciaturasResponse> GetLicenciaturas();
 
     @GET("GetPaises")
     Call<PaisesResponse> GetPaises();
@@ -191,4 +190,11 @@ public interface ClientAPI {
     @FormUrlEncoded
     @POST("GetEstados")
     Call<EstadosResponse> getEstados(@Field("json") String json);
+
+    @GET("GetNivelesAcademicos")
+    Call<NivelAcademicoResponse> getNivelesAcademicos();
+
+    @FormUrlEncoded
+    @POST("GetProgramasAcademicos")
+    Call<LicenciaturasResponse> GetLicenciaturas(@Field("json") String json);
 }

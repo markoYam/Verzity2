@@ -219,7 +219,9 @@
             android:label="@string/title_activity_notificaciones_universidad"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.activity.Universitario_v2.FiltrarEstadosActivity" />
-        <activity android:name=".view.activity.Universitario_v2.VisualizarUniversidadesActivity"></activity>
+        <activity android:name=".view.activity.Universitario_v2.VisualizarUniversidadesActivity" />
+        <activity android:name=".view.activity.Universitario_v2.FiltrarNivelAcademicoActivity" />
+        <activity android:name=".view.activity.Universitario_v2.ProspectusActivity"></activity>
     </application>
 
 </manifest>

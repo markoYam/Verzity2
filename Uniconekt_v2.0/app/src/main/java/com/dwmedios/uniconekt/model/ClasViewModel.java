@@ -26,6 +26,8 @@ public class ClasViewModel {
         paquetes,
         examen,
         extranjero,
-        buscar_pais
+        buscar_pais,
+        videos,
+        folletos
     }
 }

@@ -19,11 +19,16 @@ import android.widget.TextView;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.ClasViewModel;
 import com.dwmedios.uniconekt.model.Licenciaturas;
+import com.dwmedios.uniconekt.model.NivelAcademico;
+import com.dwmedios.uniconekt.model.NivelEstudios;
 import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.presenter.LicenciaturasPresenter;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.LicenciaturasAdapter;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
+import com.dwmedios.uniconekt.view.util.SharePrefManager;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.LicenciaturaViewController;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
@@ -35,8 +40,10 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.SEARCH_KEY;
 import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.UNIVERSIDAD_KEY;
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
 
 public class SearchLicenciaturasActivity extends BaseActivity implements LicenciaturaViewController {
+    public static final String KEY_NIVEL = "jksgvjnsgkjkjgskjgs";
     @BindView(R.id.recyclerview_utils)
     RecyclerView mRecyclerView;
     @BindView(R.id.textView_empyRecycler)
@@ -59,7 +66,7 @@ public class SearchLicenciaturasActivity extends BaseActivity implements Licenci
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Programas académicos");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mLicenciaturasPresenter = new LicenciaturasPresenter(this,getApplicationContext());
+        mLicenciaturasPresenter = new LicenciaturasPresenter(this, getApplicationContext());
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -68,7 +75,17 @@ public class SearchLicenciaturasActivity extends BaseActivity implements Licenci
             }
         });
         mButton.setOnClickListener(mOnClickListener);
-        mLicenciaturasPresenter.GetLicenciaturas();
+        loadLicenciaturas();
+    }
+
+    public void loadLicenciaturas() {
+        NivelAcademico mNivelEstudios = getIntent().getExtras().getParcelable(KEY_NIVEL);
+        if (mNivelEstudios != null) {
+            mLicenciaturasPresenter.GetLicenciaturas(mNivelEstudios);
+        } else {
+            showMessage("Ups");
+            finish();
+        }
     }
 
     @Override
@@ -93,11 +110,11 @@ public class SearchLicenciaturasActivity extends BaseActivity implements Licenci
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Utils.tipoBusqueda_Universidad = 2;
             SearchUniversidades universidades = new SearchUniversidades();
-            universidades.licenciaturas = licenciaturasSeleccionadas;
-            Intent mIntent = new Intent(getApplicationContext(), ViewUniversidadesActivity.class);
-            mIntent.putExtra(UNIVERSIDAD_KEY, universidades);
-            SEARCH_KEY = 2;
+            SharePrefManager.getInstance(getApplicationContext()).saveLicenciaturas(licenciaturasSeleccionadas);
+            Intent mIntent = new Intent(getApplicationContext(), VisualizarUniversidadesActivity.class);
+            mIntent.putExtra(KEY_BUSQUEDA, universidades);
             startActivity(mIntent);
         }
     };

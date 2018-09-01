@@ -82,6 +82,7 @@ public class Utils {
     public static int filtro_becas = 1;
     public static int filtro_financiamientos = 1;
     public static int tipoBusqueda_Universidad = 1;
+    public static boolean busqueda_universidades = false;
 
     public static void showNotification(Context mContext, Notificaciones mNotification) {
         try {

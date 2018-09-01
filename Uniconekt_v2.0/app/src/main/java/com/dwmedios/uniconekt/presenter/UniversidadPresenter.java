@@ -1,6 +1,7 @@
 package com.dwmedios.uniconekt.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.data.service.ClientService;
@@ -23,6 +24,7 @@ import retrofit2.Response;
 import static com.dwmedios.uniconekt.view.util.Utils.ConvertModelToStringGson;
 import static com.dwmedios.uniconekt.view.util.Utils.ERROR_CONECTION;
 import static com.dwmedios.uniconekt.view.util.Utils.ParseString;
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class UniversidadPresenter {
     private UniversidadViewController mUniversidadViewController;
@@ -40,11 +42,13 @@ public class UniversidadPresenter {
     public void Search(SearchUniversidades mSearchUniversidades) {
         mSearchUniversidades.extranjero = SharePrefManager.getInstance(mContext).isSeachExtranjero();
         Persona mPersona = mAllController.getDatosPersona();
-        if (mPersona != null && mPersona.direccion != null) {
-            mSearchUniversidades.pais = mPersona.direccion.pais;
-        }
+        if (isNullOrEmpty(mSearchUniversidades.pais))
+            if (mPersona != null && mPersona.direccion != null) {
+                mSearchUniversidades.pais = mPersona.direccion.pais;
+            }
         mUniversidadViewController.Onloading(true);
         String json = ConvertModelToStringGson(mSearchUniversidades);
+        Log.e("Buscar uni",json);
         if (json != null) {
             mClientService
                     .getAPI()

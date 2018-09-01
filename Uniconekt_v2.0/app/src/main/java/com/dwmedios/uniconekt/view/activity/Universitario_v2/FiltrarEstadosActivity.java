@@ -219,7 +219,6 @@ public class FiltrarEstadosActivity extends BaseActivity implements GetPaisesVie
                     mUniversidades.estado = mEstados.nombre;
                     Utils.tipoBusqueda_Universidad = 3;
                     startActivity(new Intent(getApplicationContext(), VisualizarUniversidadesActivity.class).putExtra(KEY_BUSQUEDA, mUniversidades));
-                    showMessage("Ola " + mEstados.nombre);
                 }
             });
         }
