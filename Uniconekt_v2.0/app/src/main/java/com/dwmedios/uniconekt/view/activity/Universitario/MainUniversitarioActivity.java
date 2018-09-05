@@ -30,14 +30,13 @@ import com.dwmedios.uniconekt.model.Notificaciones;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.MenuPresenter;
-import com.dwmedios.uniconekt.view.activity.LoginActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad.DatosUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad_v2.NotificacionesUniversidadActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.RegistroUniversitarioActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.PaquetesAsesoresActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.fragments.MenuFragment;
-import com.dwmedios.uniconekt.view.fragments.NotificacionesFragment;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.toast;
 import com.dwmedios.uniconekt.view.viewmodel.MenuController;
@@ -50,6 +49,7 @@ import java.util.List;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_VER_PERFIL_REPRESENTANTE;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_VER_PERFIL_UNIVERSITARIO;
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity.typeViewAsesor;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 
 public class MainUniversitarioActivity extends BaseActivity
@@ -186,7 +186,6 @@ public class MainUniversitarioActivity extends BaseActivity
             menuPresenter.closeSesion();
         }
         if (id == R.id.menu_perfil) {
-            //startActivity(new Intent(getApplicationContext(),DetalleNotificacionActivity.class));
             startActivity(new Intent(getApplicationContext(), DatosUniversidadActivity.class));
         }
         if (id == R.id.menu_perfil_universitario) {
@@ -203,10 +202,13 @@ public class MainUniversitarioActivity extends BaseActivity
         }
         if (id == R.id.menu_mensajes) {
             getSupportActionBar().setTitle("Notificaciones");
-            //fragmentManager.beginTransaction().replace(R.id.contenidoPanel, new NotificacionesFragment()).commit();
             startActivity(new Intent(getApplicationContext(), NotificacionesUniversidadActivity.class));
         }
+        if (id == R.id.menu_mis_asesores) {
+            typeViewAsesor = 0;
+            startActivity(new Intent(getApplicationContext(), AsesoresActivity.class));
 
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -315,6 +317,7 @@ public class MainUniversitarioActivity extends BaseActivity
             navigationView.getMenu().findItem(R.id.menu_perfil_universitario).setVisible(true);
             navigationView.getMenu().findItem(R.id.menu_perfil_universitario).setTitle("Ver  Perfil representante");
             navigationView.getMenu().findItem(R.id.navigation_subheader).setVisible(true);
+            navigationView.getMenu().findItem(R.id.menu_mis_asesores).setVisible(false);
             mensajes = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().
                     findItem(R.id.menu_mensajes));
             mensajes.setGravity(Gravity.CENTER_VERTICAL);
@@ -327,6 +330,7 @@ public class MainUniversitarioActivity extends BaseActivity
             navigationView.getMenu().findItem(R.id.menu_perfil).setVisible(false);
             navigationView.getMenu().findItem(R.id.menu_mensajes).setVisible(false);
             navigationView.getMenu().findItem(R.id.menu_perfil_universitario).setVisible(true);
+            navigationView.getMenu().findItem(R.id.menu_mis_asesores).setVisible(true);
             navigationView.getMenu().findItem(R.id.navigation_subheader).setVisible(true);
             navigationView.getMenu().findItem(R.id.menu_perfil_universitario).setTitle("Ver  Perfil universitario");
         }

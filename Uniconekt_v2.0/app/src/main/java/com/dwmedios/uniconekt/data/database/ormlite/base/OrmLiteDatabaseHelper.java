@@ -11,6 +11,7 @@ import com.dwmedios.uniconekt.model.Item;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
+import com.dwmedios.uniconekt.model.VentaPaqueteAsesor;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
@@ -31,7 +32,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         for (Class<?> currentClass : mDbClasses) {
             try {
-                TableUtils.createTableIfNotExists(connectionSource,currentClass);
+                TableUtils.createTableIfNotExists(connectionSource, currentClass);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -69,9 +70,9 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
         onCreate(getWritableDatabase(), connectionSource);
     }
 
-    private static Class<?>[] mDbClasses = {Item.class, Direccion.class, Dispositivo.class, Persona.class, Universidad.class, Usuario.class, VentasPaquetes.class, Configuraciones.class};
+    private static Class<?>[] mDbClasses = {Item.class, Direccion.class, Dispositivo.class, Persona.class, Universidad.class, Usuario.class, VentasPaquetes.class, Configuraciones.class, VentaPaqueteAsesor.class};
 
-    private static final String DATABASE_NAME = "uniconekt2.db";
+    private static final String DATABASE_NAME = "uniconekt.db";
     private static final int DATABASE_VERSION = 1;
 }
 

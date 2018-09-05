@@ -18,6 +18,11 @@
             android:title="Ver perfil Universitario" />
 
         <item
+            android:id="@+id/menu_mis_asesores"
+            android:icon="@drawable/ic_action_user_profile"
+            android:title="Ver mis asesores" />
+
+        <item
             android:id="@+id/menu_mensajes"
             android:icon="@drawable/ic_action_notifications"
             android:title="Notificaciones"

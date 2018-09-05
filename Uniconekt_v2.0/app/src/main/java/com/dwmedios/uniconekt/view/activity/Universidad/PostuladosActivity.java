@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Licenciaturas;
 import com.dwmedios.uniconekt.model.PostuladosGeneral;
+import com.dwmedios.uniconekt.model.TipoPostulacion;
 import com.dwmedios.uniconekt.presenter.PostuladosGeneralesPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.LicenciaturasAdapter;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universidad.DetalleNotificacionActivity.KEY_POSTULADO_DETALLE;
 import static com.dwmedios.uniconekt.view.activity.Universidad.DetalleNotificacionActivity.VIEW_POSTULADO_DETALLE;
+import static com.dwmedios.uniconekt.view.activity.Universidad_v2.TipoPostuladosActivity.KEY_TIPO_POSTU;
 
 public class PostuladosActivity extends BaseActivity implements PostuladosGeneralesViewController {
     private PostuladosAdapter mPostuladosAdapter;
@@ -61,7 +63,7 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
                 reload();
             }
         });
-        mPostuladosGeneralesPresenter.Getpostulados();
+        getPostulados();
     }
 
     @Override
@@ -72,6 +74,16 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    TipoPostulacion mTipoPostulacion;
+
+    public void getPostulados() {
+        if (mTipoPostulacion == null)
+            mTipoPostulacion = getIntent().getExtras().getParcelable(KEY_TIPO_POSTU);
+        if (mTipoPostulacion != null) {
+            mPostuladosGeneralesPresenter.Getpostulados(mTipoPostulacion.tipo);
+        }
     }
 
     public void reload() {
@@ -92,7 +104,7 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
         mTextView.setVisibility(View.GONE);
         if (mPostuladosGenerals != null && mPostuladosGenerals.size() > 0) {
 
-            mPostuladosAdapter = new PostuladosAdapter(mPostuladosGenerals,mOnclick);
+            mPostuladosAdapter = new PostuladosAdapter(mPostuladosGenerals, mOnclick);
             mStickyRecyclerHeadersDecoration = new StickyRecyclerHeadersDecoration(mPostuladosAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
             mPostuladosAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -114,25 +126,27 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
             this.EmptyRecyclerView();
         }
     }
-PostuladosAdapter.onclick mOnclick= new PostuladosAdapter.onclick() {
-    @Override
-    public void onclickListener(PostuladosGeneral mPostuladosGeneral) {
-        try {
-            VIEW_POSTULADO_DETALLE = 1;
-            Intent mIntent = new Intent(getApplicationContext(), DetalleNotificacionActivity.class);
-            mIntent.putExtra(KEY_POSTULADO_DETALLE, mPostuladosGeneral);
-            startActivity(mIntent);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            /**
-             * poner validacion de descripcion o mensaje
-             s
-             */
-            showMessage("No es posible visualizar el detalle.");
-        }
 
-    }
-};
+    PostuladosAdapter.onclick mOnclick = new PostuladosAdapter.onclick() {
+        @Override
+        public void onclickListener(PostuladosGeneral mPostuladosGeneral) {
+            try {
+                VIEW_POSTULADO_DETALLE = 1;
+                Intent mIntent = new Intent(getApplicationContext(), DetalleNotificacionActivity.class);
+                mIntent.putExtra(KEY_POSTULADO_DETALLE, mPostuladosGeneral);
+                startActivity(mIntent);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                /**
+                 * poner validacion de descripcion o mensaje
+                 s
+                 */
+                showMessage("No es posible visualizar el detalle.");
+            }
+
+        }
+    };
+
     @Override
     public void OnFailed(String mensaje) {
         showMessage(mensaje);

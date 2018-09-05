@@ -9,6 +9,7 @@ import com.dwmedios.uniconekt.data.database.DispositivoOrmlite;
 import com.dwmedios.uniconekt.data.database.PersonaOrmlite;
 import com.dwmedios.uniconekt.data.database.UniversidadOrmlite;
 import com.dwmedios.uniconekt.data.database.UsuarioOrmLite;
+import com.dwmedios.uniconekt.data.database.VentaPaqueteAsesorOrmLite;
 import com.dwmedios.uniconekt.data.database.VentasPaquetesOrmlite;
 import com.dwmedios.uniconekt.data.database.ormlite.base.OrmLiteDatabaseHelper;
 import com.dwmedios.uniconekt.model.Configuraciones;
@@ -17,6 +18,7 @@ import com.dwmedios.uniconekt.model.Dispositivo;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
+import com.dwmedios.uniconekt.model.VentaPaqueteAsesor;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
 
 import java.util.List;
@@ -36,6 +38,7 @@ public class AllController {
     private UsuarioOrmLite mUsuarioOrmLite;
     private VentasPaquetesOrmlite mVentasPaquetesController;
     private ConfiguracionesOrmlite mConfiguracionesOrmlite;
+    private VentaPaqueteAsesorOrmLite mVentaPaqueteAsesorOrmLite;
 
     public AllController(Context mContext) {
         this.mContext = mContext;
@@ -47,6 +50,7 @@ public class AllController {
         mUsuarioOrmLite = new UsuarioOrmLite(mOrmLiteDatabaseHelper);
         mVentasPaquetesController = new VentasPaquetesOrmlite(mOrmLiteDatabaseHelper);
         mConfiguracionesOrmlite = new ConfiguracionesOrmlite(mOrmLiteDatabaseHelper);
+        mVentaPaqueteAsesorOrmLite = new VentaPaqueteAsesorOrmLite(mOrmLiteDatabaseHelper);
     }
 
     // TODO: 18/04/2018 Direccion
@@ -355,5 +359,22 @@ public class AllController {
             Log.e("Config", "save");
         }
         return true;
+    }
+
+    /**
+     * paquetes asesor
+     *
+     * @return
+     */
+    public VentaPaqueteAsesor getPaqueteAsesor() {
+        List<VentaPaqueteAsesor> mVentaPaqueteAsesors = mVentaPaqueteAsesorOrmLite.selectAll();
+        return (mVentaPaqueteAsesors != null && mVentaPaqueteAsesors.size() > 0 ? mVentaPaqueteAsesors.get(0) : null);
+    }
+
+    public boolean SaveVentaPaqueteAsesor(VentaPaqueteAsesor mVentaPaqueteAsesor) {
+        if (mVentaPaqueteAsesorOrmLite.deleteElements(mVentaPaqueteAsesorOrmLite.selectAll()) > 0) {
+            return mVentaPaqueteAsesorOrmLite.addElement(mVentaPaqueteAsesor) > 0;
+        } else
+            return mVentaPaqueteAsesorOrmLite.addElement(mVentaPaqueteAsesor) > 0;
     }
 }

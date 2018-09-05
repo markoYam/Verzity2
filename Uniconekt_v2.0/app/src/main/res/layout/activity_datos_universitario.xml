@@ -54,15 +54,15 @@
                             <android.support.design.widget.FloatingActionButton
                                 android:id="@+id/fabPerfilUniverstario"
                                 android:layout_width="wrap_content"
-                                android:theme="@style/MyFloatingButton"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentRight="true"
                                 android:backgroundTint="@color/colorPrimaryDark"
+                                android:foregroundTint="@color/colorPrimaryDark"
                                 android:src="@drawable/ic_action_camera_enhance"
+                                android:theme="@style/MyFloatingButton"
                                 android:tint="#ffff"
                                 app:fab_colorNormal="@color/colorPrimaryDark"
-                                android:foregroundTint="@color/colorPrimaryDark"
                                 app:fab_size="normal" />
                         </RelativeLayout>
 
@@ -98,6 +98,7 @@
                                     android:id="@+id/editTextNombre"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:enabled="false"
                                     android:hint="Nombre completo"
                                     android:imeOptions="actionNext"
                                     android:inputType="text"></android.support.design.widget.TextInputEditText>
@@ -153,8 +154,8 @@
 
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
-                                android:theme="@style/ThemeLayout"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:theme="@style/ThemeLayout">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/editTextCorreo"
@@ -166,28 +167,7 @@
                             </android.support.design.widget.TextInputLayout>
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:visibility="visible"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:src="@drawable/ic_action_licenciatura"
-                                android:tint="@color/colorGris" />
-
-                            <Spinner
-                                android:id="@+id/spinnerLicenciaturas"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:visibility="gone"
-                                android:tooltipText="País"></Spinner>
-                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -203,10 +183,10 @@
                                 android:tint="@color/colorGris" />
 
                             <Spinner
-                                android:drawSelectorOnTop="true"
                                 android:id="@+id/spinnerPaises"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
+                                android:drawSelectorOnTop="true"
                                 android:tooltipText="País"></Spinner>
                         </LinearLayout>
 
@@ -226,17 +206,17 @@
                             <android.support.design.widget.TextInputLayout
                                 android:id="@+id/layoutCodigo"
                                 android:layout_width="match_parent"
-                                android:theme="@style/ThemeLayout"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:theme="@style/ThemeLayout">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/editTexCodigo"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:maxLength="5"
                                     android:hint="Código postal"
                                     android:imeOptions="actionNext"
-                                    android:inputType="number"></android.support.design.widget.TextInputEditText>
+                                    android:inputType="number"
+                                    android:maxLength="5"></android.support.design.widget.TextInputEditText>
                             </android.support.design.widget.TextInputLayout>
                         </LinearLayout>
 
@@ -256,8 +236,8 @@
                             <android.support.design.widget.TextInputLayout
                                 android:id="@+id/layoutEstado"
                                 android:layout_width="match_parent"
-                                android:theme="@style/ThemeLayout"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:theme="@style/ThemeLayout">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/editTextEstado"
@@ -286,8 +266,8 @@
                             <android.support.design.widget.TextInputLayout
                                 android:id="@+id/layoutMunicipio"
                                 android:layout_width="match_parent"
-                                android:theme="@style/ThemeLayout"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:theme="@style/ThemeLayout">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/editTextMunicipio"
@@ -316,8 +296,8 @@
                             <android.support.design.widget.TextInputLayout
                                 android:id="@+id/layoutCiudad"
                                 android:layout_width="match_parent"
-                                android:theme="@style/ThemeLayout"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:theme="@style/ThemeLayout">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/editTextCiudad"
@@ -345,8 +325,8 @@
 
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
-                                android:theme="@style/ThemeLayout"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:theme="@style/ThemeLayout">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/edittextCalle"

@@ -217,6 +217,7 @@ public class FiltrarEstadosActivity extends BaseActivity implements GetPaisesVie
                 public void onClick(View v) {
                     SearchUniversidades mUniversidades = new SearchUniversidades();
                     mUniversidades.estado = mEstados.nombre;
+                    mUniversidades.pais = mSpinner.getSelectedItem().toString();
                     Utils.tipoBusqueda_Universidad = 3;
                     startActivity(new Intent(getApplicationContext(), VisualizarUniversidadesActivity.class).putExtra(KEY_BUSQUEDA, mUniversidades));
                 }

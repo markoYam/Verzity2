@@ -186,10 +186,10 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
     @Override
     public void OnSuccesPaquete(VentasPaquetes mVentasPaquetes) {
         mPaquetePresenter.GuardarPaquete(mVentasPaquetes);
-        mostrarventa(mVentasPaquetes,false);
+        mostrarventa(mVentasPaquetes, false);
     }
 
-    public  void mostrarventa(VentasPaquetes mVentasPaquetes,boolean solover) {
+    public void mostrarventa(VentasPaquetes mVentasPaquetes, boolean solover) {
         KEY_SOLO_VER = solover;
         Intent mIntent = new Intent(getApplicationContext(), ConfirmBuyActivity.class);
         mIntent.putExtra(KEY_DETALLLE_COMPRA, mVentasPaquetes);
@@ -240,9 +240,8 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
             } else {
                 if (temp != null) {
                     temp.mPaquetes = mPaquetes;
-                    mostrarventa(temp,true);
-                }
-                else
+                    mostrarventa(temp, true);
+                } else
                     showMessage("No es posible visualizar el resumen de la compra.");
             }
         }

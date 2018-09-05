@@ -1,71 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="250dp"
-    android:layout_height="150dp"
-    android:background="#ffff">
+    android:layout_width="270dp"
+    android:layout_height="200dp"
+    android:background="@color/colorTrasparente">
 
-    <RelativeLayout
-        android:layout_width="252dp"
-        android:layout_height="150dp"
-        android:background="@color/colorPrimaryDark">
-        <RelativeLayout
-            android:id="@+id/contenedor"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark">
-
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/imageUniversidad"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_centerHorizontal="true"
-                android:padding="3dp"
-                android:src="@drawable/defaultt"
-                app:civ_border_color="#FFff"
-                app:civ_border_width="2dp" />
-        </RelativeLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="270dp"
+        android:layout_height="200dp"
+        android:background="@color/colorPrimaryDark"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
 
         <RelativeLayout
-            android:id="@+id/contenedor2"
-            android:layout_width="250dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/contenedor"
-            android:background="#ffff">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/nombreuniversidadMaker"
+            <RelativeLayout
+                android:id="@+id/contenedor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"
-                android:paddingLeft="5dp"
-                android:text="Dw medios"
-                android:textColor="#000000"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+                android:layout_height="80dp">
 
-        <RelativeLayout
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/contenedor2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="#fff">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/fondo_dialogo_marker" />
 
-            <ImageView
-                android:layout_width="80dp"
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imageUniversidad"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:padding="3dp"
+                    android:src="@drawable/defaultt"
+                    android:visibility="gone"
+                    app:civ_border_color="#FFff"
+                    app:civ_border_width="2dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/contenedor2"
+                android:layout_width="250dp"
                 android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/row_mapa" />
-        </RelativeLayout>
+                android:layout_below="@+id/contenedor"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#ffff"
+                android:orientation="vertical">
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/nombreuniversidadMaker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:text="Dw medios"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/desuniversidadMaker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:text="Dw medios"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import com.dwmedios.uniconekt.data.service.response.UniversidadResponse;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.model.Universidad;
+import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadViewController;
@@ -39,8 +40,9 @@ public class UniversidadPresenter {
         mAllController = new AllController(this.mContext);
     }
 
-    public void Search(SearchUniversidades mSearchUniversidades) {
-        mSearchUniversidades.extranjero = SharePrefManager.getInstance(mContext).isSeachExtranjero();
+    public void Search(SearchUniversidades mSearchUniversidades, int tipo) {
+        if (tipo != 3)
+            mSearchUniversidades.extranjero = SharePrefManager.getInstance(mContext).isSeachExtranjero();
         Persona mPersona = mAllController.getDatosPersona();
         if (isNullOrEmpty(mSearchUniversidades.pais))
             if (mPersona != null && mPersona.direccion != null) {
@@ -48,7 +50,7 @@ public class UniversidadPresenter {
             }
         mUniversidadViewController.Onloading(true);
         String json = ConvertModelToStringGson(mSearchUniversidades);
-        Log.e("Buscar uni",json);
+        Log.e("Buscar uni", json);
         if (json != null) {
             mClientService
                     .getAPI()
@@ -85,14 +87,17 @@ public class UniversidadPresenter {
 
     }
 
-    private Persona getPersona() {
-        List<Persona> personasList = mAllController.getPersona();
-        return personasList.get(0);
+    public Persona getPersona() {
+       return mAllController.getDatosPersona();
 
     }
 
     public Persona getDatosPersona() {
         return mAllController.getDatosPersona();
+    }
+    public Usuario getUsuario()
+    {
+        return mAllController.getusuarioPersona();
     }
 
     public void getFavoritos() {

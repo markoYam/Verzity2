@@ -1,10 +1,9 @@
 package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,21 +11,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.TextView;
 
-
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.ClasViewModel;
 import com.dwmedios.uniconekt.model.Licenciaturas;
 import com.dwmedios.uniconekt.model.NivelAcademico;
-import com.dwmedios.uniconekt.model.NivelEstudios;
 import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.presenter.LicenciaturasPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.LicenciaturasAdapter;
-import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.LicenciaturaViewController;
@@ -38,8 +32,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.SEARCH_KEY;
-import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.UNIVERSIDAD_KEY;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
 
 public class SearchLicenciaturasActivity extends BaseActivity implements LicenciaturaViewController {

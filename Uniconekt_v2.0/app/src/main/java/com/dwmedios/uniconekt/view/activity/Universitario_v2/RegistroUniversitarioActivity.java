@@ -9,13 +9,10 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.transition.Visibility;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,8 +34,6 @@ import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.GetPaisesPresenter;
 import com.dwmedios.uniconekt.presenter.RegistroUniversitarioPresenter;
-import com.dwmedios.uniconekt.view.activity.LoginActivity;
-import com.dwmedios.uniconekt.view.activity.RegistroActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
@@ -48,7 +43,6 @@ import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_IsEmpty;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_MinLength_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Phone_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Spinner_Valid;
-import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_webSite;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.RuleDw_base;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Rules_Dw;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField;
@@ -68,7 +62,6 @@ import static com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivit
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.EMAIL_EQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.FIELD_REQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.PHONE_EQUIRED;
-import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.WEB_EQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.setFocusableView;
 
 public class RegistroUniversitarioActivity extends BaseActivity implements GetPaisesViewController, RegistroUniversitarioViewController {

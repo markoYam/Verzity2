@@ -1,6 +1,7 @@
 package com.dwmedios.uniconekt.data.service.api;
 
 
+import com.dwmedios.uniconekt.data.service.response.AsesoresResponse;
 import com.dwmedios.uniconekt.data.service.response.BannersResponse;
 import com.dwmedios.uniconekt.data.service.response.CodigoPostalResponse;
 import com.dwmedios.uniconekt.data.service.response.ConfiguracionesResponse;
@@ -15,6 +16,7 @@ import com.dwmedios.uniconekt.data.service.response.NivelAcademicoResponse;
 import com.dwmedios.uniconekt.data.service.response.NotificacionesResponse;
 import com.dwmedios.uniconekt.data.service.response.NotificacionesUniResponse;
 import com.dwmedios.uniconekt.data.service.response.PaisesResponse;
+import com.dwmedios.uniconekt.data.service.response.PaqueteAsesorResponse;
 import com.dwmedios.uniconekt.data.service.response.PaquetesResponse;
 import com.dwmedios.uniconekt.data.service.response.PersonaResponse;
 import com.dwmedios.uniconekt.data.service.response.PostuladoFinanciamientoResponse;
@@ -27,6 +29,7 @@ import com.dwmedios.uniconekt.data.service.response.TipoCategoriaResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadDetalleResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadResponse;
 import com.dwmedios.uniconekt.data.service.response.UsuarioResponse;
+import com.dwmedios.uniconekt.data.service.response.VentaPaqueteAsesorResponse;
 import com.dwmedios.uniconekt.data.service.response.VentasPaquetesResponse;
 import com.dwmedios.uniconekt.data.service.response.VideoResponse;
 import com.dwmedios.uniconekt.data.service.response.VisitasBannersResponse;
@@ -136,9 +139,6 @@ public interface ClientAPI {
     @POST("VerificarEstatusUniversidad")
     Call<UniversidadDetalleResponse> VerificarStatusUniversidad(@Field("json") String json);
 
-    @FormUrlEncoded
-    @POST("GetPostulados")
-    Call<PostuladosGeneralesResponse> GetPostulados(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("PostularseUniversidad")
@@ -186,7 +186,6 @@ public interface ClientAPI {
     @POST("ConsultarNotificaciones")
     Call<NotificacionesUniResponse> ConsultarNotUniversidad(@Field("json") String json);
 
-
     @FormUrlEncoded
     @POST("GetEstados")
     Call<EstadosResponse> getEstados(@Field("json") String json);
@@ -197,4 +196,23 @@ public interface ClientAPI {
     @FormUrlEncoded
     @POST("GetProgramasAcademicos")
     Call<LicenciaturasResponse> GetLicenciaturas(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("GetPostulados")
+    Call<PostuladosGeneralesResponse> GetPostulados(@Field("json") String json, @Field("tipo") int tipo);
+
+    @GET("GetPaquetesAsesoresDisponibles")
+    Call<PaqueteAsesorResponse> getPaquetesAsesores();
+
+    @GET("GetAsesores")
+    Call<AsesoresResponse> getAsesores();
+
+    @FormUrlEncoded
+    @POST("GetMisAsesores")
+    Call<AsesoresResponse> getMisAsesores(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("SaveVentaPaqueteAsesor")
+    Call<VentaPaqueteAsesorResponse> saveVentaPaqueteAsesor(@Field("json") String json);
+
 }

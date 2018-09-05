@@ -10,7 +10,7 @@ public interface LoginViewController {
 
     void LoginSucces(Usuario mUsuario);
 
-    void LoginFailed(String mensaje);
+    void LoginFailed(String mensaje,boolean isError);
 
     void Loading(boolean loading);
 

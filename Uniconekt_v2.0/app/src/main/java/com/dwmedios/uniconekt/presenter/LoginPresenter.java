@@ -80,26 +80,26 @@ public class LoginPresenter {
                             mLoginViewController.LoginSucces(user);
                         } else {
                             if (res.status != -1) {
-                                mLoginViewController.LoginFailed(res.mensaje);
+                                mLoginViewController.LoginFailed(res.mensaje, false);
                             } else {
-                                mLoginViewController.LoginFailed(ERROR_CONECTION);
+                                mLoginViewController.LoginFailed(ERROR_CONECTION, true);
                             }
 
                         }
                     } else {
-                        mLoginViewController.LoginFailed(ERROR_CONECTION);
+                        mLoginViewController.LoginFailed(ERROR_CONECTION, true);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UsuarioResponse> call, Throwable t) {
                     mLoginViewController.Loading(false);
-                    mLoginViewController.LoginFailed(ERROR_CONECTION);
+                    mLoginViewController.LoginFailed(ERROR_CONECTION, true);
                 }
             });
         } else {
             mLoginViewController.Loading(false);
-            mLoginViewController.LoginFailed(ERROR_CONECTION);
+            mLoginViewController.LoginFailed(ERROR_CONECTION, true);
         }
 
     }

@@ -12,24 +12,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff">
+
         <ImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/imageUniversidad"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:padding="5dp"
             android:layout_centerVertical="true"
+            android:padding="5dp"
             android:src="@drawable/ic_programas_academicos"
-            android:tint="@color/Color_programas"
-             />
+            android:tint="@color/Color_programas" />
 
         <TextView
             android:id="@+id/texviewNombreItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/imagebuttom"
             android:layout_toRightOf="@+id/imageUniversidad"
             android:gravity="center_vertical"
-            android:layout_centerVertical="true"
             android:paddingLeft="5dp"
             android:text="Nombre del item"
             android:textColor="@color/uvv_black"
@@ -40,10 +40,10 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentRight="true"
-            android:tint="@color/uvv_black"
             android:layout_centerVertical="true"
             android:background="@color/colorTrasparente"
-            android:src="@drawable/ic_action_ic_rightarrow" />
+            android:src="@drawable/ic_action_ic_rightarrow"
+            android:tint="@color/uvv_black" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

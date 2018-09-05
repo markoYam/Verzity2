@@ -29,13 +29,13 @@ public class PostuladosGeneralesPresenter {
         mAllController = new AllController(this.mContext);
     }
 
-    public void Getpostulados() {
+    public void Getpostulados(int tipo) {
         mPostuladosGeneralesViewController.Onloading(true);
         String json = ConvertModelToStringGson(mAllController.getuniversidadPersona());
         if (json != null) {
             mClientService
                     .getAPI()
-                    .GetPostulados(json)
+                    .GetPostulados(json, tipo)
                     .enqueue(new Callback<PostuladosGeneralesResponse>() {
                         @Override
                         public void onResponse(Call<PostuladosGeneralesResponse> call, Response<PostuladosGeneralesResponse> response) {

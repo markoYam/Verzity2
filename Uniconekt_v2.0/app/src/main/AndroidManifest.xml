@@ -24,10 +24,6 @@
             android:label="demo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activity.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
             android:name=".view.activity.RegistroActivity"
             android:screenOrientation="portrait" />
 
@@ -81,9 +77,6 @@
             android:name=".view.activity.Universitario.SearchUniversidadActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.Universitario.ViewUniversidadesActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
@@ -98,10 +91,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Universitario.SearchLicenciaturasActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.Universitario.ActivityMaps.MapsUniversityActivity"
-            android:label="@string/title_activity_maps_university"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Universitario.VideosActivity"
@@ -218,10 +207,18 @@
             android:name=".view.activity.Universidad_v2.NotificacionesUniversidadActivity"
             android:label="@string/title_activity_notificaciones_universidad"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.activity.Universitario_v2.FiltrarEstadosActivity" />
-        <activity android:name=".view.activity.Universitario_v2.VisualizarUniversidadesActivity" />
-        <activity android:name=".view.activity.Universitario_v2.FiltrarNivelAcademicoActivity" />
-        <activity android:name=".view.activity.Universitario_v2.ProspectusActivity"></activity>
+        <activity android:name=".view.activity.Universitario_v2.FiltrarEstadosActivity" android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.Universitario_v2.VisualizarUniversidadesActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Universitario_v2.FiltrarNivelAcademicoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Universitario_v2.ProspectusActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Universidad_v2.TipoPostuladosActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Universitario_v2.PaquetesAsesoresActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Universitario_v2.AsesoresActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Universitario_v2.PreviewPaqueteAsesorActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.Universitario_v2.mapsActivity.UniversidadesMapsActivity"
+            android:label="@string/title_activity_universidades_maps" android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Universitario_v2.mapsActivity.DialogPreviewMapsActivity" android:theme="@style/NewDialog" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

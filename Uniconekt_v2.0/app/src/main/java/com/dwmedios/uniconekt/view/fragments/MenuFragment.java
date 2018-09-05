@@ -30,11 +30,14 @@ import com.dwmedios.uniconekt.view.activity.Universidad.PaquetesActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad.PostuladosActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad.SearchUbicacionUniActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad_v2.NotificacionesUniversidadActivity;
+import com.dwmedios.uniconekt.view.activity.Universidad_v2.TipoPostuladosActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.CuponesViewActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.SearchUniversidadActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.PaquetesAsesoresActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.fragments.base.BaseFragment;
 import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
@@ -156,7 +159,7 @@ public class MenuFragment extends BaseFragment implements MenuController {
                     startActivity(new Intent(getActivity(), SearchUniversidadActivity.class));
                     break;
                 case examen:
-                    startActivity(new Intent(getActivity(), NotificacionesUniversidadActivity.class));
+                    startActivity(new Intent(getActivity(), PaquetesAsesoresActivity.class));
                     break;
                 case paquetes:
                     startActivity(new Intent(getActivity(), PaquetesActivity.class));
@@ -164,11 +167,10 @@ public class MenuFragment extends BaseFragment implements MenuController {
                     break;
                 case Viaja:
                     // startActivity(new Intent(getActivity(), SearchUbicacionUniActivity.class));
-
                     break;
 
                 case postulados:
-                    startActivity(new Intent(getActivity(), PostuladosActivity.class));
+                    startActivity(new Intent(getActivity(), TipoPostuladosActivity.class));
                     break;
                 default:
                     showMessaje("En proceso....");

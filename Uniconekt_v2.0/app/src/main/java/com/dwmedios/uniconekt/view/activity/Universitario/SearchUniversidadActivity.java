@@ -28,10 +28,10 @@ import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.VisitasBanners;
 import com.dwmedios.uniconekt.presenter.SearchUniversidadesPresenter;
-import com.dwmedios.uniconekt.view.activity.Universitario.ActivityMaps.MapsUniversityActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.FiltrarEstadosActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.FiltrarNivelAcademicoActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.mapsActivity.UniversidadesMapsActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
@@ -47,8 +47,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.SEARCH_KEY;
-import static com.dwmedios.uniconekt.view.activity.Universitario.ViewUniversidadesActivity.UNIVERSIDAD_KEY;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderDark;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
@@ -181,7 +179,6 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
                     break;
                 case cercaMi:
                     abrirMapa();
-                    TYPE_VIEW_MAPS = 1;
                     break;
                 case favoritos:
                     Utils.tipoBusqueda_Universidad = 4;
@@ -214,7 +211,7 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
                 AlertNoGps();
             } else {
                 GO_TO_MAP = false;
-                startActivity(new Intent(SearchUniversidadActivity.this, MapsUniversityActivity.class));
+                startActivity(new Intent(SearchUniversidadActivity.this, UniversidadesMapsActivity.class));
             }
 
         }
@@ -272,10 +269,10 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
                 if (!text.isEmpty()) {
                     SearchUniversidades universidades = new SearchUniversidades();
                     universidades.nombreUniversidad = text;
-                    Intent mIntent = new Intent(SearchUniversidadActivity.this, ViewUniversidadesActivity.class);
+                  /*  Intent mIntent = new Intent(SearchUniversidadActivity.this, ViewUniversidadesActivity.class);
                     mIntent.putExtra(UNIVERSIDAD_KEY, universidades);
                     SEARCH_KEY = 2;
-                    startActivity(mIntent);
+                    startActivity(mIntent);*/
                 }
             }
         });

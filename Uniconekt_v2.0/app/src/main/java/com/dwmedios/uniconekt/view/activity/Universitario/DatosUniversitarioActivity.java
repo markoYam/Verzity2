@@ -113,8 +113,6 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
     TextInputEditText mEditTextTelefono;
     @BindView(R.id.editTextCorreo)
     TextInputEditText mEditTextCorreo;
-    @BindView(R.id.spinnerLicenciaturas)
-    Spinner mSpinnerLicenciaturas;
     @BindView(R.id.buttonRegistrousuario)
     Button mButtonContinuar;
     @BindView(R.id.profile_Usuario)
@@ -131,7 +129,8 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
     private ftpClient mFtpClient;
     private String patchFoto = null;
     private boolean isRestaurar = false;
-private boolean isCodigo=false;
+    private boolean isCodigo = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +145,7 @@ private boolean isCodigo=false;
         mEditTextCodigo.setOnEditorActionListener(mOnEditorActionListener);
         mDatosUsuarioPresenter.Getpaises();
         mSpinner.setOnItemSelectedListener(mOnItemSelectedListener);
-        mSpinnerLicenciaturas.setOnItemSelectedListener(mOnItemSelectedListener2);
+
         mButtonContinuar.setOnClickListener(mOnClickListener);
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,7 +210,6 @@ private boolean isCodigo=false;
         mRules_dwList.add(new Rules_Dw(mEditTextTelefono, telefono));
         mRules_dwList.add(new Rules_Dw(mEditTextCorreo, Email));
         mRules_dwList.add(new Rules_Dw(mSpinner, spinner_valid));
-        mRules_dwList.add(new Rules_Dw(mSpinnerLicenciaturas, spinner_valid2));
         mValidateField = new ValidateField(mRules_dwList, mErrorItem);
 
         loadPerfilUser();
@@ -219,36 +217,6 @@ private boolean isCodigo=false;
 
     }
 
-    private List<Licenciaturas> mLicenciaturasList;
-
-    public void getLicenciaturas() {
-        try {
-            Universidad temp = getIntent().getExtras().getParcelable(IS_UNIVERSIDAD);
-            LinearLayout parent = (LinearLayout) mSpinnerLicenciaturas.getParent();
-            if (temp.mLicenciaturasList != null && temp.mLicenciaturasList.size() > 0) {
-                this.mLicenciaturasList = temp.mLicenciaturasList;
-                parent.setVisibility(View.VISIBLE);
-                mSpinnerLicenciaturas.setVisibility(View.VISIBLE);
-                List<String> mStringListTemnp = new ArrayList<>();
-                mStringListTemnp.add("--Seleccione licenciatura de interés--");
-                for (Licenciaturas mLicenciaturas : temp.mLicenciaturasList) {
-                    mStringListTemnp.add(mLicenciaturas.nombre);
-                }
-                ArrayAdapter<String> mStringArrayAdapter = new ArrayAdapter<String>(this, R.layout.row_spinner_paises, mStringListTemnp);
-                mStringArrayAdapter.setDropDownViewResource(R.layout.row_spinner_paises);
-                mSpinnerLicenciaturas.setAdapter(mStringArrayAdapter);
-                mSpinnerLicenciaturas.setSelection(0);
-            } else {
-                parent.setVisibility(View.GONE);
-                mSpinnerLicenciaturas.setVisibility(View.GONE);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            mSpinnerLicenciaturas.setVisibility(View.GONE);
-        }
-    }
 
     private Persona mPersonaPerfil;
 
@@ -406,26 +374,6 @@ private boolean isCodigo=false;
             OnchageVisivility(false);
         }
     };
-    public int id_licenciaturaInteres = 0;
-    AdapterView.OnItemSelectedListener mOnItemSelectedListener2 = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i > 0) {
-                if (mLicenciaturasList != null && mLicenciaturasList.size() > 0) {
-                    id_licenciaturaInteres = mLicenciaturasList.get(i - 1).id;
-                } else {
-                    id_licenciaturaInteres = 0;
-                }
-
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-            id_licenciaturaInteres = 0;
-            OnchageVisivility(false);
-        }
-    };
 
 
     TextWatcher mTextWatcher = new TextWatcher() {
@@ -520,10 +468,10 @@ private boolean isCodigo=false;
 
     @Override
     public void onfailesCodigo() {
-            mCodigoPostals = null;
-            mEditTextCiudad.setText("");
-            mEditTextEstado.setText("");
-            mEditTextMunicipio.setText("");
+        mCodigoPostals = null;
+        mEditTextCiudad.setText("");
+        mEditTextEstado.setText("");
+        mEditTextMunicipio.setText("");
 
     }
 
@@ -610,7 +558,7 @@ private boolean isCodigo=false;
         Intent mIntent = getIntent();
         mIntent.putExtra(KEY_REGISTRO_UNIVERSITARIO, mPersona);
         mIntent.putExtra(KEY_RESTAURAR, (isRestaurar ? 1 : 0));
-        mIntent.putExtra(LICE_SELECT, id_licenciaturaInteres);
+        //mIntent.putExtra(LICE_SELECT, id_licenciaturaInteres);
         setResult(RESULT_OK, mIntent);
         finish();
     }
@@ -684,7 +632,7 @@ private boolean isCodigo=false;
 
     @Override
     public void onfailedVerficar(String mensaje) {
-      //  showMessage("no tiene una cuenta activa");
+        //  showMessage("no tiene una cuenta activa");
     }
 
     @Override

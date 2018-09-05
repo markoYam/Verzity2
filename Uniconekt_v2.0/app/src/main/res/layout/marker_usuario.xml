@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="48dp"
+    android:layout_height="68dp"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/profile"
+        app:civ_border_color="@color/colorGris"
+        app:civ_border_width="2dp" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:layout_height="20dp"
+        android:background="@drawable/marker_util">
+
+    </ImageView>
+</LinearLayout>

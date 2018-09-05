@@ -3,10 +3,8 @@ package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -20,10 +18,8 @@ import com.dwmedios.uniconekt.model.Dispositivo;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.LoginPresenter;
-import com.dwmedios.uniconekt.view.activity.LoginActivity;
 import com.dwmedios.uniconekt.view.activity.RegistroActivity;
 import com.dwmedios.uniconekt.view.activity.RestorePasswordActivity;
-import com.dwmedios.uniconekt.view.activity.SplashActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
@@ -45,8 +41,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.dwmedios.uniconekt.view.activity.RegistroActivity.OBJECT;
 
 public class LoginActivity2 extends BaseActivity implements LoginViewController {
     public static final String REGISTRO_FACEBOOK = "key_facebook2erdsdwsd";
@@ -287,13 +281,18 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
     }
 
     @Override
-    public void LoginFailed(String mensaje) {
-        if (loginFacebook) {
-            Intent mIntent = new Intent(getApplicationContext(), RegistroUniversitarioActivity.class);
-            mIntent.putExtra(REGISTRO_FACEBOOK, mUsuarioLogin);
-            startActivity(mIntent);
-        } else {
+    public void LoginFailed(String mensaje, boolean isError) {
+        if (!isError)
+            if (loginFacebook) {
+                Intent mIntent = new Intent(getApplicationContext(), RegistroUniversitarioActivity.class);
+                mIntent.putExtra(REGISTRO_FACEBOOK, mUsuarioLogin);
+                startActivity(mIntent);
+            } else {
+                showMessage(mensaje);
+            }
+        else {
             showMessage(mensaje);
+            LoginManager.getInstance().logOut();
         }
     }
 

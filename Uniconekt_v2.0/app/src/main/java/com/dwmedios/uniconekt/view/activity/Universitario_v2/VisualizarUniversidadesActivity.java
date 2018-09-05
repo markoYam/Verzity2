@@ -79,23 +79,25 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
         if (mUniversidades == null)
             mUniversidades = getIntent().getExtras().getParcelable(KEY_BUSQUEDA);
         if (mUniversidades != null) {
-            mUniversidades.extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+
             if (isNullOrEmpty(mUniversidades.pais))
                 mUniversidades.pais = mUniversidadPresenter.getDatosPersona().direccion.pais;
             switch (Utils.tipoBusqueda_Universidad) {
                 case 1:
                     //todas las universidades
-                    mUniversidadPresenter.Search(mUniversidades);
+                    mUniversidades.extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+                    mUniversidadPresenter.Search(mUniversidades, 0);
                     break;
                 case 2:
                     //programas academicos
+                    mUniversidades.extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
                     mUniversidades.licenciaturas = SharePrefManager.getInstance(getApplicationContext()).getLicenciaturas();
-                    mUniversidadPresenter.Search(mUniversidades);
+                    mUniversidadPresenter.Search(mUniversidades, 0);
                     break;
                 case 3:
                     //estados
                     getSupportActionBar().setTitle("Universidades en " + mUniversidades.estado);
-                    mUniversidadPresenter.Search(mUniversidades);
+                    mUniversidadPresenter.Search(mUniversidades, 3);
                     break;
                 case 4:
                     //favoritos
