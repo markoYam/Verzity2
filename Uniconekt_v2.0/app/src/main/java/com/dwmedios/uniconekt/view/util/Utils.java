@@ -3,47 +3,23 @@ package com.dwmedios.uniconekt.view.util;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Notification;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.data.service.api.apiConfiguraciones;
 import com.dwmedios.uniconekt.data.service.response.YoutubeResponse;
-import com.dwmedios.uniconekt.model.Configuraciones;
 import com.dwmedios.uniconekt.model.Notificaciones;
-import com.dwmedios.uniconekt.view.activity.PDFViewerActivity;
-import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.google.gson.Gson;
-import com.j256.ormlite.stmt.query.Not;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.yarolegovich.lovelydialog.LovelyCustomDialog;
-import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -64,12 +40,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static android.provider.MediaStore.AUTHORITY;
-import static com.dwmedios.uniconekt.view.activity.PDFViewerActivity.KEY_VIEWER;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderItems;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderLight;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -215,11 +185,12 @@ public class Utils {
             super.onPreExecute();
             mActivity.runOnUiThread(new Runnable() {
                 public void run() {
-                    mLovelyProgressDialog = new LovelyProgressDialog(mActivity)
+                   /* mLovelyProgressDialog = new Dialog(mActivity)
                             .setIcon(R.drawable.ic_action_information)
                             .setTitle("Descargando...")
                             .setTopColorRes(R.color.colorPrimaryDark)
-                            .show();
+                            .show();*/
+                    Toast.makeText(mContext, "Descargando...", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -229,7 +200,6 @@ public class Utils {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                // String url = getUrlImage(urlDownload, mContext);
                 String url = urlDownload;
                 if (url != null) {
 
@@ -295,10 +265,103 @@ public class Utils {
         }
     }
 
-    public class dsd {
+    public static final String Folder_rutaPerfil = Environment.getExternalStorageDirectory() + File.separator + "DW_MEDIOS" + File.separator + "VERZITY" + File.separator + "PROFILE" + File.separator;
 
+    public static class DownloadImage extends AsyncTask<Void, Void, Void> {
+        private String urlDownload;
+        private String nombreArchivo = "Perfil.jpg";
+        private boolean success = false;
+        private boolean Existe = false;
+        private downloadImageInterface mDownloadImage;
+
+        public DownloadImage(String urlDownload, downloadImageInterface mDownloadImage, String nombreArchivo) {
+            this.urlDownload = urlDownload;
+            this.mDownloadImage = mDownloadImage;
+            this.nombreArchivo = nombreArchivo;
+        }
+
+        public interface downloadImageInterface {
+            void Onsucces(String patch);
+        }
+
+        public DownloadImage(String urlDownload, String nombreArchivo) {
+            this.urlDownload = urlDownload;
+            this.nombreArchivo = nombreArchivo;
+        }
+
+        public DownloadImage(String urlDownload) {
+            this.urlDownload = urlDownload;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                File foto = new File(Folder_rutaPerfil + "/" + nombreArchivo);
+                if (!foto.exists()) {
+                    //eliminar
+                    String url = urlDownload;
+                    if (url != null) {
+
+                        URL u = new URL(url);
+                        InputStream is = u.openStream();
+
+                        DataInputStream dis = new DataInputStream(is);
+
+                        byte[] buffer = new byte[1024];
+                        int length;
+                        File folder = new File(Folder_rutaPerfil);
+
+                        boolean succ = true;
+                        if (!folder.exists()) {
+                            succ = folder.mkdirs();
+                        } else {
+                            File[] files = folder.listFiles();
+                            for (File mFile : files) {
+                                mFile.delete();
+                            }
+                        }
+
+                        if (succ) {
+                            FileOutputStream fos = new FileOutputStream(new File((Folder_rutaPerfil + "/" + nombreArchivo)));
+                            while ((length = dis.read(buffer)) > 0) {
+                                fos.write(buffer, 0, length);
+                            }
+                            success = true;
+                        } else {
+
+                        }
+                    }
+
+                } else
+                    Existe = true;
+            } catch (MalformedURLException mue) {
+                Log.e("SYNC getUpdate", "malformed url error", mue);
+            } catch (IOException ioe) {
+                Log.e("SYNC getUpdate", "io error", ioe);
+            } catch (SecurityException se) {
+                Log.e("SYNC getUpdate", "security error", se);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (success) {
+                if (mDownloadImage != null)
+                    mDownloadImage.Onsucces((Folder_rutaPerfil + "/" + nombreArchivo));
+            } else {
+                if (Existe) {
+                    mDownloadImage.Onsucces((Folder_rutaPerfil + "/" + nombreArchivo));
+                }
+            }
+        }
     }
-
 
     public static class searchList extends AsyncTask<Void, Void, Void> {
         private resultSearch mResultSearch;

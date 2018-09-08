@@ -122,7 +122,7 @@
                         android:padding="12dp"
                         android:text="No se encontró la universidad."
                         android:textColor="@color/colorGris"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
                     <ImageButton
                         android:id="@+id/imageButtonVerUniversidadBecaDetalle"

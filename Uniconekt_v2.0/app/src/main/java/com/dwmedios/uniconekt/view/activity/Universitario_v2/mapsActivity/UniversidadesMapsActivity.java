@@ -14,19 +14,17 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Persona;
@@ -37,6 +35,7 @@ import com.dwmedios.uniconekt.presenter.UniversidadPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadViewController;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,8 +46,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,8 +61,10 @@ import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversi
 import static com.dwmedios.uniconekt.view.activity.Universitario.SearchUniversidadActivity.TYPE_VIEW_MAPS;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.mapsActivity.DialogPreviewMapsActivity.KEY_RESULT;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.mapsActivity.DialogPreviewMapsActivity.KEY_UNIVERSIDAD_DIALOGO;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderLight;
+import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlFacebook;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class UniversidadesMapsActivity extends BaseActivity implements OnMapReadyCallback, UniversidadViewController, LocationListener {
@@ -86,9 +87,11 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
-        if (extranjero)
+        if (extranjero) {
             getSupportActionBar().setTitle("Universidades en el extranjero");
-        else
+            setStatusBarGradiant(UniversidadesMapsActivity.this, R.drawable.status_uni_extra);
+            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, UniversidadesMapsActivity.this);
+        } else
             getSupportActionBar().setTitle("Universidades cercanas");
         mUniversidadPresenter = new UniversidadPresenter(this, getApplicationContext());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -96,6 +99,8 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         mapFragment.getMapAsync(this);
         initializeLocationManager();
     }
+
+    Bitmap mBitmap;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -107,15 +112,6 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         mUniversidadPresenter.Search(new SearchUniversidades(), 0);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -138,6 +134,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                         startActivityForResult(mIntent, 200);
             }
         });
+
     }
 
     GoogleMap.OnInfoWindowClickListener mOnInfoWindowClickListener = new GoogleMap.OnInfoWindowClickListener() {
@@ -146,12 +143,6 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
             onclickMaker(marker);
         }
     };
-  /*  MapsUniversityActivity.adaper.onclick mOnclick = new MapsUniversityActivity.adaper.onclick() {
-        @Override
-        public void onclick(Universidad mUniversidad) {
-            showToastLongMessage(mUniversidad.nombre);
-        }
-    };*/
     GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker) {
@@ -165,23 +156,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         try {
             final int position = Integer.parseInt(marker.getSnippet());
             mIntent = new Intent(getApplicationContext(), DialogPreviewMapsActivity.class);
-            //marker.showInfoWindow();
             marker.hideInfoWindow();
-          /*  Snackbar.make(mLinearLayout, "Ver detalle de la universidad.", Snackbar.LENGTH_LONG)
-                    .setAction("Ir", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            for (Universidad mUniversidad : mUniversidadList) {
-                                if (mUniversidad.id == position) {
-                                    Intent mIntent = new Intent(getApplicationContext(), DetalleUniversidadActivity.class);
-                                    mIntent.putExtra(KEY_DETALLE_UNIVERSIDAD, mUniversidad);
-                                    startActivity(mIntent);
-                                    break;
-                                }
-                            }
-
-                        }
-                    }).show();*/
             Universidad mUniversidadEnviar = null;
             for (Universidad mUniversidad : mUniversidadList) {
                 if (mUniversidad.id == position) {
@@ -232,6 +207,11 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
     protected void onPause() {
         super.onPause();
         this.locationManager.removeUpdates(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -289,41 +269,45 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
 
     @Override
     public void onLocationChanged(Location location) {
-        marcarMiUbicacion(location);
+        this.mLocationLast = location;
+        LoadImageUser();
+        //marcarMiUbicacion(location);
     }
 
     Marker markerListLocation = null;
 
-    private void marcarMiUbicacion(Location location) {
+    private void marcarMiUbicacion(Location location, Bitmap mBitmap) {
         if (location != null && mMap != null) {
             if (mLocationLast != null) {
-                if (mLocationLast.getLongitude() != location.getLongitude() && mLocationLast.getLatitude() != location.getLatitude()) {
-                    mLocationLast = location;
-
-                    LatLng coordenadas = new LatLng(location.getLatitude(), location.getLongitude());
-                    if (markerListLocation != null) markerListLocation.remove();
+                LatLng coordenadas = new LatLng(location.getLatitude(), location.getLongitude());
+                if (markerListLocation != null) {
+                    markerListLocation.setPosition(coordenadas);
+                } else {
                     markerListLocation = mMap.addMarker(new MarkerOptions()
                             .position(coordenadas)
                             .title("Mi ubicación")
-                            .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.profile, R.layout.marker_usuario, true))));
+                            .icon(BitmapDescriptorFactory.fromBitmap(mBitmap)));
                     CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 4f);
                     mMap.animateCamera(miUbicacion);
                 }
+            }
+        } else {
+            mLocationLast = location;
+            LatLng coordenadas = new LatLng(location.getLatitude(), location.getLongitude());
+            if (markerListLocation != null) {
+                markerListLocation.setPosition(coordenadas);
             } else {
-                mLocationLast = location;
-                LatLng coordenadas = new LatLng(location.getLatitude(), location.getLongitude());
-                if (markerListLocation != null) markerListLocation.remove();
                 markerListLocation = mMap.addMarker(new MarkerOptions()
                         .position(coordenadas)
                         .title("Mi ubicación")
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.profile, R.layout.marker_usuario, true))));
-
+                        .icon(BitmapDescriptorFactory.fromBitmap(mBitmap)));
                 CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 4f);
                 mMap.animateCamera(miUbicacion);
 
             }
         }
     }
+
 
     Location mLocationLast = null;
 
@@ -342,70 +326,9 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
 
     }
 
-    public static class adaper implements GoogleMap.InfoWindowAdapter {
-        View master;
-        Context mContext;
-        List<Universidad> mUniversidadList;
-        //MapsUniversityActivity.adaper.onclick mOnclick;
-
-     /*   public adaper(Context mContext, List<Universidad> mUniversidadList, MapsUniversityActivity.adaper.onclick mOnclick) {
-            this.mContext = mContext;
-            this.mUniversidadList = mUniversidadList;
-            this.mOnclick = mOnclick;
-            master = LayoutInflater.from(mContext).inflate(R.layout.row_marker_google, null);
-        }
-*/
-        public interface onclick {
-            void onclick(Universidad mUniversidad);
-        }
-
-        public void configure(Marker marker, final View master) {
-            Universidad mUniversidadTemp;
-            try {
-                int id = Integer.parseInt(marker.getSnippet().toString());
-                TextView mTextViewNombre = master.findViewById(R.id.nombreuniversidadMaker);
-                TextView mTextViewDes = master.findViewById(R.id.desuniversidadMaker);
-                ImageView mImageView = master.findViewById(R.id.imageUniversidad);
-                Button mButton = master.findViewById(R.id.buttonVisto);
-                mButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(master.getContext(), "Vas a dar los chupos", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                for (Universidad mUniversidad : mUniversidadList) {
-                    if (mUniversidad.id == id) {
-                        mTextViewNombre.setText(mUniversidad.nombre);
-                        mTextViewDes.setText(mUniversidad.descripcion);
-                        if (mUniversidad.logo != null)
-                            ImageLoader.getInstance().displayImage(getUrlImage(mUniversidad.logo, mContext), mImageView, OptionsImageLoaderLight);
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public View getInfoWindow(Marker marker) {
-            configure(marker, master);
-            return master;
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            configure(marker, master);
-            return master;
-        }
-    }
-
     @Override
     public void OnSuccessSeach(List<Universidad> mUniversidadList, int type) {
         this.mUniversidadList = mUniversidadList;
-        loadCurrentLocation();
-        // UniversidadesMapsActivity.adaper mAdaper = new UniversidadesMapsActivity.adaper(getApplicationContext(), mUniversidadList, mOnclick);
-        // mMap.setInfoWindowAdapter(mAdaper);
         try {
             for (int i = 0; i < mUniversidadList.size(); i++) {
 
@@ -433,7 +356,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                 }
 
             }
-
+            loadCurrentLocation();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -462,8 +385,31 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
         if (!isUser)
             markerImageView.setImageResource(resId);
-        else
-            configureCabeceras(markerImageView);
+        //configureCabeceras(markerImageView);
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null)
+            drawable.draw(canvas);
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
+    }
+
+    private Bitmap crearVistausuario(String uriImage) {
+
+        View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_usuario, null);
+        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
+        markerImageView.setImageResource(R.drawable.ic_action_user_profile);
+
+        File mFile = new File(uriImage);
+        Uri imageUri = Uri.fromFile(mFile);
+        Bitmap myBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
+        markerImageView.setImageBitmap(myBitmap);
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
         customMarkerView.buildDrawingCache();
@@ -482,29 +428,58 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         this.locationProvider = locationManager.getBestProvider(criteria, false);
-        loadCurrentLocation();
     }
 
-    private void configureCabeceras(ImageView mImageView) {
+    public class uri {
+        public String uri;
+        public String nombre;
+    }
+
+    private uri getUri() {
         Persona mPersona = mUniversidadPresenter.getDatosPersona();
+        uri mUri = new uri();
         if (mPersona != null) {
-            if (!isNullOrEmpty(mPersona.foto))
-                new taskImageP(getUrlImage(mPersona.foto, getApplicationContext()), mImageView).execute();
-            else {
+            if (!isNullOrEmpty(mPersona.foto)) {
+                String[] string = mPersona.foto.split("/");
+                mUri.nombre = string[string.length - 1];
+                mUri.uri = getUrlImage(mPersona.foto, getApplicationContext());
+            } else {
                 Usuario mUsuario = mUniversidadPresenter.getUsuario();
                 if (mUsuario != null) {
-                    if (!isNullOrEmpty(mUsuario.cv_facebook))
-                        new taskImageFacebook(mUsuario.cv_facebook, mImageView).execute();
+                    mUri.uri = getUrlFacebook(mUsuario.cv_facebook);
+                    mUri.nombre = "PefilFacebook.jpg";
                 }
             }
         } else {
             Usuario mUsuario = mUniversidadPresenter.getUsuario();
             if (mUsuario != null) {
-                if (!isNullOrEmpty(mUsuario.cv_facebook))
-                    new taskImageFacebook(mUsuario.cv_facebook, mImageView).execute();
+                if (!isNullOrEmpty(mUsuario.cv_facebook)) {
+                    mUri.uri = getUrlFacebook(mUsuario.cv_facebook);
+                    mUri.nombre = "PefilFacebook.jpg";
+                }
             }
         }
+        return mUri;
     }
+
+    private void LoadImageUser() {
+        uri uri = getUri();
+        new Utils.DownloadImage(uri.uri, mDownloadImageInterface, uri.nombre).execute();
+    }
+
+    private String mpatch;
+
+    Utils.DownloadImage.downloadImageInterface mDownloadImageInterface = new Utils.DownloadImage.downloadImageInterface() {
+        @Override
+        public void Onsucces(String patch) {
+            mpatch = patch;
+            if (mLocationLast != null) {
+                if (mBitmap == null)
+                    mBitmap = crearVistausuario(patch);
+                marcarMiUbicacion(mLocationLast, mBitmap);
+            }
+        }
+    };
 
     public class taskImageFacebook extends AsyncTask<Void, Void, Void> {
 

@@ -13,44 +13,47 @@ import java.util.List;
  * Created by mYam on 16/04/2018.
  */
 @DatabaseTable
-public class Persona implements Parcelable{
-    public static final String ID="idPersona";
-    public static final String NOMBRE="nbCompleto";
-    public static final String TELEFONO="desTelefono";
-    public static final String CORREO="desCorreo";
-    public static final String DIRECCIONES="Direcciones";
-    public static final String DISPOSITIVOS="Dispositivos";
-    public static final String UNIVERSIDADES="Universidades";
-    public static final String FOTO="pathFoto";
-    public static final String ID_DIRECCION="idDireccion";
-    public static final String TIPO_PERSONA="CatTiposPersonas";
+public class Persona implements Parcelable {
+    public static final String ID = "idPersona";
+    public static final String NOMBRE = "nbCompleto";
+    public static final String TELEFONO = "desTelefono";
+    public static final String CORREO = "desCorreo";
+    public static final String DIRECCIONES = "Direcciones";
+    public static final String DISPOSITIVOS = "Dispositivos";
+    public static final String UNIVERSIDADES = "Universidades";
+    public static final String FOTO = "pathFoto";
+    public static final String ID_DIRECCION = "idDireccion";
+    public static final String TIPO_PERSONA = "CatTiposPersonas";
+
+    public static final String PAQUETE_ASESOR = "VentasPaquetesAsesores";
+    public static final String SKYPE = "desSkype";
 
     @SerializedName(ID)
-    @DatabaseField(columnName = ID,id = true, index = true)
-    public  int id;
+    @DatabaseField(columnName = ID, id = true, index = true)
+    public int id;
 
     @SerializedName(ID_DIRECCION)
     @DatabaseField(columnName = ID_DIRECCION)
-    public  int id_direccion;
+    public int id_direccion;
 
     @SerializedName(NOMBRE)
     @DatabaseField(columnName = NOMBRE)
-    public  String nombre;
+    public String nombre;
 
     @SerializedName(TELEFONO)
     @DatabaseField(columnName = TELEFONO)
-    public  String telefono;
+    public String telefono;
 
     @SerializedName(CORREO)
     @DatabaseField(columnName = CORREO)
-    public  String correo;
+    public String correo;
 
     @SerializedName(DIRECCIONES)
-    public  Direccion direccion;
+    public Direccion direccion;
 
     @SerializedName(FOTO)
     @DatabaseField(columnName = FOTO)
-    public  String foto;
+    public String foto;
 
     @SerializedName(DISPOSITIVOS)
     public List<Dispositivo> dispositivosList;
@@ -60,6 +63,12 @@ public class Persona implements Parcelable{
 
     @SerializedName(TIPO_PERSONA)
     public TipoPersonas mTipoPersonas;
+
+    @SerializedName(PAQUETE_ASESOR)
+    public List<VentaPaqueteAsesor> mVentaPaqueteAsesors;
+
+    @SerializedName(SKYPE)
+    public String skype;
 
 
     protected Persona(Parcel in) {
@@ -73,6 +82,8 @@ public class Persona implements Parcelable{
         dispositivosList = in.createTypedArrayList(Dispositivo.CREATOR);
         universidad = in.createTypedArrayList(Universidad.CREATOR);
         mTipoPersonas = in.readParcelable(TipoPersonas.class.getClassLoader());
+        mVentaPaqueteAsesors = in.createTypedArrayList(VentaPaqueteAsesor.CREATOR);
+        skype = in.readString();
     }
 
     public Persona() {
@@ -90,6 +101,8 @@ public class Persona implements Parcelable{
         dest.writeTypedList(dispositivosList);
         dest.writeTypedList(universidad);
         dest.writeParcelable(mTipoPersonas, flags);
+        dest.writeTypedList(mVentaPaqueteAsesors);
+        dest.writeString(skype);
     }
 
     @Override

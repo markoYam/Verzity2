@@ -2,53 +2,81 @@ package com.dwmedios.uniconekt.view.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.Paquetes;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.SplashPresenter;
 import com.dwmedios.uniconekt.view.activity.Universidad.PaquetesActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2;
+import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.SplashViewController;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity.KEY_DIALOG;
+
 public class SplashActivity extends BaseActivity implements SplashViewController {
     private SplashPresenter mSplashPresenter;
+    @BindView(R.id.imageLogo)
+    ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         getSupportActionBar().hide();
         mSplashPresenter = new SplashPresenter(SplashActivity.this, this);
-        if (checkDatasMovil() || checkWifi()) {
-            mSplashPresenter.getConguraciones();
-        } else {
-            showMessage("Sin conexión a internet.");
-            showConfirmDialog1("Atención", "Sin conexión a internet.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    finish();
-                }
-            });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+            in.setDuration(500);
+            mImageView.startAnimation(in);
+            mImageView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (checkDatasMovil() || checkWifi()) {
+                    mSplashPresenter.getConguraciones();
+                } else {
+                    showMessage("Sin conexión a internet.");
+                    showConfirmDialog1("Atención", "Sin conexión a internet.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+                }
+            }
+        }, 500);
+
     }
 
     public void tryDownloadConfig() {
         Log.e("Configuraciones", "Error al descargar");
-        showdialogMaterialConfig("Error", "Ocurrio un error al descargar las configuraciones. ¿Intentar nuevamente? ", R.drawable.ic_action_information, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSplashPresenter.getConguraciones();
-            }
-        });
+        DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
+        mHandleDialog.logo = R.drawable.ic_action_information;
+        mHandleDialog.titulo = "Error";
+        mHandleDialog.contenido = "Ocurrio un error al descargar las configuraciones. ¿Intentar nuevamente? ";
+        startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 201);
+
     }
 
     @Override
@@ -126,15 +154,32 @@ public class SplashActivity extends BaseActivity implements SplashViewController
 
     private void cancelValidateInfo() {
         String contenido = getString(R.string.universidad_desactivada);
-        showdialogMaterial2("Atención", contenido, R.drawable.ic_action_information, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
+        mHandleDialog.logo = R.drawable.ic_action_information;
+        mHandleDialog.titulo = "Atención";
+        mHandleDialog.contenido = contenido;
+        startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 200);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 200) {
+            if (resultCode == RESULT_OK) {
                 if (mSplashPresenter.borrarTodo()) {
                     startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
                     finish();
                 }
+            } else if (resultCode == RESULT_CANCELED) {
+                finish();
             }
-        });
+        }
+        if (requestCode == 201) {
+            if (resultCode == RESULT_OK) {
+                mSplashPresenter.getConguraciones();
+            } else if (resultCode == RESULT_CANCELED) {
+                finish();
+            }
+        }
     }
 }
 

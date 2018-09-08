@@ -2,23 +2,15 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -32,12 +24,9 @@ import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.PostuladosBecas;
 import com.dwmedios.uniconekt.presenter.BecasDetallePresenter;
 import com.dwmedios.uniconekt.view.activity.PDFViewerActivity;
-import com.dwmedios.uniconekt.view.activity.RegistroActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.ImageUtils;
-import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.BecasDetalleViewController;
-import com.facebook.login.LoginManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -49,13 +38,12 @@ import butterknife.ButterKnife;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.dwmedios.uniconekt.view.activity.PDFViewerActivity.KEY_VIEWER;
 import static com.dwmedios.uniconekt.view.activity.PDFViewerActivity.KEY_VIEWER_NOMBRE;
-import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.KEY_TRANSACTIONS;
 import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.TYPE_VIEW;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_REGISTRO_UNIVERSITARIO;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversidadActivity.KEY_DETALLE_UNIVERSIDAD;
-import static com.dwmedios.uniconekt.view.util.Utils.changeColorStatusBarOnli;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class DetalleBecasActivity extends BaseActivity implements BecasDetalleViewController {
     public static String KEY_BECA_DETALLE = "key_beca_detalle";
@@ -99,9 +87,9 @@ public class DetalleBecasActivity extends BaseActivity implements BecasDetalleVi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Cambiar el color del toolbar y status bar
-        setStatusBarGradiant(this,R.drawable.status_beca);
-       // changeColorToolbar(getSupportActionBar(), R.color.Color_becas, DetalleBecasActivity.this);
-
+        setStatusBarGradiant(this, R.drawable.status_beca);
+        // changeColorToolbar(getSupportActionBar(), R.color.Color_becas, DetalleBecasActivity.this);
+        supportPostponeEnterTransition();
         mBecasDetallePresenter = new BecasDetallePresenter(this, getApplicationContext());
         mBecasDetallePresenter.loadInfo();
         if (TYPE_VIEW == 2)
@@ -126,23 +114,19 @@ public class DetalleBecasActivity extends BaseActivity implements BecasDetalleVi
                         //  mFloatingActionButtonMenu.startAnimation(close_Fab);
                         mFloatingActionButtonMenu.setVisibility(View.GONE);
                     }
-                     changeColorToolbar(getSupportActionBar(),R.color.Color_becas,DetalleBecasActivity.this);
+                    changeColorToolbar(getSupportActionBar(), R.color.Color_becas, DetalleBecasActivity.this);
                     isShow = true;
                 } else if (isShow) {
                     mCollapsingToolbarLayout.setTitle(" ");
                     //mFloatingActionButtonMenu.startAnimation(open_Fab);
                     mFloatingActionButtonMenu.setVisibility(View.VISIBLE);
                     isShow = false;
-                     changeColorToolbar(getSupportActionBar(),R.color.colorTrasparente,DetalleBecasActivity.this);
+                    changeColorToolbar(getSupportActionBar(), R.color.colorTrasparente, DetalleBecasActivity.this);
                 }
             }
         });
-        supportPostponeEnterTransition();
-        String transaction = getIntent().getExtras().getString(KEY_TRANSACTIONS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mImageView.setTransitionName(transaction);
-            supportStartPostponedEnterTransition();
-        }
+
+
     }
 
     @Override
@@ -170,6 +154,13 @@ public class DetalleBecasActivity extends BaseActivity implements BecasDetalleVi
         try {
             mBecas = getIntent().getExtras().getParcelable(KEY_BECA_DETALLE);
             this.onSucces(mBecas);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mImageView.setTransitionName(BecasActivity.KEY_TRANSICION_BECA_1);
+                //mTextViewNombreBeca.setTransitionName(BecasActivity.KEY_TRANSICION_BECA_2);
+                supportStartPostponedEnterTransition();
+
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             this.OnFailed("Ocurrio un error");
@@ -232,12 +223,8 @@ public class DetalleBecasActivity extends BaseActivity implements BecasDetalleVi
 
     @Override
     public void onSucces(Becas mBecas) {
-        if (mBecas.rutaImagen != null) {
+        if (!isNullOrEmpty(mBecas.rutaImagen)) {
             ImageLoader.getInstance().displayImage(ImageUtils.getUrlImage(mBecas.rutaImagen, getApplicationContext()), mImageView, ImageUtils.OptionsImageLoaderItems);
-            /** ViewGroup.LayoutParams params= mImageView.getLayoutParams();
-             ViewGroup.LayoutParams paramsImage= mCollapsingToolbarLayout.getLayoutParams();
-             paramsImage.height=params.height;
-             mCollapsingToolbarLayout.setLayoutParams(paramsImage);**/
         }
         if (mBecas.nombre != null)
             mTextViewNombreBeca.setText(mBecas.nombre);

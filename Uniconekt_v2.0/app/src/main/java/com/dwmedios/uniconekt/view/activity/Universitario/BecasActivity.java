@@ -2,11 +2,9 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -27,12 +23,9 @@ import android.widget.TextView;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Becas;
 import com.dwmedios.uniconekt.model.Universidad;
-import com.dwmedios.uniconekt.model.Videos;
 import com.dwmedios.uniconekt.presenter.BecasPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.BecasAdapter;
-import com.dwmedios.uniconekt.view.adapter.VideoAdapter;
-import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.BecasViewController;
 
 import java.util.List;
@@ -41,13 +34,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleBecasActivity.KEY_BECA_DETALLE;
-import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.Dw_CreateTransactions;
+import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.createTransitions;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class BecasActivity extends BaseActivity implements BecasViewController {
     public static final String KEY_BECAS = "key-becas";
     public static final String KEY_BECAS_COLOR = "key-becas_COLOR";
+    public static final String KEY_TRANSICION_BECA_1 = "key_TRANSISION_!";
+    public static final String KEY_TRANSICION_BECA_2 = "key_TRANSISION_!2";
+
     public static int TYPE_VIEW = 1;
     @BindView(R.id.recyclerview_utils)
     RecyclerView mRecyclerView;
@@ -73,7 +69,7 @@ public class BecasActivity extends BaseActivity implements BecasViewController {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Cambiar el color del toolbar y status bar
-        setStatusBarGradiant(this,R.drawable.status_beca);
+        setStatusBarGradiant(this, R.drawable.status_beca);
         changeColorToolbar(getSupportActionBar(), R.color.Color_becas, BecasActivity.this);
 
         mBecasPresenter = new BecasPresenter(this, getApplicationContext());
@@ -89,7 +85,7 @@ public class BecasActivity extends BaseActivity implements BecasViewController {
     }
 
     @Override
-    public void Onsucces(List<Becas> mBecasList,int first) {
+    public void Onsucces(List<Becas> mBecasList, int first) {
         Log.e("Becas", "Exito");
         if (first == 1)
             this.mBecasList = mBecasList;
@@ -173,19 +169,19 @@ public class BecasActivity extends BaseActivity implements BecasViewController {
 
     public void searchViewMetod(String criterio) {
         if (TYPE_VIEW == 2) {
-            if (criterio!=null && !criterio.isEmpty()) {
-                mBecasPresenter.SearchBecas(mBecasList, criterio,false);
+            if (criterio != null && !criterio.isEmpty()) {
+                mBecasPresenter.SearchBecas(mBecasList, criterio, false);
             } else {
                 mBecasPresenter.GetBecasUniversidad(mUniversidad);
             }
 
         } else if (TYPE_VIEW == 1) {           // mBecasPresenter.GetBecasUniversidad(mUniversidad);
-            if (criterio!=null && !criterio.isEmpty()) {
-                mBecasPresenter.SearchBecas(mBecasList, criterio,true);
+            if (criterio != null && !criterio.isEmpty()) {
+                mBecasPresenter.SearchBecas(mBecasList, criterio, true);
             } else {
                 mBecasPresenter.GetBecasUniversidad(mUniversidad);
             }
-           // mBecasPresenter.SearchBecas(mBecasList, criterio,true);
+            // mBecasPresenter.SearchBecas(mBecasList, criterio,true);
         }
     }
 
@@ -244,13 +240,14 @@ public class BecasActivity extends BaseActivity implements BecasViewController {
             this.EmptyRecyclerView();
         }
     }
-public static final String KEY_TRANSACTIONS="KEY_TRANSACTIONS";
+
+
     BecasAdapter.onclick mOnclick = new BecasAdapter.onclick() {
         @Override
-        public void onclickButton(Becas mBecas, ImageView mImageView) {
+        public void onclickButton(Becas mBecas, ImageView mImageView, TextView mTextView) {
             Intent mIntent = new Intent(getApplicationContext(), DetalleBecasActivity.class);
             mIntent.putExtra(KEY_BECA_DETALLE, mBecas);
-            Dw_CreateTransactions(mIntent, KEY_TRANSACTIONS, mImageView, BecasActivity.this);
+            startActivity(mIntent, createTransitions(BecasActivity.this, KEY_TRANSICION_BECA_1, KEY_TRANSICION_BECA_2, mImageView, mTextView).toBundle());
         }
     };
 

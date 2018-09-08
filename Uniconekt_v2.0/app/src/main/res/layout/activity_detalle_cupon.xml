@@ -26,7 +26,16 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPagerFotosCupon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+                android:layout_height="match_parent"
+                android:visibility="gone"></android.support.v4.view.ViewPager>
+
+            <ImageView
+                android:id="@+id/defaultImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/defaultt"
+                android:visibility="visible" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -41,8 +50,8 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
         android:background="#ffffff"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -59,8 +68,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginBottom="5dp"
+                    android:orientation="vertical"
                     android:paddingLeft="10dp">
 
                     <TextView
@@ -97,30 +106,32 @@
                 android:id="@+id/cardContentQr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="5dp"
                 android:visibility="gone"
+                app:cardElevation="5dp"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="10dp"
                         android:text="Código QR del cupón"
-                        android:layout_marginBottom="5dp"
                         android:textColor="@color/colorPrimaryDark" />
+
                     <ImageView
                         android:id="@+id/imageviewQR"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        android:scaleType="center"
                         android:layout_gravity="center"
                         android:cropToPadding="true"
+                        android:scaleType="center"
                         android:src="@drawable/defaultt" />
 
                     <TextView
@@ -129,11 +140,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="Clave del cupon"
-                        android:layout_marginBottom="5dp"
                         android:textColor="@color/colorPrimaryDark" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>

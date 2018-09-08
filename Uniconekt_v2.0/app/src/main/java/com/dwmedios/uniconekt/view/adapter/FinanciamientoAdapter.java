@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Financiamientos;
@@ -21,7 +22,7 @@ public class FinanciamientoAdapter  extends RecyclerView.Adapter<FinanciamientoH
     }
 
     public interface onclick {
-        void onclickButton(Financiamientos financiamientos);
+        void onclickButton(Financiamientos financiamientos, ImageView mImageView);
     }
 
     private onclick mOnclick;

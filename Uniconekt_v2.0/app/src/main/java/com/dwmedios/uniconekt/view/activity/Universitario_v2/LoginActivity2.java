@@ -3,14 +3,18 @@ package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
-import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
@@ -20,7 +24,7 @@ import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.LoginPresenter;
 import com.dwmedios.uniconekt.view.activity.RegistroActivity;
 import com.dwmedios.uniconekt.view.activity.RestorePasswordActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
+import com.dwmedios.uniconekt.view.activity.SplashActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.LoginViewController;
@@ -42,6 +46,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.dwmedios.uniconekt.view.util.ImageUtils.setTintView;
+
 public class LoginActivity2 extends BaseActivity implements LoginViewController {
     public static final String REGISTRO_FACEBOOK = "key_facebook2erdsdwsd";
     @BindView(R.id.descontraseña)
@@ -56,6 +62,8 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
     TextView mTextViewPassword;
     @BindView(R.id.buttonregistrarUniversidad)
     Button mButtonRegistrarUniversidad;
+    @BindView(R.id.imageViewLogo)
+    ImageView mImageViewLogo;
     private LoginPresenter mLoginPresenter;
     private CallbackManager callbackManager;
     private boolean loginFacebook = false;
@@ -66,10 +74,17 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
         mLoginPresenter = new LoginPresenter(this, getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Animation in = AnimationUtils.loadAnimation(this, R.anim.slide_up_in);
+            in.setDuration(500);
+            mImageViewLogo.startAnimation(in);
+            mImageViewLogo.setVisibility(View.VISIBLE);
+        }
         onclickControls();
         if (validatePermison(Manifest.permission.READ_PHONE_STATE, LoginActivity2.this, 2))
             SharePrefManager.getInstance(getApplicationContext()).saveImei(getImei(getApplicationContext()));
@@ -152,6 +167,12 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
     protected void onStart() {
         super.onStart();
         LoginManager.getInstance().logOut();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            setTintView(getApplicationContext(), mTextInputEditTextCorreo, R.color.colorPrimaryDark, R.drawable.ic_action_ic_user);
+            setTintView(getApplicationContext(), mTextInputEditTextContraseña, R.color.colorPrimaryDark, R.drawable.ic_action_ic_contrasea);
+
+        }
+
     }
 
     public void onclickControls() {
@@ -276,7 +297,7 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
             SharePrefManager.getInstance(getApplicationContext()).saveTypeUser(1);
         else if (mUsuario.persona.mTipoPersonas.nombre.equals("UNIVERSIDAD"))
             SharePrefManager.getInstance(getApplicationContext()).saveTypeUser(2);
-        startActivity(new Intent(getApplicationContext(), MainUniversitarioActivity.class));
+        startActivity(new Intent(getApplicationContext(), SplashActivity.class));
         finish();
     }
 

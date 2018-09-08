@@ -1,6 +1,5 @@
 package com.dwmedios.uniconekt.view.adapter.holder;
 
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,18 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.model.Becas;
-import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.view.adapter.BecasAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderDark;
+import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.KEY_TRANSICION_BECA_1;
+import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.KEY_TRANSICION_BECA_2;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderItems;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderLight;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.Dw_setTransaction;
 import static com.dwmedios.uniconekt.view.util.Utils.getDrawable;
@@ -60,14 +57,15 @@ public class BecasHolder extends RecyclerView.ViewHolder {
 
         mCardView.setOnClickListener(mOnClickListener);
         mButton.setOnClickListener(mOnClickListener);
-        Dw_setTransaction(mImageView, mBecas.nombre);
+        Dw_setTransaction(mImageView, KEY_TRANSICION_BECA_1);
+        Dw_setTransaction(mTextViewNombrebeca, KEY_TRANSICION_BECA_2);
 
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (mOnclick != null) mOnclick.onclickButton(mBecas, mImageView);
+            if (mOnclick != null) mOnclick.onclickButton(mBecas, mImageView, mTextViewNombrebeca);
         }
     };
 }

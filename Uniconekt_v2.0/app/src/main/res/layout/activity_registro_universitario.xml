@@ -66,14 +66,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Datos generales"
                         android:layout_marginBottom="2dp"
+                        android:text="Datos generales"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/colorPrimaryDark" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
+                        android:text="Una vez registrado, el nombre no se podrá cambiar posteriormente."
+                        android:textColor="@color/colorrojo"
+                        android:textSize="11dp" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawableTint="@color/colorGris"
                         android:theme="@style/ThemeLayout"
                         app:errorTextAppearance="@style/AppTheme.EditTextError">
 
@@ -85,6 +94,7 @@
                             android:drawablePadding="3dp"
                             android:drawableStart="@drawable/ic_action_ic_user"
                             android:drawableTint="@color/colorGris"
+                            android:drawableTintMode="src_in"
                             android:hint="Nombre completo"
                             android:imeOptions="actionNext"
                             android:inputType="text" />
@@ -169,8 +179,8 @@
                             android:drawablePadding="3dp"
                             android:drawableStart="@drawable/ic_action_estado"
                             android:drawableTint="@color/colorGris"
-                            android:hint="Estado"
                             android:enabled="false"
+                            android:hint="Estado"
                             android:imeOptions="actionNext"
                             android:inputType="text" />
                     </android.support.design.widget.TextInputLayout>
@@ -189,8 +199,8 @@
                             android:drawablePadding="3dp"
                             android:drawableStart="@drawable/ic_action_ciudad"
                             android:drawableTint="@color/colorGris"
-                            android:hint="Municipio"
                             android:enabled="false"
+                            android:hint="Municipio"
                             android:imeOptions="actionNext"
                             android:inputType="text" />
                     </android.support.design.widget.TextInputLayout>
@@ -209,8 +219,8 @@
                             android:drawablePadding="3dp"
                             android:drawableStart="@drawable/ic_action_ciudad"
                             android:drawableTint="@color/colorGris"
-                            android:hint="Ciudad"
                             android:enabled="false"
+                            android:hint="Ciudad"
                             android:imeOptions="actionNext"
                             android:inputType="text" />
                     </android.support.design.widget.TextInputLayout>
@@ -238,8 +248,8 @@
                         android:id="@+id/textViewdatosAcceso"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Datos de acceso."
                         android:paddingLeft="3dp"
+                        android:text="Datos de acceso."
                         android:textColor="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout

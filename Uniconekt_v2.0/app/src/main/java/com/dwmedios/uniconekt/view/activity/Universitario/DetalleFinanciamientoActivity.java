@@ -2,6 +2,7 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -41,10 +42,6 @@ import static com.dwmedios.uniconekt.view.activity.PDFViewerActivity.KEY_VIEWER_
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_REGISTRO_UNIVERSITARIO;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleBecasActivity.CODE_RESULT;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversidadActivity.KEY_DETALLE_UNIVERSIDAD;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
-import static com.dwmedios.uniconekt.view.util.Utils.DownloadFiles;
-import static com.dwmedios.uniconekt.view.util.Utils.ERROR_CONECTION;
-import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class DetalleFinanciamientoActivity extends BaseActivity implements FinaciamientoDetalleView {
@@ -85,6 +82,7 @@ public class DetalleFinanciamientoActivity extends BaseActivity implements Finac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_financiamiento);
+        supportPostponeEnterTransition();
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
@@ -116,7 +114,7 @@ public class DetalleFinanciamientoActivity extends BaseActivity implements Finac
                     }
                     //mFloatingActionButtonMenu.startAnimation(close_Fab);
                     mFloatingActionButtonMenu.setVisibility(View.GONE);
-                      isShow = true;
+                    isShow = true;
                 } else if (isShow) {
                     mCollapsingToolbarLayout.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
                     //mFloatingActionButtonMenu.startAnimation(open_Fab);
@@ -221,6 +219,15 @@ public class DetalleFinanciamientoActivity extends BaseActivity implements Finac
             LinearLayout archivo = (LinearLayout) mTextViewArchivo.getParent();
             archivo.setVisibility(View.GONE);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mImageView.setTransitionName(FinanciamientoActivity.KEY_TRANSICIONES_1);
+            supportStartPostponedEnterTransition();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override

@@ -19,7 +19,7 @@
 
         <item
             android:id="@+id/menu_mis_asesores"
-            android:icon="@drawable/ic_action_user_profile"
+            android:icon="@drawable/ic_action_people_outline"
             android:title="Ver mis asesores" />
 
         <item

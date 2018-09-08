@@ -9,15 +9,16 @@ import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Financiamientos;
+import com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity;
 import com.dwmedios.uniconekt.view.adapter.FinanciamientoAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderDark;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderItems;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
+import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.Dw_setTransaction;
 
 public class FinanciamientoHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.cardviewFinanciamiento)
@@ -49,14 +50,16 @@ public class FinanciamientoHolder extends RecyclerView.ViewHolder {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mOnclick != null) mOnclick.onclickButton(mFinanciamientos);
+                if (mOnclick != null) mOnclick.onclickButton(mFinanciamientos, mImageView);
             }
         });
         mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mOnclick != null) mOnclick.onclickButton(mFinanciamientos);
+                if (mOnclick != null) mOnclick.onclickButton(mFinanciamientos, mImageView);
             }
         });
+        Dw_setTransaction(mImageView, FinanciamientoActivity.KEY_TRANSICIONES_1);
+
     }
 }

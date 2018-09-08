@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/uvv_black"
+    android:orientation="vertical"
+    tools:context=".view.activity.View_Utils.PreviewImageActivity">
+
+    <include layout="@layout/tolbar"></include>
+
+    <ImageView
+        android:id="@+id/imageViewFoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/uvv_black"
+        android:backgroundTint="@color/uvv_black"
+        android:src="@drawable/defaultt" />
+
+</LinearLayout>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Becas;
@@ -22,7 +23,7 @@ public class BecasAdapter extends RecyclerView.Adapter<BecasHolder> {
     }
 
     public interface onclick {
-        void onclickButton(Becas mBecas, ImageView mImageView);
+        void onclickButton(Becas mBecas, ImageView mImageView, TextView mTextView);
     }
 
     public onclick mOnclick;

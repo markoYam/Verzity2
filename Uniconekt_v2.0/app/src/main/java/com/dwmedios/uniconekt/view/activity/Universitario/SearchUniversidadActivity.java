@@ -39,7 +39,6 @@ import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.util.demo.CustoViewPager;
 import com.dwmedios.uniconekt.view.viewmodel.SearchUniversidadViewController;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +50,7 @@ import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUn
 import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderDark;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class SearchUniversidadActivity extends BaseActivity implements SearchUniversidadViewController {
     public static int TYPE_VIEW_MAPS = 0;
@@ -81,10 +81,13 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Buscar universidades");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero())
+        if (SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero()) {
+            setStatusBarGradiant(SearchUniversidadActivity.this, R.drawable.status_uni_extra);
             changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, SearchUniversidadActivity.this);
-        else
-            changeColorToolbar(getSupportActionBar(), R.color.Color_buscarUniversidad, SearchUniversidadActivity.this);
+        } else {
+            setStatusBarGradiant(SearchUniversidadActivity.this, R.drawable.status_uni);
+            //changeColorToolbar(getSupportActionBar(), R.color.Color_buscarUniversidad, SearchUniversidadActivity.this);
+        }
         mSearchUniversidadesPresenter.ConfigureMenu();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -201,6 +204,8 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
         List<String> per = new ArrayList<>();
         per.add(Manifest.permission.ACCESS_FINE_LOCATION);
         per.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        per.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        per.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         if (validatePermison(per, SearchUniversidadActivity.this, 1)) {//falta el estatus
 
             LocationManager manager = (LocationManager) SearchUniversidadActivity.this.getSystemService(Context.LOCATION_SERVICE);
@@ -213,7 +218,6 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
                 GO_TO_MAP = false;
                 startActivity(new Intent(SearchUniversidadActivity.this, UniversidadesMapsActivity.class));
             }
-
         }
     }
 
@@ -263,21 +267,6 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
 
     @Override
     public void SearchName() {
-        showdialogInputMaterial("Buscar Universidad", "Ingrese el nombre de la universidad.", R.drawable.ic_search, "Buscar", new LovelyTextInputDialog.OnTextInputConfirmListener() {
-            @Override
-            public void onTextInputConfirmed(String text) {
-                if (!text.isEmpty()) {
-                    SearchUniversidades universidades = new SearchUniversidades();
-                    universidades.nombreUniversidad = text;
-                  /*  Intent mIntent = new Intent(SearchUniversidadActivity.this, ViewUniversidadesActivity.class);
-                    mIntent.putExtra(UNIVERSIDAD_KEY, universidades);
-                    SEARCH_KEY = 2;
-                    startActivity(mIntent);*/
-                }
-            }
-        });
-
-
     }
 
     private List<Banners> mBannersList;
@@ -322,19 +311,15 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
 
     @Override
     protected void onPause() {
-      /*  mBanner.stopBanner();
-        estatusBanner = false;*/
-        if (mCustoViewPager != null) mCustoViewPager.stopHandler();
         super.onPause();
+        if (mCustoViewPager != null) mCustoViewPager.stopHandler();
+
     }
 
     @Override
     protected void onDestroy() {
-        /*estatusBanner = false;
-        mBanner.stopBanner();*/
-        if (mCustoViewPager != null) mCustoViewPager.stopHandler();
         super.onDestroy();
-
+        if (mCustoViewPager != null) mCustoViewPager.stopHandler();
     }
 
     @Override

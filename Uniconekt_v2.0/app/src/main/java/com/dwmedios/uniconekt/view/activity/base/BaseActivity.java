@@ -2,15 +2,12 @@ package com.dwmedios.uniconekt.view.activity.base;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -18,7 +15,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -27,29 +23,17 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
-
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.Utils_app_Running.BaseApp;
-import com.dwmedios.uniconekt.view.activity.RegistroActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
-import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderLight;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 
 /**
  * Created by Luis Cabanas on 19/03/2018.
@@ -60,7 +44,7 @@ public class BaseActivity extends BaseApp {
         void onFinish(String text);
     }
 
-    public boolean validatePermison(String permison, Activity onresult,int CodeResult) {
+    public boolean validatePermison(String permison, Activity onresult, int CodeResult) {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), permison) == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
@@ -69,7 +53,7 @@ public class BaseActivity extends BaseApp {
         return false;
     }
 
-    public boolean validatePermison(List<String> permison, Activity onresult,int CodeResult) {
+    public boolean validatePermison(List<String> permison, Activity onresult, int CodeResult) {
         List<String> temp = new ArrayList<>();
         for (String per : permison) {
             if (ActivityCompat.checkSelfPermission(onresult.getApplicationContext(), per) != PackageManager.PERMISSION_GRANTED) {
@@ -89,7 +73,7 @@ public class BaseActivity extends BaseApp {
         return false;
     }
 
-    public boolean checkPermison(List<String> permison, Activity onresult,int CodeResult) {
+    public boolean checkPermison(List<String> permison, Activity onresult, int CodeResult) {
         List<String> temp = new ArrayList<>();
         for (String per : permison) {
             if (ActivityCompat.checkSelfPermission(getApplicationContext(), per) != PackageManager.PERMISSION_GRANTED) {
@@ -107,13 +91,14 @@ public class BaseActivity extends BaseApp {
         }
         return false;
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         hideKeyboard();
     }
 
-    public void showdialogInputMaterial(String titulo, String mensaje, int icono, LovelyTextInputDialog.OnTextInputConfirmListener mOnTextInputConfirmListener) {
+    /*public void showdialogInputMaterial(String titulo, String mensaje, int icono, LovelyTextInputDialog.OnTextInputConfirmListener mOnTextInputConfirmListener) {
         new LovelyTextInputDialog(this, R.style.EditTextTintTheme)
                 .setTopColorRes(R.color.colorPrimary)
                 .setTitle(titulo)
@@ -128,9 +113,9 @@ public class BaseActivity extends BaseApp {
                 .setConfirmButton(android.R.string.ok, mOnTextInputConfirmListener)
                 .setNegativeButton(android.R.string.no, null)
                 .show();
-    }
+    }*/
 
-    public void showdialogInputMaterial(String titulo, String mensaje, int icono, String buttonOk, LovelyTextInputDialog.OnTextInputConfirmListener mOnTextInputConfirmListener) {
+    /*public void showdialogInputMaterial(String titulo, String mensaje, int icono, String buttonOk, LovelyTextInputDialog.OnTextInputConfirmListener mOnTextInputConfirmListener) {
         new LovelyTextInputDialog(this, R.style.EditTextTintTheme)
                 .setTopColorRes(R.color.colorPrimary)
                 .setTitle(titulo)
@@ -148,9 +133,9 @@ public class BaseActivity extends BaseApp {
                 .setConfirmButton(buttonOk, mOnTextInputConfirmListener)
                 .setNegativeButton(android.R.string.no, null)
                 .show();
-    }
+    }*/
 
-    public void showdialogMaterial(String titulo, String mensaje, int icono, View.OnClickListener mOnClickListener) {
+  /*  public void showdialogMaterial(String titulo, String mensaje, int icono, View.OnClickListener mOnClickListener) {
         new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                 .setTopColorRes(R.color.colorPrimary)
                 .setButtonsColorRes(R.color.colorPrimaryDark)
@@ -161,8 +146,9 @@ public class BaseActivity extends BaseApp {
                 .setPositiveButton(android.R.string.ok, mOnClickListener)
                 .setNegativeButton(android.R.string.no, null)
                 .show();
-    }
-    public void showdialogMaterial(String titulo, String mensaje, int icono, View.OnClickListener yes,View.OnClickListener no) {
+    }*/
+
+  /*  public void showdialogMaterial(String titulo, String mensaje, int icono, View.OnClickListener yes, View.OnClickListener no) {
         new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                 .setTopColorRes(R.color.colorPrimary)
                 .setButtonsColorRes(R.color.colorPrimaryDark)
@@ -173,8 +159,9 @@ public class BaseActivity extends BaseApp {
                 .setPositiveButton(android.R.string.ok, yes)
                 .setNegativeButton(android.R.string.no, no)
                 .show();
-    }
-    public void showdialogMaterialConfig(String titulo, String mensaje, int icono, View.OnClickListener mOnClickListener) {
+    }*/
+
+  /*  public void showdialogMaterialConfig(String titulo, String mensaje, int icono, View.OnClickListener mOnClickListener) {
         new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                 .setTopColorRes(R.color.colorPrimary)
                 .setButtonsColorRes(R.color.colorPrimaryDark)
@@ -190,9 +177,9 @@ public class BaseActivity extends BaseApp {
                     }
                 })
                 .show();
-    }
+    }*/
 
-    public void showdialogMaterial2(String titulo, String mensaje, int icono, View.OnClickListener mOnClickListener) {
+   /* public void showdialogMaterial2(String titulo, String mensaje, int icono, View.OnClickListener mOnClickListener) {
         new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                 .setTopColorRes(R.color.colorPrimary)
                 .setButtonsColorRes(R.color.colorPrimaryDark)
@@ -202,19 +189,20 @@ public class BaseActivity extends BaseApp {
                 .setMessage(mensaje)
                 .setPositiveButton(android.R.string.ok, mOnClickListener)
                 .show();
-    }
-public void ShowDialogMaterialChoice(String titulo, String mensaje,int icono,List<String> List ,LovelyChoiceDialog.OnItemSelectedListener mOnItemSelectedListener) {
-    final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.row_choice_licenciaturas, List);
-    new LovelyChoiceDialog(this)
-            .setTopColorRes(R.color.colorPrimary)
-            .setTitle(titulo)
-            .setIcon(icono)
-            .setMessage(mensaje)
-            .setItems(adapter, mOnItemSelectedListener)
-            .show();
-}
+    }*/
 
-    public void ShowDialogMaterialChoice2(String titulo,int icono,List<String> List ,LovelyChoiceDialog.OnItemSelectedListener mOnItemSelectedListener) {
+  /*  public void ShowDialogMaterialChoice(String titulo, String mensaje, int icono, List<String> List, LovelyChoiceDialog.OnItemSelectedListener mOnItemSelectedListener) {
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.row_choice_licenciaturas, List);
+        new LovelyChoiceDialog(this)
+                .setTopColorRes(R.color.colorPrimary)
+                .setTitle(titulo)
+                .setIcon(icono)
+                .setMessage(mensaje)
+                .setItems(adapter, mOnItemSelectedListener)
+                .show();
+    }*/
+
+  /*  public void ShowDialogMaterialChoice2(String titulo,int icono,List<String> List ,LovelyChoiceDialog.OnItemSelectedListener mOnItemSelectedListener) {
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.row_choice_licenciaturas, List);
         new LovelyChoiceDialog(this)
                 .setTopColorRes(R.color.colorPrimary)
@@ -222,17 +210,18 @@ public void ShowDialogMaterialChoice(String titulo, String mensaje,int icono,Lis
                 .setIcon(icono)
                 .setItems(adapter, mOnItemSelectedListener)
                 .show();
-    }
-    public void showmesaajeDesactivateUniversity() {
+    }*/
+// TODO: 06/09/2018 verificar este metodo
+   /* public void showmesaajeDesactivateUniversity() {
         showdialogMaterial2("Atención", "La información de la universidad se esta validando por el administrador, se le notificara por correo cuando este proceso concluya.", R.drawable.ic_action_information, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-    }
+    }*/
 
-    public void showdialogMaterial(String titulo, String mensaje, int icono) {
+   /* public void showdialogMaterial(String titulo, String mensaje, int icono) {
         new LovelyInfoDialog(this)
                 .setTopColorRes(R.color.colorPrimary)
                 .setIcon(icono)
@@ -241,7 +230,7 @@ public void ShowDialogMaterialChoice(String titulo, String mensaje,int icono,Lis
                 .setTitle(titulo)
                 .setMessage(mensaje)
                 .show();
-    }
+    }*/
 
     @Override
     protected void onStop() {

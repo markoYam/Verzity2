@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Cupones;
@@ -21,7 +22,7 @@ public class CuponAdapter extends RecyclerView.Adapter<CuponesHolder> {
     }
 
     public interface onclick{
-    void onclick(Cupones mCupones);
+    void onclick(Cupones mCupones, ImageView mImageView);
 }
 onclick mOnclick;
     @NonNull

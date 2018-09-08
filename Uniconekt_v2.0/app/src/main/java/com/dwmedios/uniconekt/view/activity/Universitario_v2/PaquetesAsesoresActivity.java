@@ -16,14 +16,11 @@ import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.data.service.response.PaypalResponse;
-import com.dwmedios.uniconekt.model.NivelAcademico;
 import com.dwmedios.uniconekt.model.PaqueteAsesor;
-import com.dwmedios.uniconekt.model.Paquetes;
 import com.dwmedios.uniconekt.model.Persona;
-import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.VentaPaqueteAsesor;
-import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.presenter.PaquetesAsesorPresenter;
+import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.PaquetesAsesorViewController;
@@ -44,6 +41,7 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity.KEY_RETUNR_DATA;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity.typeViewAsesor;
+import static com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity.KEY_DIALOG;
 import static com.dwmedios.uniconekt.view.util.Paypal.getTokenPaypal;
 
 public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAsesorViewController {
@@ -95,7 +93,7 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
 
     public void PagarPaypal(PaqueteAsesor mPaqueteAsesor) {
 
-        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaqueteAsesor.costo), "MXN", mPaqueteAsesor.nombre, PayPalPayment.PAYMENT_INTENT_ORDER);
+        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaqueteAsesor.costo), "MXN", mPaqueteAsesor.nombre +" \n Asesor: "+asesorSeleccionado.nombre, PayPalPayment.PAYMENT_INTENT_ORDER);
         Intent mIntent = new Intent(this, PaymentActivity.class);
         mIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, mPayPalConfiguration);
         mIntent.putExtra(PaymentActivity.EXTRA_PAYMENT, mPayPalPayment);
@@ -112,8 +110,8 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
                     String detail = confirm.toJSONObject().toString(4);
                     PaypalResponse mPaypalResponse = new Gson().fromJson(detail, PaypalResponse.class);
                     if (mPaypalResponse.response.validPay()) {
-                        Toast.makeText(getApplicationContext(), "Orden procesada",
-                                Toast.LENGTH_LONG).show();
+                        /*Toast.makeText(getApplicationContext(), "Orden procesada",
+                                Toast.LENGTH_LONG).show();*/
 
                         VentaPaqueteAsesor mVentaPaqueteAsesor = new VentaPaqueteAsesor();
                         mVentaPaqueteAsesor.idAsesor = asesorSeleccionado.id;
@@ -255,22 +253,33 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
         @Override
         public void Onclick(Object mObject) {
             final PaqueteAsesor mPaqueteAsesor2 = (PaqueteAsesor) mObject;
+            final VentaPaqueteAsesor ventaPaqueteAsesor = mPaquetesAsesorPresenter.getPaqueteAsesor();
+
             mButtonComprar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    typeViewAsesor = 1;
                     mPaqueteAsesor = mPaqueteAsesor2;
-                    Intent mIntent = new Intent(getApplicationContext(), AsesoresActivity.class);
-                    startActivityForResult(mIntent, CODE_RESULT_ASESOR);
+                    if (ventaPaqueteAsesor == null) {
+                        typeViewAsesor = 1;
+                        Intent mIntent = new Intent(getApplicationContext(), AsesoresActivity.class);
+                        startActivityForResult(mIntent, CODE_RESULT_ASESOR);
+                    } else {
+                        DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
+                        mHandleDialog.logo = R.drawable.ic_action_information;
+                        mHandleDialog.titulo = "Atención";
+                        mHandleDialog.contenido = "Ya cuenta con un paquete activo. ¿Desea actualizarlo?";
+                        startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 202);
+                    }
                 }
             });
             mButtonComprar2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    typeViewAsesor = 1;
+                   /* typeViewAsesor = 1;
                     mPaqueteAsesor = mPaqueteAsesor2;
                     Intent mIntent = new Intent(getApplicationContext(), AsesoresActivity.class);
-                    startActivityForResult(mIntent, CODE_RESULT_ASESOR);
+                    startActivityForResult(mIntent, CODE_RESULT_ASESOR);*/
+                    // TODO: 07/09/2018 aqui va el resumen de la compra
                 }
             });
         }
@@ -299,6 +308,13 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
                 HandleResultPaypal(resultCode, data);
 
                 break;
+            case 202:
+                if (resultCode == RESULT_OK) {
+                    typeViewAsesor = 1;
+                    Intent mIntent = new Intent(getApplicationContext(), AsesoresActivity.class);
+                    startActivityForResult(mIntent, CODE_RESULT_ASESOR);
+                }
+                break;
         }
     }
 
@@ -323,7 +339,7 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
 
     @Override
     public void OnsuccesVenta(VentaPaqueteAsesor mVentaPaqueteAsesor) {
-        showMessage("Guardado correctamente en la base de datos");
+        //showMessage("Guardado correctamente en la base de datos");
         if (mPaquetesAsesorPresenter.saveVentaPaquete(mVentaPaqueteAsesor))
             mPaquetesAsesorPresenter.getPaquetes();
     }

@@ -215,4 +215,8 @@ public interface ClientAPI {
     @POST("SaveVentaPaqueteAsesor")
     Call<VentaPaqueteAsesorResponse> saveVentaPaqueteAsesor(@Field("json") String json);
 
+    @FormUrlEncoded
+    @POST("ConsultarNotificacionesUniversitario")
+    Call<NotificacionesResponse> getNotificacionesUniversitario(@Field("json") String json);
+
 }

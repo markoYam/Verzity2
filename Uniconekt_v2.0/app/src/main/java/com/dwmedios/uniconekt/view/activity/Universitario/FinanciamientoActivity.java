@@ -2,10 +2,9 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,18 +16,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.Becas;
 import com.dwmedios.uniconekt.model.Financiamientos;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.FinanciamientoPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.adapter.BecasAdapter;
-import com.dwmedios.uniconekt.view.adapter.CuponAdapter;
 import com.dwmedios.uniconekt.view.adapter.FinanciamientoAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.FinanciamientoViewController;
 
@@ -38,12 +35,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleFinanciamientoActivity.KEY_FINANCIAMIENTO_DETALLE;
+import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.createTransitions;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class FinanciamientoActivity extends BaseActivity implements FinanciamientoViewController {
     public static int TYPE_VIEW_F = 1;
     public static final String KEY_FINANCIAMIENTOS = "KEY_FINANCIAMIENTOS";
+    public static final String KEY_TRANSICIONES_1 = "KEY_TRANSICIONES_1";
     @BindView(R.id.recyclerview_utils)
     RecyclerView mRecyclerView;
     @BindView(R.id.swiperefresh)
@@ -67,8 +66,8 @@ public class FinanciamientoActivity extends BaseActivity implements Financiamien
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Cambiar el color del toolbar y status bar
-        setStatusBarGradiant(this,R.drawable.status_financiamiento);
-        changeColorToolbar(getSupportActionBar(),R.color.Color_financiamientos,FinanciamientoActivity.this);
+        setStatusBarGradiant(this, R.drawable.status_financiamiento);
+        changeColorToolbar(getSupportActionBar(), R.color.Color_financiamientos, FinanciamientoActivity.this);
 
         mFinanciamientoPresenter = new FinanciamientoPresenter(this, getApplicationContext());
         this.ConfigureLoad();
@@ -202,7 +201,7 @@ public class FinanciamientoActivity extends BaseActivity implements Financiamien
     }
 
     @Override
-    public void OnSucces(List<Financiamientos> mFinanciamientosList,int first) {
+    public void OnSucces(List<Financiamientos> mFinanciamientosList, int first) {
         if (first == 1)
             this.mFinanciamientosList = mFinanciamientosList;
         mTextView.setVisibility(View.GONE);
@@ -267,11 +266,11 @@ public class FinanciamientoActivity extends BaseActivity implements Financiamien
 
     FinanciamientoAdapter.onclick mOnclick = new FinanciamientoAdapter.onclick() {
         @Override
-        public void onclickButton(Financiamientos financiamientos) {
+        public void onclickButton(Financiamientos financiamientos, ImageView mImageView) {
             try {
                 Intent mIntent = new Intent(getApplicationContext(), DetalleFinanciamientoActivity.class);
                 mIntent.putExtra(KEY_FINANCIAMIENTO_DETALLE, financiamientos);
-                startActivity(mIntent);
+                startActivity(mIntent, createTransitions(FinanciamientoActivity.this, FinanciamientoActivity.KEY_TRANSICIONES_1, mImageView).toBundle());
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Toast.makeText(getApplicationContext(), "No es posible visualizar el detalle", Toast.LENGTH_SHORT).show();

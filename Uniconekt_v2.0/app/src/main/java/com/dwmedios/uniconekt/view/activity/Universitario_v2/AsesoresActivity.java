@@ -15,27 +15,27 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.NivelAcademico;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.presenter.AsesorPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.AsesoresViewController;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderUser;
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.DetalleAsesorActivity.KEY_USUARIO;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class AsesoresActivity extends BaseActivity implements AsesoresViewController {
     public static int typeViewAsesor = 0;
     public static final String KEY_RETUNR_DATA = "KEY5475674DFDFDFDFWFW";
+    public static final String KEY_TRANSITIONS_ASESOR = "KEY1_ASESOR85251";
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.toolbar)
@@ -67,7 +67,7 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
             }
         });
         mFloatingActionButton.setOnClickListener(mOnClickListener);
-        configureLoad();
+
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -78,11 +78,18 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
     };
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        configureLoad();
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         if (typeViewAsesor == 1) {
             Intent mIntent = getIntent();
             setResult(RESULT_CANCELED, mIntent);
+            typeViewAsesor = 0;
             finish();
         } else
             finish();
@@ -90,6 +97,7 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
 
     @Override
     protected void onDestroy() {
+        typeViewAsesor = 0;
         super.onDestroy();
     }
 
@@ -100,6 +108,7 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
                 if (typeViewAsesor == 1) {
                     Intent mIntent = getIntent();
                     setResult(RESULT_CANCELED, mIntent);
+                    typeViewAsesor = 0;
                     finish();
                 } else
                     finish();
@@ -166,8 +175,10 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
             mCardView = itemView.findViewById(R.id.cardAsesor);
             mTextView.setText(mPersona.nombre);
             if (!isNullOrEmpty(mPersona.foto))
-                ImageLoader.getInstance().displayImage(getUrlImage(mPersona.foto, getApplicationContext()), mImageView, OptionsImageLoaderUser)
-                        ;
+                Glide
+                        .with(AsesoresActivity.this)
+                        .load(getUrlImage(mPersona.foto, getApplicationContext()))
+                        .into(mImageView);
             else
                 mImageView.setImageResource(R.drawable.profile);
         }
@@ -181,7 +192,8 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
                     //showMessage(mPersona.nombre);
                     switch (typeViewAsesor) {
                         case 0: /*detalle*/
-                            showMessage("Detalle en construccion");
+                            startActivity(new Intent(getApplicationContext(), DetalleAsesorActivity.class).putExtra(KEY_USUARIO, mPersona));
+
                             break;
                         case 1: /*finalizar*/
                             Intent mIntent = getIntent();
@@ -192,13 +204,13 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
                     }
                 }
             });
-            mImageView.setOnClickListener(new View.OnClickListener() {
+            mImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // showMessage(mPersona.nombre);
                     switch (typeViewAsesor) {
                         case 0: /*detalle*/
-                            showMessage("Detalle en construccion");
+                            startActivity(new Intent(getApplicationContext(), DetalleAsesorActivity.class).putExtra(KEY_USUARIO, mPersona));
                             break;
                         case 1: /*finalizar*/
                             Intent mIntent = getIntent();
@@ -214,7 +226,7 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
 
     @Override
     public void Onfailed(String mensaje) {
-        showMessage(mensaje);
+        //showMessage(mensaje);
         this.EmpyRecycler();
     }
 
@@ -226,3 +238,4 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
             dismissProgressDialog();
     }
 }
+

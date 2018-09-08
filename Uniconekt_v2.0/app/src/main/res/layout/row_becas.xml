@@ -44,9 +44,10 @@
                 android:layout_margin="1dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/defaultt"
-                android:transitionName="demo" />
+                 />
 
             <LinearLayout
+                android:layout_toLeftOf="@+id/buttonVerMas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imageViewFotoBeca"

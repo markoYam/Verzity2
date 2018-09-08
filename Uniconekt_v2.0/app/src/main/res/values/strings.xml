@@ -123,5 +123,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="visto">VISTO</string>
     <string name="title_activity_universidades_maps">Map</string>
+    <string name="title_activity_detalle_asesor">DetalleAsesorActivity</string>
 
 </resources>

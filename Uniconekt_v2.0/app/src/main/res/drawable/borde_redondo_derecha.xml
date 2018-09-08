@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <stroke
+                android:width="2dp"
+                android:height="2dp"
+                android:color="@color/Color_BotonInicio" />
+
+            <solid android:color="@color/Color_BotonInicio" />
+
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="1dp"
+                android:top="0dp" />
+
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="10dp"
+                android:radius="1dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,23 +1,18 @@
 package com.dwmedios.uniconekt.view.activity.Universitario;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,18 +23,13 @@ import com.dwmedios.uniconekt.model.FotosCupones;
 import com.dwmedios.uniconekt.presenter.DetalleCuponPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.ViewPagerUtils;
-import com.dwmedios.uniconekt.view.util.ViewPager_Duration;
 import com.dwmedios.uniconekt.view.viewmodel.DetalleCuponViewCotroller;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,7 +55,6 @@ public class DetalleCuponActivity extends BaseActivity implements DetalleCuponVi
     TextView mTextViewVigencia;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
     @BindView(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.collapseTolbar)
@@ -79,19 +68,23 @@ public class DetalleCuponActivity extends BaseActivity implements DetalleCuponVi
     @BindView(R.id.textViewClaveQr)
     TextView mTextViewClave;
     private ViewPagerUtils mViewPagerUtils;
+    @BindView(R.id.defaultImage)
+    ImageView mImageView;
     private Cupones mCupones;
     private DetalleCuponPresenter mDetalleCuponPresenter;
+    private boolean isCanjeado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_cupon);
+        supportPostponeEnterTransition();
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Cambiar el color del toolbar y status bar
-        setStatusBarGradiant(this,R.drawable.status_cupon);
+        setStatusBarGradiant(this, R.drawable.status_cupon);
         mCupones = getIntent().getExtras().getParcelable(KEY_DETALLE_CUPON);
         mDetalleCuponPresenter = new DetalleCuponPresenter(this, this);
         mFloatingActionButton.setOnClickListener(mOnClickListener);
@@ -114,7 +107,8 @@ public class DetalleCuponActivity extends BaseActivity implements DetalleCuponVi
                 } else if (isShow) {
                     mCollapsingToolbarLayout.setTitle(" ");
                     isShow = false;
-                    mFloatingActionButton.show();
+                    if (!isCanjeado)
+                        mFloatingActionButton.show();
                 }
             }
         });
@@ -134,7 +128,21 @@ public class DetalleCuponActivity extends BaseActivity implements DetalleCuponVi
             mTextViewNombre.setText(mCupones.nombre);
             mTextViewDescripcion.setText(mCupones.descripcion);
             mTextViewVigencia.setText("Validez: " + configurefecha(mCupones.inicio) + " al " + configurefecha(mCupones.fin));
-
+            if (mCupones.mFotosCuponesList != null && mCupones.mFotosCuponesList.size() > 0) {
+                mImageView.setVisibility(View.GONE);
+                mViewPager.setVisibility(View.VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mViewPager.setTransitionName(CuponesViewActivity.KEY_TRANSITION_CUPON1);
+                    supportStartPostponedEnterTransition();
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mImageView.setTransitionName(CuponesViewActivity.KEY_TRANSITION_CUPON1);
+                    supportStartPostponedEnterTransition();
+                }
+                mImageView.setVisibility(View.VISIBLE);
+                mViewPager.setVisibility(View.GONE);
+            }
             mViewPagerUtils = new ViewPagerUtils(mCupones.mFotosCuponesList, getSupportFragmentManager(), DetalleCuponActivity.this);
             mViewPagerUtils.setLayoutInflater(R.layout.item_viewpagerutils);
             mViewPagerUtils.setmHandlerView(new ViewPagerUtils.HandlerView() {
@@ -148,6 +156,8 @@ public class DetalleCuponActivity extends BaseActivity implements DetalleCuponVi
             });
             mViewPagerUtils.build(mViewPager);
             mViewPagerUtils.setAnimate(true);
+
+
         }
     }
 
@@ -166,7 +176,7 @@ public class DetalleCuponActivity extends BaseActivity implements DetalleCuponVi
     @Override
     public void OnSuccess(CuponesCanjeados mCuponesCanjeados) {
 //    }
-
+        isCanjeado = true;
         LoadQr(mCuponesCanjeados);
     }
 

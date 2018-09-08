@@ -3,6 +3,7 @@ package com.dwmedios.uniconekt.view.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.dwmedios.uniconekt.model.Licenciaturas;
@@ -13,6 +14,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dwmedios.uniconekt.view.util.ImageUtils.decodeBase64;
+import static com.dwmedios.uniconekt.view.util.ImageUtils.encodeTobase64;
 
 /**
  * Created by marko on 23/11/2017.
@@ -31,6 +35,7 @@ public class SharePrefManager {
     private static final String IME_USER_SAVE = "USER_IME";
     private static final String KEY_GUARDAR_LICEN = "USER_IMSSSSSSSSSSSSSSSSSSSSSSSSSE";
     private static final String BUSCAR_EXTRANJERO = "BUSCAR EXTRANJERO-YTNGJGFJGRJGGFDSCFD524";
+    private static final String IMAGE = "TEMPOSDSDSD";
 
     private static Context mCxt;
     private static SharePrefManager sharePrefManager;
@@ -53,6 +58,24 @@ public class SharePrefManager {
         mEditor.apply();
         Log.e("Token saved", token);
         return true;
+    }
+
+    public boolean saveImageTemp(Bitmap image) {
+        String imageSave = encodeTobase64(image);
+        SharedPreferences sharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = sharedPreferences.edit();
+        mEditor.putString(IMAGE, imageSave);
+        mEditor.apply();
+        return true;
+    }
+
+    public Bitmap getImageTemp() {
+        SharedPreferences mSharedPreferences = mCxt.getSharedPreferences(NAMESHARE, Context.MODE_PRIVATE);
+        String image = mSharedPreferences.getString(IMAGE, null);
+        if (image != null) {
+            return decodeBase64(image);
+        } else
+            return null;
     }
 
     public String getToken() {

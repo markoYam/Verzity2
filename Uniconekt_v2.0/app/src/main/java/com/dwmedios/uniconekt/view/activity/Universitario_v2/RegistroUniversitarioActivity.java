@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -59,6 +64,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2.REGISTRO_FACEBOOK;
+import static com.dwmedios.uniconekt.view.util.ImageUtils.setTintView;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.EMAIL_EQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.FIELD_REQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.PHONE_EQUIRED;
@@ -184,12 +190,23 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         /**
          * Acciones de los botones
          */
-        RegistroFacebook();
-        ;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            setTintView(getApplicationContext(), mTextInputEditTextNombre, R.color.colorGris, R.drawable.ic_action_ic_user);
+            setTintView(getApplicationContext(), mTextInputEditTextTelefono, R.color.colorGris, R.drawable.ic_telefono);
+            setTintView(getApplicationContext(), mTextInputEditTextDireccion, R.color.colorGris, R.drawable.ic_action_ciudad);
+            setTintView(getApplicationContext(), mTextInputEditTextCorreo, R.color.colorGris, R.drawable.ic_action_mail);
+            setTintView(getApplicationContext(), mTextInputEditTextContraseña, R.color.colorGris, R.drawable.ic_action_ic_contrasea);
+            setTintView(getApplicationContext(), mTextInputEditTextConfirmacion, R.color.colorGris, R.drawable.ic_action_ic_contrasea);
+            setTintView(getApplicationContext(), mTextInputEditTextCodigo, R.color.colorGris, R.drawable.ic_action_ic_school);
+            setTintView(getApplicationContext(), mTextInputEditTextEstado, R.color.colorGris, R.drawable.ic_action_estado);
+            setTintView(getApplicationContext(), mTextInputEditTextMunicipio, R.color.colorGris, R.drawable.ic_action_ciudad);
+            setTintView(getApplicationContext(), mTextInputEditTextCiudad, R.color.colorGris, R.drawable.ic_action_ciudad);
+        }
         mButton.setOnClickListener(mOnClickListener);
         mSpinner.setOnItemSelectedListener(mOnItemSelectedListener);
         mTextInputEditTextCodigo.addTextChangedListener(mTextWatcher);
         mTextInputEditTextCodigo.setOnEditorActionListener(mOnEditorActionListener);
+        RegistroFacebook();
         changeVisivility(false);
         /**
          * Obtener el imei del dispositivo
@@ -334,10 +351,10 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
             View estado = (View) mTextInputEditTextEstado.getParent();
             View municipio = (View) mTextInputEditTextMunicipio.getParent();
             View ciudad = (View) mTextInputEditTextCiudad.getParent();
-            mTextInputEditTextCodigo.setVisibility(View.GONE);
-            mTextInputEditTextEstado.setVisibility(View.GONE);
-            mTextInputEditTextMunicipio.setVisibility(View.GONE);
-            mTextInputEditTextCiudad.setVisibility(View.GONE);
+            mTextInputEditTextCodigo.setVisibility(viewType);
+            mTextInputEditTextEstado.setVisibility(viewType);
+            mTextInputEditTextMunicipio.setVisibility(viewType);
+            mTextInputEditTextCiudad.setVisibility(viewType);
             cod.setVisibility(viewType);
             estado.setVisibility(viewType);
             municipio.setVisibility(viewType);

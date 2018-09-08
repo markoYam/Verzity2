@@ -2,7 +2,6 @@ package com.dwmedios.uniconekt.view.fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -10,47 +9,34 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.ClasViewModel;
 import com.dwmedios.uniconekt.model.Persona;
-import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.MenuPresenter;
-import com.dwmedios.uniconekt.view.activity.Universidad.DatosUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad.PaquetesActivity;
-import com.dwmedios.uniconekt.view.activity.Universidad.PostuladosActivity;
-import com.dwmedios.uniconekt.view.activity.Universidad.SearchUbicacionUniActivity;
-import com.dwmedios.uniconekt.view.activity.Universidad_v2.NotificacionesUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad_v2.TipoPostuladosActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.CuponesViewActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.SearchUniversidadActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.PaquetesAsesoresActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.fragments.base.BaseFragment;
-import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.MenuController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.widget.RelativeLayout.CENTER_VERTICAL;
 import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.KEY_BECAS_COLOR;
 import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.TYPE_VIEW;
 
@@ -159,7 +145,8 @@ public class MenuFragment extends BaseFragment implements MenuController {
                     startActivity(new Intent(getActivity(), SearchUniversidadActivity.class));
                     break;
                 case examen:
-                    startActivity(new Intent(getActivity(), PaquetesAsesoresActivity.class));
+                    //startActivity(new Intent(getActivity(), DetalleAsesorActivity.class));
+                    showMessaje("Modulo en construcción");
                     break;
                 case paquetes:
                     startActivity(new Intent(getActivity(), PaquetesActivity.class));

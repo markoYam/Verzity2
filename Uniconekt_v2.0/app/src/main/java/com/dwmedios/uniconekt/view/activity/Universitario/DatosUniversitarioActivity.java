@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,52 +17,36 @@ import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.CodigoPostal;
 import com.dwmedios.uniconekt.model.Direccion;
 import com.dwmedios.uniconekt.model.Dispositivo;
-import com.dwmedios.uniconekt.model.Licenciaturas;
 import com.dwmedios.uniconekt.model.Paises;
 import com.dwmedios.uniconekt.model.Persona;
-import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.DatosUsuarioPresenter;
-import com.dwmedios.uniconekt.view.activity.Universidad.DatosUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.View_Utils.Dialog_user;
+import com.dwmedios.uniconekt.view.activity.View_Utils.UploadImage;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.util.Dialog.SimpleCustomDialog;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
-import com.dwmedios.uniconekt.view.util.UtilsFtp.ftpClient;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Email_Valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_IsEmpty;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Phone_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Spinner_Valid;
-import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_webSite;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.RuleDw_base;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Rules_Dw;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField;
 import com.dwmedios.uniconekt.view.viewmodel.DatosUsuarioViewController;
-import com.github.jaiimageio.plugins.tiff.EXIFGPSTagSet;
-import com.mobsandgeeks.saripaar.ValidationError;
-import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.Email;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -76,12 +58,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.View_Utils.Dialog_user.KEY_CUENTA;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderUser;
+import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlFacebook;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.EMAIL_EQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.FIELD_REQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.PHONE_EQUIRED;
-import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.WEB_EQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.setFocusableView;
 
 public class DatosUniversitarioActivity extends BaseActivity implements DatosUsuarioViewController {
@@ -126,10 +107,10 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
     private String pais_seleccionado = null;
     private ValidateField mValidateField;
     private List<Rules_Dw> mRules_dwList;
-    private ftpClient mFtpClient;
     private String patchFoto = null;
     private boolean isRestaurar = false;
     private boolean isCodigo = false;
+    private UploadImage mUploadImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,34 +128,49 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
         mSpinner.setOnItemSelectedListener(mOnItemSelectedListener);
 
         mButtonContinuar.setOnClickListener(mOnClickListener);
+        mUploadImage = new UploadImage(DatosUniversitarioActivity.this, mResultInfo);
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFtpClient = new ftpClient(getApplicationContext(), DatosUniversitarioActivity.this);
-                mFtpClient.pickImage(new ftpClient.patchImageInterface() {
-                    @Override
-                    public void patch(String patch) {
-                        patchFoto = patch;
-                    }
-                }, mImageViewFoto);
+                //metodo para seleccionar imagen
+                mUploadImage.pickImage();
             }
         });
         this.OnchageVisivility(false);
         ConfigureLoad();
     }
 
+    UploadImage.resultInfo mResultInfo = new UploadImage.resultInfo() {
+        @Override
+        public void Onsucces(String patch) {
+            patchFoto = patch;
+            showMessage(patch);
+
+        }
+
+        @Override
+        public void Onfailed(String mensaje) {
+            showMessage(mensaje);
+        }
+
+        @Override
+        public void Onloading(boolean isLoading) {
+            if (isLoading)
+                showOnProgressDialog("Subiendo fotografía...", DatosUniversitarioActivity.this);
+            else
+                dismissProgressDialog();
+        }
+    };
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mUploadImage.onRequestPermison(requestCode);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (mFtpClient != null)
-            mFtpClient.permisonResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (mFtpClient != null)
-            mFtpClient.activityResult(requestCode, resultCode, data);
+        mUploadImage.OnActivityResult(requestCode, resultCode, data, mImageViewFoto);
         if (requestCode == 120) {
             if (resultCode == Activity.RESULT_OK) {
                 //gargar el perfil....
@@ -193,6 +189,7 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
                 }
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void ConfigureLoad() {
@@ -225,15 +222,24 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
             getSupportActionBar().setTitle("Perfil universitario");
             mButtonContinuar.setText("Guardar Cambios");
             mPersonaPerfil = mDatosUsuarioPresenter.getInfo();
+            Usuario mUsuario = mDatosUsuarioPresenter.getUsuario();
             if (!mPersonaPerfil.nombre.equals("temp")) {
                 mEditTextNombre.setText(mPersonaPerfil.nombre);
                 mEditTextCorreo.setText(mPersonaPerfil.correo);
                 mEditTextTelefono.setText(mPersonaPerfil.telefono);
                 if (mPersonaPerfil.foto != null) {
-                    new taskImageP(getUrlImage(mPersonaPerfil.foto, getApplicationContext())).execute();
+                    Glide
+                            .with(DatosUniversitarioActivity.this)
+                            .load(getUrlImage(mPersonaPerfil.foto, getApplicationContext()))
+                            .into(mImageViewFoto);
                     patchFoto = mPersonaPerfil.foto;
-                    // ImageLoader.getInstance().displayImage(getUrlImage(mPersonaPerfil.foto, getApplicationContext()), mImageViewFoto, OptionsImageLoaderUser);
+                } else if (mUsuario != null && mUsuario.cv_facebook != null) {
+                    Glide
+                            .with(DatosUniversitarioActivity.this)
+                            .load(getUrlFacebook(mUsuario.cv_facebook))
+                            .into(mImageViewFoto);
                 }
+
             }
         } else if (KEY_VER_PERFIL_REPRESENTANTE) {
             getSupportActionBar().setTitle("Perfil representante");
@@ -250,7 +256,13 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
             mEditTextCalle.setVisibility(View.GONE);
             if (mPersonaPerfil != null) {
                 if (mPersonaPerfil.foto != null) {
-                    new taskImageP(getUrlImage(mPersonaPerfil.foto, getApplicationContext())).execute();
+
+                    Glide
+                            .with(DatosUniversitarioActivity.this)
+                            .load(getUrlImage(mPersonaPerfil.foto, getApplicationContext()))
+                            .into(mImageViewFoto);
+
+                    // new taskImageP(getUrlImage(mPersonaPerfil.foto, getApplicationContext())).execute();
                     patchFoto = mPersonaPerfil.foto;
                 }
                 if (mUsuario != null && mUsuario.cv_facebook != null) {

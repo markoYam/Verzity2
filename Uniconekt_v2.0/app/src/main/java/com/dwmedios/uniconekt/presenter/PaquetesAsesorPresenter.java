@@ -69,6 +69,7 @@ public class PaquetesAsesorPresenter {
                     switch (res.status) {
                         case 1:
                             mPaquetesAsesorViewController.OnsuccesVenta(res.mVentaPaqueteAsesor);
+                            mPaquetesAsesorViewController.onfailedVenta(res.mensaje);
                             break;
                         case 0:
                             mPaquetesAsesorViewController.onfailedVenta(res.mensaje);

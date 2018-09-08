@@ -291,19 +291,28 @@ public class AllController {
             } else {
                 Log.e("info Dire Persona", "No cuenta con direccion");
             }
+
+            if (mUsuario.persona.dispositivosList != null && mUsuario.persona.dispositivosList.size() > 0) {
+                if (mDispositivoOrmlite.addElement(mUsuario.persona.dispositivosList.get(0)) > 0)
+                    Log.e("info Dispositivo", "Agregado Correctamente");
+                else Log.e("info Dispositivo", "Ocurrio un error al agregar");
+            }
+            if (mUsuario.persona.universidad != null && mUsuario.persona.universidad.size() > 0) {
+                this.updateDatosUniversidad(mUsuario.persona.universidad.get(0));
+            } else {
+                Log.e("info Universidad", "No cuenta con Informacion de universidad");
+            }
+
+            if (mUsuario.persona.mVentaPaqueteAsesors != null && mUsuario.persona.mVentaPaqueteAsesors.size() > 0) {
+                if (mVentaPaqueteAsesorOrmLite.addElements(mUsuario.persona.mVentaPaqueteAsesors) > 0)
+                    Log.e("info asesores", "Agregado Correctamente");
+                else Log.e("info asesores", "Ocurrio un error al agregar");
+            }
         } else {
+            clearAllTables();
             Log.e("info Persona", "No cuenta con info Persona");
         }
-        if (mUsuario.persona.dispositivosList != null && mUsuario.persona.dispositivosList.size() > 0) {
-            if (mDispositivoOrmlite.addElement(mUsuario.persona.dispositivosList.get(0)) > 0)
-                Log.e("info Dispositivo", "Agregado Correctamente");
-            else Log.e("info Dispositivo", "Ocurrio un error al agregar");
-        }
-        if (mUsuario.persona.universidad != null && mUsuario.persona.universidad.size() > 0) {
-            this.updateDatosUniversidad(mUsuario.persona.universidad.get(0));
-        } else {
-            Log.e("info Universidad", "No cuenta con Informacion de universidad");
-        }
+
         return true;
     }
 

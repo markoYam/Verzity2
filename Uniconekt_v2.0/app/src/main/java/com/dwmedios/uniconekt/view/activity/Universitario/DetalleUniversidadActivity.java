@@ -2,13 +2,11 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
@@ -16,24 +14,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Favoritos;
 import com.dwmedios.uniconekt.model.FotosUniversidades;
 import com.dwmedios.uniconekt.model.Licenciaturas;
 import com.dwmedios.uniconekt.model.Persona;
-import com.dwmedios.uniconekt.model.PostuladosBecas;
 import com.dwmedios.uniconekt.model.PostuladosUniversidades;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
@@ -45,10 +37,8 @@ import com.dwmedios.uniconekt.view.adapter.AdapterViewPager.UniversidadesAdapter
 import com.dwmedios.uniconekt.view.animation_demo.demoAnimation;
 import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadDetalleViewController;
-import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,18 +47,14 @@ import me.relex.circleindicator.CircleIndicator;
 
 import static com.dwmedios.uniconekt.view.activity.Universidad.UbicacionUniversidadActivity.KEY_UBICACION_UNIVERSIDAD;
 import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.KEY_BECAS;
-import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.KEY_BECAS_COLOR;
 import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.TYPE_VIEW;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.IS_UNIVERSIDAD;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_REGISTRO_UNIVERSITARIO;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_RESTAURAR;
-import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.LICE_SELECT;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleBecasActivity.CODE_RESULT;
-import static com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity.TYPE_VIEW_F;
 import static com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity.KEY_FINANCIAMIENTOS;
-import static com.dwmedios.uniconekt.view.activity.Universitario.VideosActivity.KEY_VIDEO;
+import static com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity.TYPE_VIEW_F;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.ProspectusActivity.KEY_PROSPECTUS;
-import static com.dwmedios.uniconekt.view.util.Utils.getDrawable;
 import static com.dwmedios.uniconekt.view.util.Utils.getDrawable2;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 

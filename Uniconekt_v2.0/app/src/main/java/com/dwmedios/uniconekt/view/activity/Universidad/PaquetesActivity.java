@@ -1,39 +1,31 @@
 package com.dwmedios.uniconekt.view.activity.Universidad;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.data.controller.AllController;
-import com.dwmedios.uniconekt.model.Becas;
 import com.dwmedios.uniconekt.model.Paquetes;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.presenter.PaquetePresenter;
 import com.dwmedios.uniconekt.view.activity.SplashActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity;
+import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.adapter.BecasAdapter;
 import com.dwmedios.uniconekt.view.adapter.PaquetesAdapter;
-import com.dwmedios.uniconekt.view.adapter.VideoAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.PaquetesViewController;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalPaymentDetails;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
@@ -49,6 +41,7 @@ import butterknife.ButterKnife;
 import static com.dwmedios.uniconekt.view.activity.SplashActivity.TYPE_LOGIN_PAQUETES;
 import static com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity.KEY_DETALLLE_COMPRA;
 import static com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity.KEY_SOLO_VER;
+import static com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity.KEY_DIALOG;
 import static com.dwmedios.uniconekt.view.util.Paypal.getTokenPaypal;
 
 public class PaquetesActivity extends BaseActivity implements PaquetesViewController {
@@ -113,7 +106,10 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                cancelBuy();
+                if (TYPE_LOGIN_PAQUETES == 1)
+                    cancelBuy();
+                else
+                    finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -121,37 +117,18 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
 
     @Override
     public void onBackPressed() {
-        if (cancelBuy()) {
+        if (TYPE_LOGIN_PAQUETES == 1)
+            cancelBuy();
+        else
             super.onBackPressed();
-        }
-
     }
 
-    public boolean cancelBuy() {
-        final boolean[] isCondition = {false};
-        if (TYPE_LOGIN_PAQUETES == 1) {
-            showdialogMaterial("¿Desea cancelar la compra?", "No podrá gozar los beneficios de VERZITY hasta que realice la adquisición de un paquete.", R.drawable.ic_action_information, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//yes
-                    if (mPaquetePresenter.borrarTodo()) {
-                        startActivity(new Intent(getApplicationContext(), SplashActivity.class));
-                        finish();
-
-                    }
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//nop
-                    isCondition[0] = false;
-                }
-            });
-            return isCondition[0];
-        } else {
-            finish();
-            return true;
-        }
+    public void cancelBuy() {
+        DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
+        mHandleDialog.logo = R.drawable.ic_action_information;
+        mHandleDialog.titulo = "¿Desea cancelar la compra?";
+        mHandleDialog.contenido = "No podrá gozar los beneficios de VERZITY hasta que realice la adquisición de un paquete.";
+        startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 201);
     }
 
     @Override
@@ -225,15 +202,15 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
     PaquetesAdapter.onclick mOnclick = new PaquetesAdapter.onclick() {
         @Override
         public void onclickButton(final Paquetes mPaquetes) {
+            comprarNuevo = mPaquetes;
             VentasPaquetes temp = mAllController.getVentaPaquete();
             if (!mPaquetes.actual) {
                 if (temp != null) {
-                    showdialogMaterial("Atención", "Ya cuenta con un paquete activo. ¿Desea actualizarlo?", R.drawable.ic_action_information, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            paypayPayament(mPaquetes);
-                        }
-                    });
+                    DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
+                    mHandleDialog.logo = R.drawable.ic_action_information;
+                    mHandleDialog.titulo = "Atención";
+                    mHandleDialog.contenido = "Ya cuenta con un paquete activo. ¿Desea actualizarlo?";
+                    startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 202);
                 } else {
                     paypayPayament(mPaquetes);
                 }
@@ -247,6 +224,7 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
         }
     };
     private Paquetes mPaquetes;
+    private Paquetes comprarNuevo;
 
     public void paypayPayament(Paquetes mPaquetes) {
         this.mPaquetes = mPaquetes;
@@ -259,41 +237,63 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 200) {
 
-        if (resultCode == Activity.RESULT_OK) {
-            PaymentConfirmation confirm = data
-                    .getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-            if (confirm != null) {
-                try {
+            if (resultCode == Activity.RESULT_OK) {
+                PaymentConfirmation confirm = data
+                        .getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirm != null) {
+                    try {
 
-                    //informacion extra del pedido
-                    System.out.println(confirm.toJSONObject().toString(4));
-                    String detail = confirm.toJSONObject().toString(4);
-                    String state = confirm.getProofOfPayment().getState();
-                    if (state != null) {
-                        if (state.equals("approved")) {
-                            VentasPaquetes mVentasPaquetes = new VentasPaquetes();
-                            Universidad mUniversidad = mPaquetePresenter.getUniversidad();
-                            mVentasPaquetes.id_universidad = mUniversidad.id;
-                            mVentasPaquetes.id_paquete = mPaquetes.id;
-                            mPaquetePresenter.SaveVentapaquete(mVentasPaquetes);                           //llama al formulario de los detalles de la universidad.........
+                        //informacion extra del pedido
+                        System.out.println(confirm.toJSONObject().toString(4));
+                        String detail = confirm.toJSONObject().toString(4);
+                        String state = confirm.getProofOfPayment().getState();
+                        if (state != null) {
+                            if (state.equals("approved")) {
+                                VentasPaquetes mVentasPaquetes = new VentasPaquetes();
+                                Universidad mUniversidad = mPaquetePresenter.getUniversidad();
+                                mVentasPaquetes.id_universidad = mUniversidad.id;
+                                mVentasPaquetes.id_paquete = mPaquetes.id;
+                                mPaquetePresenter.SaveVentapaquete(mVentasPaquetes);                           //llama al formulario de los detalles de la universidad.........
+                            } else {
+                                showMessage("Ocurrió un error al tratar de generar la compra");
+                            }
                         } else {
                             showMessage("Ocurrió un error al tratar de generar la compra");
                         }
-                    } else {
-                        showMessage("Ocurrió un error al tratar de generar la compra");
-                    }
-                    System.out.println(confirm.getPayment().toJSONObject()
-                            .toString(4));
-                    Toast.makeText(getApplicationContext(), "Orden procesada",
-                            Toast.LENGTH_LONG).show();
+                        System.out.println(confirm.getPayment().toJSONObject()
+                                .toString(4));
+                        Toast.makeText(getApplicationContext(), "Orden procesada",
+                                Toast.LENGTH_LONG).show();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("El usuario cancelo la compra del paquete.");
+            }
+        }
+        if (requestCode == 201) {
+            if (resultCode == RESULT_OK) {
+                if (mPaquetePresenter.borrarTodo()) {
+                    startActivity(new Intent(getApplicationContext(), SplashActivity.class));
+                    finish();
+
                 }
             }
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            showMessage("El usuario cancelo la compra del paquete.");
+            if (resultCode == RESULT_CANCELED) {
+                //finish();
+            }
+        }
+        if (requestCode == 202) {
+            if (resultCode == RESULT_OK) {
+                paypayPayament(comprarNuevo);
+            }
+            if (resultCode == RESULT_CANCELED) {
+
+            }
         }
     }
 

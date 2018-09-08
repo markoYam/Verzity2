@@ -34,6 +34,7 @@ import com.dwmedios.uniconekt.view.activity.Universidad.DatosUniversidadActivity
 import com.dwmedios.uniconekt.view.activity.Universidad_v2.NotificacionesUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.NotificacionesUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.PaquetesAsesoresActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.fragments.MenuFragment;
@@ -79,6 +80,7 @@ public class MainUniversitarioActivity extends BaseActivity
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
         this.configureCabeceras();
         fragmentManager.beginTransaction().replace(R.id.contenidoPanel, new MenuFragment()).commit();
@@ -126,7 +128,7 @@ public class MainUniversitarioActivity extends BaseActivity
         super.onStart();
         if (mTextViewNombre != null)
             menuPresenter.ConfigureCabeceras();
-
+        navigationView.getMenu().findItem(R.id.menu_inicio).setChecked(true);
 
     }
 
@@ -201,8 +203,12 @@ public class MainUniversitarioActivity extends BaseActivity
             }
         }
         if (id == R.id.menu_mensajes) {
-            getSupportActionBar().setTitle("Notificaciones");
-            startActivity(new Intent(getApplicationContext(), NotificacionesUniversidadActivity.class));
+            //getSupportActionBar().setTitle("Notificaciones");
+            int type = SharePrefManager.getInstance(getApplicationContext()).getTypeUser();
+            if (type == 1)
+                startActivity(new Intent(getApplicationContext(), NotificacionesUniversitarioActivity.class));
+            else
+                startActivity(new Intent(getApplicationContext(), NotificacionesUniversidadActivity.class));
         }
         if (id == R.id.menu_mis_asesores) {
             typeViewAsesor = 0;
@@ -235,7 +241,10 @@ public class MainUniversitarioActivity extends BaseActivity
 
     @Override
     public void OnLoading(boolean loading) {
-
+        if (loading)
+            showOnProgressDialog("Cargando...");
+        else
+            dismissProgressDialog();
     }
 
     @Override
@@ -328,7 +337,7 @@ public class MainUniversitarioActivity extends BaseActivity
 
         } else if (SharePrefManager.getInstance(getApplicationContext()).getTypeUser() == 1) {
             navigationView.getMenu().findItem(R.id.menu_perfil).setVisible(false);
-            navigationView.getMenu().findItem(R.id.menu_mensajes).setVisible(false);
+            navigationView.getMenu().findItem(R.id.menu_mensajes).setVisible(true);
             navigationView.getMenu().findItem(R.id.menu_perfil_universitario).setVisible(true);
             navigationView.getMenu().findItem(R.id.menu_mis_asesores).setVisible(true);
             navigationView.getMenu().findItem(R.id.navigation_subheader).setVisible(true);

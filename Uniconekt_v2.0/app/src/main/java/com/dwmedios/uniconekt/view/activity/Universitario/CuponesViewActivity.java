@@ -2,10 +2,9 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,15 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.Becas;
 import com.dwmedios.uniconekt.model.Cupones;
 import com.dwmedios.uniconekt.presenter.CuponesPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.adapter.BecasAdapter;
 import com.dwmedios.uniconekt.view.adapter.CuponAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.CuponesViewController;
 
@@ -35,11 +33,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleCuponActivity.KEY_DETALLE_CUPON;
+import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.createTransitions;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class CuponesViewActivity extends BaseActivity implements CuponesViewController {
-
+    public static final String KEY_TRANSITION_CUPON1 = "KEY_CUPON_T1";
     @BindView(R.id.recyclerview_utils)
     RecyclerView mRecyclerView;
     @BindView(R.id.textView_empyRecycler)
@@ -63,8 +62,8 @@ public class CuponesViewActivity extends BaseActivity implements CuponesViewCont
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Cambiar el color del toolbar y status bar
-        setStatusBarGradiant(this,R.drawable.status_cupon);
-        changeColorToolbar(getSupportActionBar(),R.color.Color_cupones,CuponesViewActivity.this);
+        setStatusBarGradiant(this, R.drawable.status_cupon);
+        changeColorToolbar(getSupportActionBar(), R.color.Color_cupones, CuponesViewActivity.this);
         mCuponesPresenter = new CuponesPresenter(this, getApplicationContext());
         mCuponesPresenter.GetCuponesVigentes();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -169,8 +168,8 @@ public class CuponesViewActivity extends BaseActivity implements CuponesViewCont
 
     CuponAdapter.onclick mOnclick = new CuponAdapter.onclick() {
         @Override
-        public void onclick(Cupones mCupones) {
-            startActivity(new Intent(getApplicationContext(), DetalleCuponActivity.class).putExtra(KEY_DETALLE_CUPON, mCupones));
+        public void onclick(Cupones mCupones, ImageView mImageView) {
+            startActivity(new Intent(getApplicationContext(), DetalleCuponActivity.class).putExtra(KEY_DETALLE_CUPON, mCupones), createTransitions(CuponesViewActivity.this, CuponesViewActivity.KEY_TRANSITION_CUPON1, mImageView).toBundle());
             //  showMessage(mCupones.nombre);
         }
     };
