@@ -62,7 +62,7 @@ public class VideoViewActivity extends YouTubeBaseActivity implements AppCompatC
         mVideos = getIntent().getExtras().getParcelable(KEY_VIDEO_VIEWER);
 
         //mToolbar.setBackgroundColor(Color.BLACK);
-       // mToolbar.setTitle(mVideos.nombre);
+        // mToolbar.setTitle(mVideos.nombre);
 
         // mActionBar.setTitle(mVideos.nombre);
         //mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -72,6 +72,13 @@ public class VideoViewActivity extends YouTubeBaseActivity implements AppCompatC
         //transicion
 
     }
+
+    View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     @Override
     protected void onStart() {

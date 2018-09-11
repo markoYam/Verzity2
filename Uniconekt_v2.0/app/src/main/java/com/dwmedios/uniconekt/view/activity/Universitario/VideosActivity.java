@@ -2,12 +2,11 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.content.Context;
 import android.content.Intent;
-
+import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,8 +25,8 @@ import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Videos;
 import com.dwmedios.uniconekt.presenter.VideosPresenter;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.ReproductorUrlActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.adapter.FinanciamientoAdapter;
 import com.dwmedios.uniconekt.view.adapter.VideoAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.VideoViewController;
 
@@ -36,8 +35,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.TRANSITION_VIDEO;
 import static com.dwmedios.uniconekt.view.activity.Universitario.VideoViewActivity.KEY_VIDEO_VIEWER;
+import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.TRANSITION_VIDEO;
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class VideosActivity extends BaseActivity implements VideoViewController {
     public static String KEY_VIDEO = "KEY_VIDEO";
@@ -52,7 +52,7 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
     private VideosPresenter mVideosPresenter;
     private VideoAdapter videoAdapter;
     private List<Videos> mVideosList;
-    private  SearchView mSearchView;
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Videos");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mVideosPresenter = new VideosPresenter(this,getApplicationContext());
+        mVideosPresenter = new VideosPresenter(this, getApplicationContext());
         this.configureView();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -82,6 +82,7 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -142,8 +143,8 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
 
     @Override
     public void Onsucces(List<Videos> videosList, int i) {
-        if(i==0)
-        this.mVideosList=videosList;
+        if (i == 0)
+            this.mVideosList = videosList;
         mTextView.setVisibility(View.GONE);
         mSwipeRefreshLayout.setRefreshing(false);
         configureRecyclerView(videosList);
@@ -181,11 +182,16 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
         @Override
         public void onclick(Videos mVideos, ImageView mImageView) {
 
-            Intent mIntent = new Intent(getApplicationContext(), VideoViewActivity.class);
-            mIntent.putExtra(KEY_VIDEO_VIEWER, mVideos);
-            mIntent.putExtra(TRANSITION_VIDEO, ViewCompat.getTransitionName(mImageView));
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(VideosActivity.this, mImageView, ViewCompat.getTransitionName(mImageView));
-            startActivity(mIntent, options.toBundle());
+            if (!isNullOrEmpty(mVideos.url)) {
+                Intent mIntent = new Intent(getApplicationContext(), VideoViewActivity.class);
+                mIntent.putExtra(KEY_VIDEO_VIEWER, mVideos);
+                mIntent.putExtra(TRANSITION_VIDEO, ViewCompat.getTransitionName(mImageView));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(VideosActivity.this, mImageView, ViewCompat.getTransitionName(mImageView));
+                startActivity(mIntent, options.toBundle());
+            } else if (!isNullOrEmpty(mVideos.ruta)) {
+                Intent mIntent = new Intent(getApplicationContext(), ReproductorUrlActivity.class);
+                startActivity();
+            }
 
         }
     };
