@@ -20,6 +20,7 @@ import com.dwmedios.uniconekt.model.PaqueteAsesor;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.VentaPaqueteAsesor;
 import com.dwmedios.uniconekt.presenter.PaquetesAsesorPresenter;
+import com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity;
 import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
@@ -41,6 +42,7 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity.KEY_RETUNR_DATA;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity.typeViewAsesor;
+import static com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity.KEY_DETALLLE_COMPRA;
 import static com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity.KEY_DIALOG;
 import static com.dwmedios.uniconekt.view.util.Paypal.getTokenPaypal;
 
@@ -93,7 +95,7 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
 
     public void PagarPaypal(PaqueteAsesor mPaqueteAsesor) {
 
-        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaqueteAsesor.costo), "MXN", mPaqueteAsesor.nombre +" \n Asesor: "+asesorSeleccionado.nombre, PayPalPayment.PAYMENT_INTENT_ORDER);
+        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaqueteAsesor.costo), "MXN", mPaqueteAsesor.nombre + " \n Asesor: " + asesorSeleccionado.nombre, PayPalPayment.PAYMENT_INTENT_ORDER);
         Intent mIntent = new Intent(this, PaymentActivity.class);
         mIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, mPayPalConfiguration);
         mIntent.putExtra(PaymentActivity.EXTRA_PAYMENT, mPayPalPayment);
@@ -275,10 +277,10 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
             mButtonComprar2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   /* typeViewAsesor = 1;
-                    mPaqueteAsesor = mPaqueteAsesor2;
-                    Intent mIntent = new Intent(getApplicationContext(), AsesoresActivity.class);
-                    startActivityForResult(mIntent, CODE_RESULT_ASESOR);*/
+                    ConfirmBuyActivity.tipoVista = 1;
+                    ConfirmBuyActivity.KEY_SOLO_VER = true;
+                    ventaPaqueteAsesor.mPaqueteAsesor = mPaqueteAsesor2;
+                    startActivity(new Intent(getApplicationContext(), ConfirmBuyActivity.class).putExtra(KEY_DETALLLE_COMPRA, ventaPaqueteAsesor));
                     // TODO: 07/09/2018 aqui va el resumen de la compra
                 }
             });
@@ -340,7 +342,11 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
     @Override
     public void OnsuccesVenta(VentaPaqueteAsesor mVentaPaqueteAsesor) {
         //showMessage("Guardado correctamente en la base de datos");
-        if (mPaquetesAsesorPresenter.saveVentaPaquete(mVentaPaqueteAsesor))
+        if (mPaquetesAsesorPresenter.saveVentaPaquete(mVentaPaqueteAsesor)) {
             mPaquetesAsesorPresenter.getPaquetes();
+            ConfirmBuyActivity.tipoVista = 1;
+            ConfirmBuyActivity.KEY_SOLO_VER = true;
+            startActivity(new Intent(getApplicationContext(), ConfirmBuyActivity.class).putExtra(KEY_DETALLLE_COMPRA, mVentaPaqueteAsesor));
+        }
     }
 }

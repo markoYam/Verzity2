@@ -53,6 +53,7 @@
                 android:id="@+id/defaultImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="TODO"
                 android:src="@drawable/defaultt"
                 android:visibility="gone" />
 
@@ -71,7 +72,7 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -94,48 +95,86 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/profile_image"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginStart="5sp"
+                        android:src="@drawable/profile"
+                        app:civ_border_color="#FFff"
+                        app:civ_border_width="2dp" />
+
                     <TextView
                         android:id="@+id/textViewNombreUniversidad"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:layout_toEndOf="@+id/profile_image"
                         android:layout_toLeftOf="@+id/imagebuttomFavorite"
+                        android:layout_toRightOf="@+id/profile_image"
+                        android:layout_toStartOf="@+id/imagebuttomFavorite"
                         android:padding="12dp"
-                        android:text="Dw medios software y soluciones"
+                        android:text=""
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <ImageButton
                         android:id="@+id/imagebuttomFavorite"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
+                        android:layout_marginEnd="2dp"
                         android:layout_marginRight="2dp"
                         android:layout_marginTop="12dp"
                         android:adjustViewBounds="true"
                         android:background="@color/colorTrasparente"
                         android:backgroundTint="@color/colorPrimaryDark"
                         android:clickable="true"
+                        android:contentDescription="TODO"
+                        android:focusable="true"
                         android:src="@drawable/ic_action_star_border"
                         android:tint="@color/Color_favoritos" />
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/textViewDescripcion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="1dp"
-                    android:ellipsize="end"
-                    android:paddingLeft="12dp"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50sp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textViewDescripcion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="49sp"
+                        android:layout_marginTop="1dp"
+                        android:ellipsize="end"
+                        android:paddingLeft="12dp"
+                        android:text=""
+                        android:paddingStart="12dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginRight="5sp"
+                        android:background="@android:color/darker_gray"></View>
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="50sp"
                     android:orientation="horizontal"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp">
@@ -156,7 +195,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="9"
                         android:padding="12dp"
-                        android:text="No se encontró  dirección."
+                        android:text="@string/no_se_encontr_direcci_n"
                         android:textColor="@color/colorGris"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -169,13 +208,23 @@
                         android:layout_weight="1"
                         android:background="@drawable/imageview_pressed"
                         android:clickable="true"
-                        android:contentDescription="@string/app_name" />
+                        android:contentDescription="@string/app_name"
+                        android:focusable="true" />
 
                 </LinearLayout>
+
+                <View
+                    android:id="@+id/viewTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@android:color/darker_gray"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="50sp"
                     android:orientation="horizontal"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp">
@@ -198,7 +247,7 @@
                         android:autoLink="all"
                         android:linksClickable="true"
                         android:padding="12dp"
-                        android:text="No se encontró número telefónico."
+                        android:text="@string/no_se_encontr_n_mero_telef_nico"
 
                         android:textColor="@color/colorGris"
                         android:textColorLink="@color/colorPrimaryDark"
@@ -207,9 +256,18 @@
 
                 </LinearLayout>
 
+                <View
+                    android:id="@+id/viewWeb"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@android:color/darker_gray"></View>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="50sp"
                     android:orientation="horizontal"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp">
@@ -232,7 +290,7 @@
                         android:autoLink="all"
                         android:linksClickable="true"
                         android:padding="12dp"
-                        android:text="No se encontró sitio web."
+                        android:text="@string/no_se_encontr_sitio_web"
                         android:textColor="@color/colorGris"
                         android:textColorLink="@color/colorPrimaryDark"
                         android:textSize="14sp"
@@ -240,9 +298,18 @@
 
                 </LinearLayout>
 
+                <View
+                    android:id="@+id/ViewCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@android:color/darker_gray"></View>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="50sp"
                     android:orientation="horizontal"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp">
@@ -265,7 +332,7 @@
                         android:autoLink="all"
                         android:linksClickable="true"
                         android:padding="12dp"
-                        android:text="No encontró correo electrónico."
+                        android:text="@string/no_encontr_correo_electr_nico"
                         android:textColor="@color/colorGris"
                         android:textColorLink="@color/colorPrimaryDark"
                         android:textSize="14sp"
@@ -273,141 +340,192 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@android:color/darker_gray"></View>
+
                 <LinearLayout
                     android:id="@+id/contenedorProspectus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
+                    android:orientation="vertical"
                     android:visibility="gone">
 
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_action_folleto"
-                        android:tint="@color/Color_videos" />
 
-                    <TextView
-                        android:id="@+id/textViewVideos"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="9"
-                        android:autoLink="all"
-                        android:linksClickable="true"
-                        android:padding="12dp"
-                        android:text="Ver prospectus"
-                        android:textColor="@color/colorGris"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:minHeight="50sp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp">
 
-                    <ImageButton
-                        android:id="@+id/imageButtonVideos"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="#fff"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_visitarweb"
-                        android:tint="@color/colorGris" />
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_action_folleto"
+                            android:tint="@color/Color_videos" />
 
+                        <TextView
+                            android:id="@+id/textViewVideos"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="9"
+                            android:autoLink="all"
+                            android:linksClickable="true"
+                            android:padding="12dp"
+                            android:text="@string/ver_prospectus"
+                            android:textColor="@color/colorGris"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonVideos"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="#fff"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_visitarweb"
+                            android:tint="@color/colorGris" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginRight="5sp"
+                        android:background="@android:color/darker_gray"></View>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/contenedorBecas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
+                    android:orientation="vertical"
                     android:visibility="gone">
 
-                    <ImageView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/app_name"
+                        android:minHeight="50sp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp">
 
-                        android:src="@drawable/ic_action_ic_openbook"
-                        android:tint="@color/Color_becas" />
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/app_name"
 
-                    <TextView
-                        android:id="@+id/textViewBecas"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="9"
-                        android:autoLink="all"
-                        android:linksClickable="true"
-                        android:padding="12dp"
-                        android:text="Ver becas"
-                        android:textColor="@color/colorGris"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                            android:src="@drawable/ic_action_ic_openbook"
+                            android:tint="@color/Color_becas" />
 
-                    <ImageButton
-                        android:id="@+id/imageButtonBecas"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="#fff"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_visitarweb"
-                        android:tint="@color/colorGris" />
+                        <TextView
+                            android:id="@+id/textViewBecas"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="9"
+                            android:autoLink="all"
+                            android:linksClickable="true"
+                            android:padding="12dp"
+                            android:text="Ver becas"
+                            android:textColor="@color/colorGris"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
+                        <ImageButton
+                            android:id="@+id/imageButtonBecas"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="#fff"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_visitarweb"
+                            android:tint="@color/colorGris" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginRight="5sp"
+                        android:background="@android:color/darker_gray"></View>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/contentenedorFinanciamientos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
+                    android:orientation="vertical"
                     android:visibility="gone">
 
-                    <ImageView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_action_financiamiento"
-                        android:tint="@color/Color_financiamientos" />
+                        android:minHeight="50sp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp">
 
-                    <TextView
-                        android:id="@+id/textViewFinanciamiento"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="9"
-                        android:autoLink="all"
-                        android:linksClickable="true"
-                        android:padding="12dp"
-                        android:text="Ver financiamientos "
-                        android:textColor="@color/colorGris"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_action_financiamiento"
+                            android:tint="@color/Color_financiamientos" />
 
-                    <ImageButton
-                        android:id="@+id/imageButtonFinanciamientos"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="#fff"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_visitarweb"
-                        android:tint="@color/colorGris" />
+                        <TextView
+                            android:id="@+id/textViewFinanciamiento"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="9"
+                            android:autoLink="all"
+                            android:linksClickable="true"
+                            android:padding="12dp"
+                            android:text="Ver financiamientos "
+                            android:textColor="@color/colorGris"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
+                        <ImageButton
+                            android:id="@+id/imageButtonFinanciamientos"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="#fff"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_visitarweb"
+                            android:tint="@color/colorGris" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginRight="5sp"
+                        android:background="@android:color/darker_gray"></View>
                 </LinearLayout>
+
             </LinearLayout>
 
 

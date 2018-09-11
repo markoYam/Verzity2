@@ -106,19 +106,20 @@ public class UploadImage extends BaseActivity {
                 switch (res.estatus) {
                     case 1:
                         mResultInfo.Onsucces(res.data.toString());
+                        mResultInfo.Onfailed("Fotografía cargada con éxito");
                         break;
                     case 0:
-                        mResultInfo.Onsucces("Fotografía cargada con éxito");
+                        mResultInfo.Onfailed(res.mensaje.toString());
                         break;
                     case -1:
-                        mResultInfo.Onsucces(error);
+                        mResultInfo.Onfailed(error);
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<UploadImage.responseUpload> call, Throwable t) {
-                mResultInfo.Onsucces(error);
+                mResultInfo.Onfailed(error);
                 mResultInfo.Onloading(false);
 
             }

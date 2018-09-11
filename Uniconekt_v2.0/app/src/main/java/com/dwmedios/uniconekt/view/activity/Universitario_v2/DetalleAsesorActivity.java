@@ -92,12 +92,16 @@ public class DetalleAsesorActivity extends BaseActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //mTextView.setText("");
+                    mTextView.setText("información no disponible");
                     Animation in = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
                     in.setDuration(500);
                     mCardView.startAnimation(in);
                     mCardView.setVisibility(View.VISIBLE);
-                    mTextView.setText(text);
+                    if (!isNullOrEmpty(text))
+                        mTextView.setText(text);
+                    else
+                        mTextView.setText("información no disponible");
+
                 }
             }, 500);
 
@@ -106,7 +110,10 @@ public class DetalleAsesorActivity extends BaseActivity {
             in.setDuration(500);
             mCardView.startAnimation(in);
             mCardView.setVisibility(View.VISIBLE);
-            mTextView.setText(text);
+            if (!isNullOrEmpty(text))
+                mTextView.setText(text);
+            else
+                mTextView.setText("información no disponible");
         }
 
         mRunnable = new Runnable() {

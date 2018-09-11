@@ -36,7 +36,9 @@ import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.AdapterViewPager.UniversidadesAdapterViewPager;
 import com.dwmedios.uniconekt.view.animation_demo.demoAnimation;
 import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
+import com.dwmedios.uniconekt.view.util.ImageUtils;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadDetalleViewController;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,9 +109,16 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
     ImageView mImageViewDeafult;
     @BindView(R.id.contenedorProspectus)
     LinearLayout mLinearLayoutProspectus;
+    @BindView(R.id.profile_image)
+    ImageView mImageViewLogo;
+    @BindView(R.id.viewWeb)
+    View mViewWeb;
+    @BindView(R.id.ViewCorreo)
+    View mViewCorreo;
+    @BindView(R.id.viewTelefono)
+    View mViewTelefono;
     private UniversidadDetallePresenter mUniversidadDetallePresenter;
     private UniversidadesAdapterViewPager mUniversidadesAdapterViewPager;
-    //private Animation open_Fab, close_Fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -404,6 +413,8 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
         mUniversidadDetallePresenter.VerificarFavorito(mUniversidad);
         mUniversidadesAdapterViewPager = new UniversidadesAdapterViewPager(getSupportFragmentManager(), mUniversidad.mFotosUniversidades);
         mViewPager.setAdapter(mUniversidadesAdapterViewPager);
+        if (!isNullOrEmpty(mUniversidad.logo))
+            ImageLoader.getInstance().displayImage(ImageUtils.getUrlImage(mUniversidad.logo, getApplicationContext()), mImageViewLogo, ImageUtils.OptionsImageLoaderItems);
         if (mUniversidad != null && mUniversidad.mFotosUniversidades.size() > 0) {
             mCircleIndicator.setViewPager(mViewPager);
             ChangePager(0);
@@ -461,8 +472,14 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
         if (mUniversidad.nombre != null)
             mTextViewNombre.setText(mUniversidad.nombre);
         if (mUniversidad.descripcion != null) {
+            LinearLayout mLinearLayout = (LinearLayout) mTextViewDescripcion.getParent();
+            mLinearLayout.setVisibility(View.VISIBLE);
             mTextViewDescripcion.setText(mUniversidad.descripcion);
-            mTextViewDescripcion.setVisibility(View.VISIBLE);
+            //mTextViewDescripcion.setVisibility(View.VISIBLE);
+        }else {
+            LinearLayout mLinearLayout = (LinearLayout) mTextViewDescripcion.getParent();
+            mLinearLayout.setVisibility(View.GONE);
+            //mTextViewDescripcion.setVisibility(View.GONE);
         }
 
         if (!isNullOrEmpty(mUniversidad.telefono))
@@ -471,6 +488,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
             LinearLayout mLinearLayout = (LinearLayout) mTextViewTelefono.getParent();
             mLinearLayout.setVisibility(View.GONE);
             mTextViewTelefono.setVisibility(View.GONE);
+            mViewTelefono.setVisibility(View.GONE);
         }
         if (!isNullOrEmpty(mUniversidad.sitio)) {
             mTextViewSitio.setText(mUniversidad.sitio);
@@ -479,9 +497,17 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
             LinearLayout mLinearLayout = (LinearLayout) mTextViewSitio.getParent();
             mLinearLayout.setVisibility(View.GONE);
             mTextViewSitio.setVisibility(View.GONE);
+            mViewWeb.setVisibility(View.GONE);
+
         }
-        if (mUniversidad.correo != null)
+        if (!isNullOrEmpty(mUniversidad.correo))
             mTextViewCorreo.setText(mUniversidad.correo);
+        else {
+            LinearLayout mLinearLayout = (LinearLayout) mTextViewCorreo.getParent();
+            mLinearLayout.setVisibility(View.GONE);
+            mTextViewCorreo.setVisibility(View.GONE);
+            mViewCorreo.setVisibility(View.GONE);
+        }
 
         if (mUniversidad.mDireccion != null) {
             if (mUniversidad.mDireccion.pais != null)

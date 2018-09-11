@@ -38,7 +38,6 @@ public class DialogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog);
-        setFinishOnTouchOutside(false);
         ButterKnife.bind(this);
         mHandleDialog = getIntent().getExtras().getParcelable(KEY_DIALOG);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -57,6 +56,11 @@ public class DialogActivity extends AppCompatActivity {
             if (mHandleDialog.logo != 0) {
                 imageView.setImageResource(mHandleDialog.logo);
             }
+            if (mHandleDialog.touchOutSide) {
+                setFinishOnTouchOutside(true);
+            } else {
+                setFinishOnTouchOutside(false);
+            }
         }
     }
 
@@ -65,12 +69,12 @@ public class DialogActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.buttonCancel:
-                     Intent mIntent = getIntent();
-                     setResult(RESULT_CANCELED, mIntent);
+                    Intent mIntent = getIntent();
+                    setResult(RESULT_CANCELED, mIntent);
                     finish();
                 case R.id.buttonOk:
-                     Intent mIntent2 = getIntent();
-                     setResult(RESULT_OK, mIntent2);
+                    Intent mIntent2 = getIntent();
+                    setResult(RESULT_OK, mIntent2);
                     finish();
             }
         }
@@ -80,28 +84,14 @@ public class DialogActivity extends AppCompatActivity {
         public int logo;
         public String titulo;
         public String contenido;
+        public boolean touchOutSide;
 
 
         public handleDialog(Parcel in) {
             logo = in.readInt();
             titulo = in.readString();
             contenido = in.readString();
-        }
-
-        public handleDialog() {
-
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(logo);
-            dest.writeString(titulo);
-            dest.writeString(contenido);
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
+            touchOutSide = in.readByte() != 0;
         }
 
         public static final Creator<handleDialog> CREATOR = new Creator<handleDialog>() {
@@ -115,6 +105,23 @@ public class DialogActivity extends AppCompatActivity {
                 return new handleDialog[size];
             }
         };
+
+        public handleDialog() {
+
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(logo);
+            dest.writeString(titulo);
+            dest.writeString(contenido);
+            dest.writeByte((byte) (touchOutSide ? 1 : 0));
+        }
     }
 
 }

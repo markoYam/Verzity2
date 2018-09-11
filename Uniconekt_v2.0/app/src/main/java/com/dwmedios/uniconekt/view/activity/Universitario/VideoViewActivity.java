@@ -3,25 +3,18 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatCallback;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
@@ -30,18 +23,16 @@ import android.widget.VideoView;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Videos;
-import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.TRANSITION_VIDEO;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
+import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.TRANSITION_VIDEO;
 
 public class VideoViewActivity extends YouTubeBaseActivity implements AppCompatCallback {
     public static String KEY_VIDEO_VIEWER = "key_video_viewer";
@@ -49,13 +40,9 @@ public class VideoViewActivity extends YouTubeBaseActivity implements AppCompatC
     ImageView imageViewPlay;
     @BindView(R.id.imageviewFrmme)
     ImageView mImageViewFrame;
-  //  @BindView(R.id.toolbar)
-   // Toolbar mToolbar;
-    //@BindView(R.id.app_bar_layout)
-    // android.support.design.widget.AppBarLayout mActionBar;
     @BindView(R.id.VideoView)
     VideoView mVideoView;
-    // @BindView(R.id.VideoYoutube)
+
     YouTubePlayerView mYouTubePlayerView;
     @BindView(R.id.contenedorView)
     RelativeLayout mRelativeLayout;

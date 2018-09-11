@@ -40,7 +40,6 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.SplashActivity.TYPE_LOGIN_PAQUETES;
 import static com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity.KEY_DETALLLE_COMPRA;
-import static com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity.KEY_SOLO_VER;
 import static com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity.KEY_DIALOG;
 import static com.dwmedios.uniconekt.view.util.Paypal.getTokenPaypal;
 
@@ -167,7 +166,8 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
     }
 
     public void mostrarventa(VentasPaquetes mVentasPaquetes, boolean solover) {
-        KEY_SOLO_VER = solover;
+        ConfirmBuyActivity.tipoVista = 0;
+        ConfirmBuyActivity.KEY_SOLO_VER = solover;
         Intent mIntent = new Intent(getApplicationContext(), ConfirmBuyActivity.class);
         mIntent.putExtra(KEY_DETALLLE_COMPRA, mVentasPaquetes);
         startActivity(mIntent);
@@ -209,6 +209,7 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
                     DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
                     mHandleDialog.logo = R.drawable.ic_action_information;
                     mHandleDialog.titulo = "Atención";
+                    mHandleDialog.touchOutSide=false;
                     mHandleDialog.contenido = "Ya cuenta con un paquete activo. ¿Desea actualizarlo?";
                     startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 202);
                 } else {

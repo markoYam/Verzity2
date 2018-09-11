@@ -124,5 +124,10 @@
     <string name="visto">VISTO</string>
     <string name="title_activity_universidades_maps">Map</string>
     <string name="title_activity_detalle_asesor">DetalleAsesorActivity</string>
+    <string name="no_se_encontr_direcci_n">No se encontró dirección.</string>
+    <string name="no_se_encontr_n_mero_telef_nico">No se encontró número telefónico.</string>
+    <string name="no_se_encontr_sitio_web">No se encontró sitio web.</string>
+    <string name="no_encontr_correo_electr_nico">No encontró correo electrónico.</string>
+    <string name="ver_prospectus">Ver prospectus</string>
 
 </resources>

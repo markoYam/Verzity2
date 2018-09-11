@@ -2,12 +2,11 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +26,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.CodigoPostal;
 import com.dwmedios.uniconekt.model.Direccion;
@@ -48,9 +51,6 @@ import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Rules_Dw;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField;
 import com.dwmedios.uniconekt.view.viewmodel.DatosUsuarioViewController;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,7 +144,7 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
         @Override
         public void Onsucces(String patch) {
             patchFoto = patch;
-            showMessage(patch);
+            //showMessage(patch);
 
         }
 
@@ -231,12 +231,14 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
                     Glide
                             .with(DatosUniversitarioActivity.this)
                             .load(getUrlImage(mPersonaPerfil.foto, getApplicationContext()))
+                            .listener(mRequestListener)
                             .into(mImageViewFoto);
                     patchFoto = mPersonaPerfil.foto;
                 } else if (mUsuario != null && mUsuario.cv_facebook != null) {
                     Glide
                             .with(DatosUniversitarioActivity.this)
                             .load(getUrlFacebook(mUsuario.cv_facebook))
+                            .listener(mRequestListener)
                             .into(mImageViewFoto);
                 }
 
@@ -256,21 +258,24 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
             mEditTextCalle.setVisibility(View.GONE);
             if (mPersonaPerfil != null) {
                 if (mPersonaPerfil.foto != null) {
-
                     Glide
                             .with(DatosUniversitarioActivity.this)
                             .load(getUrlImage(mPersonaPerfil.foto, getApplicationContext()))
+                            .listener(mRequestListener)
                             .into(mImageViewFoto);
-
-                    // new taskImageP(getUrlImage(mPersonaPerfil.foto, getApplicationContext())).execute();
                     patchFoto = mPersonaPerfil.foto;
                 }
                 if (mUsuario != null && mUsuario.cv_facebook != null) {
-                    new taskImage(mUsuario.cv_facebook).execute();
+                    Glide
+                            .with(DatosUniversitarioActivity.this)
+                            .load(getUrlFacebook(mUsuario.cv_facebook))
+                            .listener(mRequestListener)
+                            .into(mImageViewFoto);
                 }
 
                 if (!mPersonaPerfil.nombre.equals("temp")) {
                     mEditTextNombre.setText(mPersonaPerfil.nombre);
+                    mEditTextNombre.setEnabled(true);
                     mEditTextCorreo.setText(mPersonaPerfil.correo);
                     mEditTextTelefono.setText(mPersonaPerfil.telefono);
                 }
@@ -280,39 +285,20 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
         }
     }
 
-    public class taskImage extends AsyncTask<Void, Void, Void> {
-
-        Bitmap bmp;
-        public String key;
-
-        public taskImage(String key) {
-            this.key = key;
+    RequestListener mRequestListener = new RequestListener() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
+            mImageViewFoto.setImageResource(R.drawable.profile);
+            return true;
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            URL url = null;
-            try {
-                url = new URL("https://graph.facebook.com/" + key + "/picture?type=large");
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            try {
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
+        public boolean onResourceReady(Object resource, Object model, Target target, DataSource dataSource, boolean isFirstResource) {
+            BitmapDrawable mBitmapDrawable = (BitmapDrawable) resource;
+            mImageViewFoto.setImageBitmap(mBitmapDrawable.getBitmap());
+            return true;
         }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if (bmp != null)
-                mImageViewFoto.setImageBitmap(bmp);
-            super.onPostExecute(aVoid);
-        }
-    }
-
+    };
     ValidateField.errorItem mErrorItem = new ValidateField.errorItem() {
         @Override
         public void submitResult(List<Rules_Dw> mRules_dws) {
@@ -692,38 +678,5 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
         KEY_VER_PERFIL_REPRESENTANTE = false;
         KEY_VER_PERFIL_UNIVERSITARIO = false;
         super.onDestroy();
-    }
-
-    public class taskImageP extends AsyncTask<Void, Void, Void> {
-
-        Bitmap bmp;
-        public String key;
-
-        public taskImageP(String key) {
-            this.key = key;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            URL url = null;
-            try {
-                url = new URL(key);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            try {
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if (bmp != null)
-                mImageViewFoto.setImageBitmap(bmp);
-            super.onPostExecute(aVoid);
-        }
     }
 }

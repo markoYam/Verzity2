@@ -18,6 +18,7 @@ public class VentaPaqueteAsesor implements Parcelable {
     public static final String FEHCA_COMPRA = "feVenta";
     public static final String FECHA_VIGENCIA = "feVigencia";
     public static final String REFERENCIA = "numReferenciaPayPal";
+    public static final String PAQUETE = "PaquetesAsesores";
 
     @DatabaseField(columnName = ID, id = true, index = true)
     @SerializedName(ID)
@@ -47,7 +48,11 @@ public class VentaPaqueteAsesor implements Parcelable {
     @SerializedName(REFERENCIA)
     public String referencia;
 
-    public VentaPaqueteAsesor(Parcel in) {
+    @SerializedName(PAQUETE)
+    public PaqueteAsesor mPaqueteAsesor;
+
+
+    protected VentaPaqueteAsesor(Parcel in) {
         id = in.readInt();
         idPaquete = in.readInt();
         idPersona = in.readInt();
@@ -55,6 +60,27 @@ public class VentaPaqueteAsesor implements Parcelable {
         fecha_Compra = (java.util.Date) in.readSerializable();
         fecha_vigencia = (java.util.Date) in.readSerializable();
         referencia = in.readString();
+        mPaqueteAsesor = in.readParcelable(PaqueteAsesor.class.getClassLoader());
+    }
+
+    public VentaPaqueteAsesor() {
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(idPaquete);
+        dest.writeInt(idPersona);
+        dest.writeInt(idAsesor);
+        dest.writeSerializable(fecha_Compra);
+        dest.writeSerializable(fecha_vigencia);
+        dest.writeString(referencia);
+        dest.writeParcelable(mPaqueteAsesor, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<VentaPaqueteAsesor> CREATOR = new Creator<VentaPaqueteAsesor>() {
@@ -68,24 +94,4 @@ public class VentaPaqueteAsesor implements Parcelable {
             return new VentaPaqueteAsesor[size];
         }
     };
-
-    public VentaPaqueteAsesor() {
-
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(idPaquete);
-        dest.writeInt(idPersona);
-        dest.writeInt(idAsesor);
-        dest.writeSerializable(fecha_Compra);
-        dest.writeSerializable(fecha_vigencia);
-        dest.writeString(referencia);
-    }
 }

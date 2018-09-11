@@ -74,6 +74,7 @@ public class SplashActivity extends BaseActivity implements SplashViewController
         DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
         mHandleDialog.logo = R.drawable.ic_action_information;
         mHandleDialog.titulo = "Error";
+        mHandleDialog.touchOutSide = false;
         mHandleDialog.contenido = "Ocurrio un error al descargar las configuraciones. ¿Intentar nuevamente? ";
         startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 201);
 

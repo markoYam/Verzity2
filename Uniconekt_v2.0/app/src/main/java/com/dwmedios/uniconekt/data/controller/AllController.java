@@ -134,6 +134,8 @@ public class AllController {
             Log.e("Borrar Universidad", "Correcto");
         if (mVentasPaquetesController.deleteElements(mVentasPaquetesController.selectAll()) > 0)
             Log.e("Borrar Paquetes", "Correcto");
+        if (mVentaPaqueteAsesorOrmLite.deleteElements(mVentaPaqueteAsesorOrmLite.selectAll()) > 0)
+            Log.e("Borrar Paquetes asesor", "Correcto");
         return true;
     }
 

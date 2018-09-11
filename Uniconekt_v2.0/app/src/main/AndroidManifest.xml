@@ -260,7 +260,10 @@
         <activity
             android:name=".view.activity.Universitario_v2.DetalleAsesorActivity"
             android:label="@string/title_activity_detalle_asesor"
-            android:theme="@style/NewDialogAsesor"></activity>
+            android:theme="@style/NewDialogAsesor" />
+        <activity
+            android:name=".view.activity.Universitario_v2.ReproductorUrlActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
     </application>
 
 </manifest>

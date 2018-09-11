@@ -10,11 +10,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -43,8 +43,8 @@ import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.DatosUniversidadPresenter;
 import com.dwmedios.uniconekt.presenter.DatosUsuarioPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
+import com.dwmedios.uniconekt.view.activity.View_Utils.UploadImage;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.util.UtilsFtp.ftpClient;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Email_Valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_IsEmpty;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Phone_valid;
@@ -80,7 +80,7 @@ import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateFie
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.WEB_EQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.setFocusableView;
 
-public class DatosUniversidadActivity extends BaseActivity implements DatosUniversidadViewController,DatosUsuarioViewController {
+public class DatosUniversidadActivity extends BaseActivity implements DatosUniversidadViewController, DatosUsuarioViewController {
     public static int TYPE_VIEW_UNIVERSITY = 0;
     @BindView(R.id.fabPerfilUniversidad)
     FloatingActionButton mFloatingActionButton;
@@ -142,9 +142,10 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
     private String latitude = null;
     private String longitude = null;
     private boolean isFIRST_ACCESS = false;
-    private ftpClient mFtpClient;
+    //private ftpClient mFtpClient;
     private String patchImage = null;
     private List<CodigoPostal> mCodigoPostals;
+    private UploadImage mUploadImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +165,7 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
         mButtonAnterior.setOnClickListener(mOnClickListener);
         mTextInputEditTextCodigo.setOnEditorActionListener(mOnEditorActionListener);
         mImageButton.setOnClickListener(mOnClickListener);
-
+        mUploadImage = new UploadImage(DatosUniversidadActivity.this, mResultInfo);
     }
 
     @Override
@@ -178,6 +179,28 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
         if (GO_TO_MAP) abrirMapa();
 
     }
+
+    UploadImage.resultInfo mResultInfo = new UploadImage.resultInfo() {
+        @Override
+        public void Onsucces(String patch) {
+            patchImage = patch;
+           // showMessage(patch);
+
+        }
+
+        @Override
+        public void Onfailed(String mensaje) {
+            showMessage(mensaje);
+        }
+
+        @Override
+        public void Onloading(boolean isLoading) {
+            if (isLoading)
+                showOnProgressDialog("Subiendo fotografía...", DatosUniversidadActivity.this);
+            else
+                dismissProgressDialog();
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -248,10 +271,10 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
 
         mValidateField = new ValidateField(mRules_dwList, mErrorItem);
 
-        ArrayList<String> mStrings= new ArrayList<>();
+        ArrayList<String> mStrings = new ArrayList<>();
         mStrings.add("https://");
         mStrings.add("http://");
-        ArrayAdapter<String> mStringArrayAdapter= new ArrayAdapter<String>(getApplicationContext(),R.layout.row_spinner_paises,mStrings);
+        ArrayAdapter<String> mStringArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.row_spinner_paises, mStrings);
         mTextInputEditTextSitio.setThreshold(1);
         mTextInputEditTextSitio.setAdapter(mStringArrayAdapter);
 
@@ -437,7 +460,9 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
     public void Onfailed(String mensaje) {
         showMessage(mensaje);
     }
-private boolean isCodigo=false;
+
+    private boolean isCodigo = false;
+
     @Override
     public void OnFailed(String mensaje) {
 
@@ -470,14 +495,7 @@ private boolean isCodigo=false;
 
             switch (view.getId()) {
                 case R.id.fabPerfilUniversidad:
-                    mFtpClient = new ftpClient(getApplicationContext(), DatosUniversidadActivity.this);
-                    mFtpClient.pickImage(new ftpClient.patchImageInterface() {
-                        @Override
-                        public void patch(String patch) {
-                            // showMessage(patch);
-                            patchImage = patch;
-                        }
-                    }, mImageViewProfile);
+                    mUploadImage.pickImage();
                     break;
 
                 case R.id.buttonSiguienteUniversidad:
@@ -523,20 +541,20 @@ private boolean isCodigo=false;
             }
         }
     };
-    ValidateField.errorItem mErrorItem= new ValidateField.errorItem() {
+    ValidateField.errorItem mErrorItem = new ValidateField.errorItem() {
         @Override
         public void submitResult(List<Rules_Dw> mRules_dws) {
             if (mRules_dws.get(0).mView != null) {
                 changeVisivility(mRules_dws.get(0).mView);
                 if (mRules_dws.get(0).mView instanceof Spinner) {
-                   showMessage(mRules_dws.get(0).mRuleDw.error);
-                }else
-                {
+                    showMessage(mRules_dws.get(0).mRuleDw.error);
+                } else {
                     setFocusableView(mRules_dws.get(0));
                 }
             }
         }
     };
+
     private void changeVisivility(View mView) {
         try {
             LinearLayout layout = (LinearLayout) mView.getParent().getParent().getParent().getParent();
@@ -568,6 +586,7 @@ private boolean isCodigo=false;
             ex.printStackTrace();
         }
     }
+
     private int requestCode = 12;
 
     public void abrirMapa() {
@@ -623,6 +642,7 @@ private boolean isCodigo=false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mUploadImage.OnActivityResult(requestCode, resultCode, data, mImageViewProfile);
         if (requestCode == this.requestCode) {
             if (resultCode == Activity.RESULT_OK) {
 
@@ -644,19 +664,17 @@ private boolean isCodigo=false;
                 // longitude=null;
             }
         }
-        if (mFtpClient != null) mFtpClient.activityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mUploadImage.onRequestPermison(requestCode);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (mFtpClient != null)
-            mFtpClient.permisonResult(requestCode, permissions, grantResults);
     }
 
     @Override
     public void OnsuccesCodigo(List<CodigoPostal> mCodigoPostalList) {
-         this.mCodigoPostals = mCodigoPostalList;
+        this.mCodigoPostals = mCodigoPostalList;
         CodigoPostal mCodigoPostal = mCodigoPostalList.get(0);
         mTextInputEditTextCiudad.setText(mCodigoPostal.ciudad);
         mTextInputEditTextEstado.setText(mCodigoPostal.estado);

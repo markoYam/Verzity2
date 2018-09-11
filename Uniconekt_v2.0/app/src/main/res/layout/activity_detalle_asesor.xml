@@ -91,7 +91,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5sp"
                         android:layout_marginRight="5sp"
-                        android:text="Marco.yam.catina@gmail.com"
+                        android:text="información no disponible"
                         android:textAlignment="center"
                         android:textColor="@color/uvv_black" />
                 </RelativeLayout>
