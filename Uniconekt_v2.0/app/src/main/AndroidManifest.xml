@@ -263,6 +263,7 @@
             android:theme="@style/NewDialogAsesor" />
         <activity
             android:name=".view.activity.Universitario_v2.ReproductorUrlActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
     </application>
 

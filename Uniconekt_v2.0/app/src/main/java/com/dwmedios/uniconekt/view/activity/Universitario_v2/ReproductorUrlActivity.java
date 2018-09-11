@@ -26,8 +26,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.data.service.broadcast.audioController;
 import com.dwmedios.uniconekt.model.Videos;
+import com.dwmedios.uniconekt.view.util.ImageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +35,8 @@ import butterknife.ButterKnife;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class ReproductorUrlActivity extends AppCompatActivity {
-    public static String url = "http://verzity.dwmedios.com/site/Upload//Videos/vnwiz41r.elk.mp4";
+    // public static String url = "http://verzity.dwmedios.com/site/Upload//Videos/vnwiz41r.elk.mp4";
+    public static String KEY_VIDEO_URL = "URL_KEY";
     @BindView(R.id.VideoView)
     VideoView mVideoView;
     @BindView(R.id.imageViewPreview)
@@ -47,7 +48,7 @@ public class ReproductorUrlActivity extends AppCompatActivity {
     private Videos mVideos;
     private AudioManager audioManager;
     int position = 0;
-    audioController mAudioController;
+    String url = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,11 @@ public class ReproductorUrlActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
         setContentView(R.layout.activity_reproductor_url);
         ButterKnife.bind(this);
+        mVideos = getIntent().getExtras().getParcelable(KEY_VIDEO_URL);
+        url = ImageUtils.getUrlImage(mVideos.ruta, getApplicationContext());
         cargarPreview();
-        mVideos = new Videos();
-        mVideos.ruta = url;
-        mAudioController = new audioController(this, new Handler());
-        getApplicationContext().getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, mAudioController);
         initControls();
     }
 
@@ -74,7 +72,6 @@ public class ReproductorUrlActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        getApplicationContext().getContentResolver().unregisterContentObserver(mAudioController);
         super.onDestroy();
     }
 
@@ -108,10 +105,10 @@ public class ReproductorUrlActivity extends AppCompatActivity {
         }
     }
 
+
     private void loadVideo() {
         if (!isNullOrEmpty(mVideos.ruta)) {
             //Cambiar a url real
-
             mVideoView.setVideoURI(Uri.parse(url));
             mVideoView.requestFocus();
             MediaController mediaController = new MediaController(this);
@@ -146,7 +143,6 @@ public class ReproductorUrlActivity extends AppCompatActivity {
     MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(final MediaPlayer mp) {
-            //Animation in = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_out_right);
             Animation in = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
             in.setDuration(500);
             mImageView.startAnimation(in);
@@ -157,20 +153,13 @@ public class ReproductorUrlActivity extends AppCompatActivity {
                         mProgressBar.setVisibility(View.GONE);
                         mImageView.setVisibility(View.GONE);
                         mp.setLooping(true);
-                        if (position == 0) {
-                            mVideoView.start();
-                        } else {
-                            mVideoView.pause();
-                        }
+                        mVideoView.start();
                     }
                 }, 500);
             } else {
                 mp.setLooping(true);
-                if (position == 0) {
-                    mVideoView.start();
-                } else {
-                    mVideoView.pause();
-                }
+                mVideoView.start();
+
             }
 
 
