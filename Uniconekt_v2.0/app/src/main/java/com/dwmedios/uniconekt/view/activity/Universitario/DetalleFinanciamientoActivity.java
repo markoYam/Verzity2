@@ -25,6 +25,7 @@ import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.PostuladosFinanciamientos;
 import com.dwmedios.uniconekt.presenter.FinanciamientoDetallePresenter;
 import com.dwmedios.uniconekt.view.activity.PDFViewerActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.UniversidadDetalleActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.ImageUtils;
 import com.dwmedios.uniconekt.view.viewmodel.FinaciamientoDetalleView;
@@ -152,7 +153,7 @@ public class DetalleFinanciamientoActivity extends BaseActivity implements Finac
             switch (view.getId()) {
                 case R.id.imageButtonVerUniversidadFinanciamiento:
                     if (mFinanciamientos != null) {
-                        Intent mIntent = new Intent(getApplicationContext(), DetalleUniversidadActivity.class);
+                        Intent mIntent = new Intent(getApplicationContext(), UniversidadDetalleActivity.class);
                         mIntent.putExtra(KEY_DETALLE_UNIVERSIDAD, mFinanciamientos.universidad);
                         startActivity(mIntent);
                     }

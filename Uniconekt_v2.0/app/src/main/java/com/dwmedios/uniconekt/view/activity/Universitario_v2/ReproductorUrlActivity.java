@@ -35,7 +35,6 @@ import butterknife.ButterKnife;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class ReproductorUrlActivity extends AppCompatActivity {
-    // public static String url = "http://verzity.dwmedios.com/site/Upload//Videos/vnwiz41r.elk.mp4";
     public static String KEY_VIDEO_URL = "URL_KEY";
     @BindView(R.id.VideoView)
     VideoView mVideoView;
@@ -59,8 +58,8 @@ public class ReproductorUrlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reproductor_url);
         ButterKnife.bind(this);
         mVideos = getIntent().getExtras().getParcelable(KEY_VIDEO_URL);
-        url = ImageUtils.getUrlImage(mVideos.ruta, getApplicationContext());
         cargarPreview();
+
         initControls();
     }
 
@@ -77,7 +76,6 @@ public class ReproductorUrlActivity extends AppCompatActivity {
 
     private void initControls() {
         try {
-
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             mSeekBar.setMax(audioManager
                     .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
@@ -105,36 +103,48 @@ public class ReproductorUrlActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        //getSupportActionBar().show();
+        super.onBackPressed();
+    }
 
     private void loadVideo() {
         if (!isNullOrEmpty(mVideos.ruta)) {
-            //Cambiar a url real
             mVideoView.setVideoURI(Uri.parse(url));
             mVideoView.requestFocus();
             MediaController mediaController = new MediaController(this);
             mVideoView.setMediaController(mediaController);
             mVideoView.setOnPreparedListener(mOnPreparedListener);
-
         }
     }
 
     private void cargarPreview() {
-        if (mImageView.getVisibility() == View.VISIBLE) {
-            Glide.with(getApplicationContext())
-                    .load(url)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            mImageView.setImageResource(R.drawable.defaultt);
-                            return false;
-                        }
+        if (!isNullOrEmpty(mVideos.ruta)) {
+            url = ImageUtils.getUrlImage(mVideos.ruta, getApplicationContext());
+            if (mImageView.getVisibility() == View.VISIBLE) {
+                Glide.with(getApplicationContext())
+                        .load(url)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                mImageView.setImageResource(R.drawable.defaultt);
+                                return false;
+                            }
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            return false;
-                        }
-                    })
-                    .into(mImageView);
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                //BitmapDrawable mBitmapDrawable = (BitmapDrawable) resource;
+                                // mImageView.setImageBitmap(mBitmapDrawable.getBitmap());
+                                return false;
+                            }
+                        })
+                        .
+
+                                into(mImageView);
+            } else {
+                mImageView.setImageResource(R.drawable.defaultt);
+            }
         } else {
             mImageView.setImageResource(R.drawable.defaultt);
         }
@@ -150,10 +160,15 @@ public class ReproductorUrlActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mProgressBar.setVisibility(View.GONE);
-                        mImageView.setVisibility(View.GONE);
-                        mp.setLooping(true);
-                        mVideoView.start();
+                        try {
+                            mProgressBar.setVisibility(View.GONE);
+                            mImageView.setVisibility(View.GONE);
+                            mp.setLooping(true);
+                            mVideoView.start();
+                        } catch (Exception ex) {
+
+                        }
+
                     }
                 }, 500);
             } else {

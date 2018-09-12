@@ -3,9 +3,7 @@ package com.dwmedios.uniconekt.view.activity.Universitario;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,11 +34,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.VideoViewActivity.KEY_VIDEO_VIEWER;
-import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.TRANSITION_VIDEO;
+import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.createTransitions;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class VideosActivity extends BaseActivity implements VideoViewController {
     public static String KEY_VIDEO = "KEY_VIDEO";
+    public static final String KEY_VIDEO_TRANSITION = "KEY_47575278575";
     @BindView(R.id.recyclerview_utils)
     RecyclerView mRecyclerView;
     @BindView(R.id.textView_empyRecycler)
@@ -185,12 +184,11 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
             if (!isNullOrEmpty(mVideos.url)) {
                 Intent mIntent = new Intent(getApplicationContext(), VideoViewActivity.class);
                 mIntent.putExtra(KEY_VIDEO_VIEWER, mVideos);
-                mIntent.putExtra(TRANSITION_VIDEO, ViewCompat.getTransitionName(mImageView));
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(VideosActivity.this, mImageView, ViewCompat.getTransitionName(mImageView));
-                startActivity(mIntent, options.toBundle());
+                startActivity(mIntent, createTransitions(VideosActivity.this, KEY_VIDEO_TRANSITION, mImageView).toBundle());
             } else if (!isNullOrEmpty(mVideos.ruta)) {
                 Intent mIntent = new Intent(getApplicationContext(), ReproductorUrlActivity.class);
-                startActivity();
+                mIntent.putExtra(ReproductorUrlActivity.KEY_VIDEO_URL, mVideos);
+                startActivity(mIntent);
             }
 
         }

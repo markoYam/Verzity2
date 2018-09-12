@@ -15,8 +15,8 @@ public interface UniversidadDetalleViewController {
     void OnsuccesPostular(PostuladosUniversidades mPostuladosUniversidades);
 
 
-    void postular();
-    void postularDetalle(Persona mPersona);
-    void postularDetalle2();
-    void postular2(Persona mPersona);
+    void postularUsuario(Persona mPersona);
+    //void postularDetalle(Persona mPersona);
+   // void postularDetalle2();
+   // void postular2(Persona mPersona);
 }

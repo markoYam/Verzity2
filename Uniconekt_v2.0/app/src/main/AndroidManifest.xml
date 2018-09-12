@@ -99,8 +99,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Universitario.VideoViewActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.Transparent" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".view.activity.Universitario.BecasActivity"
             android:screenOrientation="portrait" />
@@ -264,7 +264,11 @@
         <activity
             android:name=".view.activity.Universitario_v2.ReproductorUrlActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".view.activity.Universitario_v2.UniversidadDetalleActivity"
+            android:label="@string/title_activity_universidad_detalle"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

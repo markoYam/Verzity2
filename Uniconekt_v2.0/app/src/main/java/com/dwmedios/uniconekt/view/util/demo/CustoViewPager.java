@@ -1,7 +1,6 @@
 package com.dwmedios.uniconekt.view.util.demo;
 
 import android.content.Context;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -15,8 +14,6 @@ import android.view.animation.AlphaAnimation;
 import com.dwmedios.uniconekt.R;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class CustoViewPager {
     private List<?> mObjectsList;
@@ -135,5 +132,16 @@ public class CustoViewPager {
         AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(500);
         view.startAnimation(anim);
+    }
+    private void setAnimation()
+    {
+        mViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                final float normalizedposition = Math.abs(Math.abs(position) - 1);
+                page.setScaleX(normalizedposition / 2 + 0.5f);
+                page.setScaleY(normalizedposition / 2 + 0.5f);
+            }
+        });
     }
 }

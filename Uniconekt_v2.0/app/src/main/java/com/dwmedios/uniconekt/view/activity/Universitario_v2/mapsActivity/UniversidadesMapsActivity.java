@@ -32,7 +32,7 @@ import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.UniversidadPresenter;
-import com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversidadActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.UniversidadDetalleActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
@@ -186,7 +186,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                 if (resultCode == RESULT_OK) {
                     Universidad mUniversidad = data.getExtras().getParcelable(KEY_RESULT);
                     if (mUniversidad != null) {
-                        Intent mIntent2 = new Intent(getApplicationContext(), DetalleUniversidadActivity.class);
+                        Intent mIntent2 = new Intent(getApplicationContext(), UniversidadDetalleActivity.class);
                         mIntent2.putExtra(KEY_DETALLE_UNIVERSIDAD, mUniversidad);
                         startActivity(mIntent2);
                         isViewDialog = false;

@@ -21,7 +21,6 @@ import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.UniversidadPresenter;
-import com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.UniversidadAdapter;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
@@ -241,7 +240,7 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
         @Override
         public void onclick(Universidad mUniversidad, int type) {
             if (type == 1) {
-                Intent mIntent = new Intent(getApplicationContext(), DetalleUniversidadActivity.class);
+                Intent mIntent = new Intent(getApplicationContext(), UniversidadDetalleActivity.class);
                 mIntent.putExtra(KEY_DETALLE_UNIVERSIDAD, mUniversidad);
                 startActivity(mIntent);
             } else if (type == 2) {

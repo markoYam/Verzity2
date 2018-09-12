@@ -8,14 +8,11 @@ import com.dwmedios.uniconekt.data.service.ClientService;
 import com.dwmedios.uniconekt.data.service.response.FavoritosResponse;
 import com.dwmedios.uniconekt.data.service.response.PostuladosUniversidadesResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadDetalleResponse;
-import com.dwmedios.uniconekt.model.Direccion;
 import com.dwmedios.uniconekt.model.Favoritos;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.PostuladosUniversidades;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadDetalleViewController;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -205,14 +202,10 @@ public class UniversidadDetallePresenter {
         mAllController.updateDatosPersona(mPersona);
     }
 
-    public void validateUser() {
-        if (!mAllController.validateInfoPersona()) {
-             mUniversidadDetalleController.postular();
-           // mUniversidadDetalleController.postularDetalle2();
-        } else {
-            Persona mPersona = mAllController.getDatosPersona();
-            mUniversidadDetalleController.postular2(mPersona);
-        }
+    public void postular() {
+        Persona mPersona = mAllController.getDatosPersona();
+        mUniversidadDetalleController.postularUsuario(mPersona);
     }
-
 }
+
+

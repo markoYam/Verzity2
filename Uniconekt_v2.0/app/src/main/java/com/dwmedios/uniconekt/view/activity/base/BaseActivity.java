@@ -277,6 +277,7 @@ public class BaseActivity extends BaseApp {
         AlertDialog.Builder dialogConfirm = new AlertDialog.Builder(BaseActivity.this);
         dialogConfirm.setTitle(title);
         dialogConfirm.setMessage(msj);
+        dialogConfirm.setCancelable(false);
         dialogConfirm.setPositiveButton("OK", mOnClickListenerYes);
         dialogConfirm.show();
     }

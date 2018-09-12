@@ -111,12 +111,6 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
     LinearLayout mLinearLayoutProspectus;
     @BindView(R.id.profile_image)
     ImageView mImageViewLogo;
-    @BindView(R.id.viewWeb)
-    View mViewWeb;
-    @BindView(R.id.ViewCorreo)
-    View mViewCorreo;
-    @BindView(R.id.viewTelefono)
-    View mViewTelefono;
     private UniversidadDetallePresenter mUniversidadDetallePresenter;
     private UniversidadesAdapterViewPager mUniversidadesAdapterViewPager;
 
@@ -158,7 +152,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
                         mFloatingActionButtonMenu.setVisibility(View.GONE);
                     isShow = true;
                 } else if (isShow) {
-                    mCollapsingToolbarLayout.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
+                    mCollapsingToolbarLayout.setTitle(" ");
                     isShow = false;
                     // mFloatingActionButtonMenu.startAnimation(open_Fab);
                     if (isValidaPostular)
@@ -476,7 +470,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
             mLinearLayout.setVisibility(View.VISIBLE);
             mTextViewDescripcion.setText(mUniversidad.descripcion);
             //mTextViewDescripcion.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             LinearLayout mLinearLayout = (LinearLayout) mTextViewDescripcion.getParent();
             mLinearLayout.setVisibility(View.GONE);
             //mTextViewDescripcion.setVisibility(View.GONE);
@@ -488,7 +482,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
             LinearLayout mLinearLayout = (LinearLayout) mTextViewTelefono.getParent();
             mLinearLayout.setVisibility(View.GONE);
             mTextViewTelefono.setVisibility(View.GONE);
-            mViewTelefono.setVisibility(View.GONE);
+
         }
         if (!isNullOrEmpty(mUniversidad.sitio)) {
             mTextViewSitio.setText(mUniversidad.sitio);
@@ -497,7 +491,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
             LinearLayout mLinearLayout = (LinearLayout) mTextViewSitio.getParent();
             mLinearLayout.setVisibility(View.GONE);
             mTextViewSitio.setVisibility(View.GONE);
-            mViewWeb.setVisibility(View.GONE);
+
 
         }
         if (!isNullOrEmpty(mUniversidad.correo))
@@ -506,7 +500,6 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
             LinearLayout mLinearLayout = (LinearLayout) mTextViewCorreo.getParent();
             mLinearLayout.setVisibility(View.GONE);
             mTextViewCorreo.setVisibility(View.GONE);
-            mViewCorreo.setVisibility(View.GONE);
         }
 
         if (mUniversidad.mDireccion != null) {
@@ -552,7 +545,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
         mImageButtonFavorite.setImageDrawable(getDrawable2("ic_action_star", getApplicationContext()));
     }
 
-    @Override
+
     public void postular() {
         Intent mIntent = new Intent(getApplicationContext(), DatosUniversitarioActivity.class);
         mIntent.putExtra(IS_UNIVERSIDAD, mUniversidad);
@@ -560,7 +553,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
     }
 
 
-    @Override
+
     public void postularDetalle(final Persona mPersona) {
         if (mUniversidad.mLicenciaturasList != null && mUniversidad.mLicenciaturasList.size() > 0) {
             List<String> temp = new ArrayList<>();
@@ -597,7 +590,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
             });
             mCustomDialogReyclerView2.showDialogRecyclerView();
         } else {
-            showMessage("No se encontraron programas académicos.");
+            showMessage("No se cuenta con programas académicos para postularse");
         }
     }
 
@@ -627,12 +620,12 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
                     Licenciaturas temp = (Licenciaturas) m;
                     id_licenciatura = temp.id;
                     mCustomDialogReyclerView2.dismisDialog();
-                    mUniversidadDetallePresenter.validateUser();
+                   // mUniversidadDetallePresenter.validateUser();
                 }
             });
             mCustomDialogReyclerView2.showDialogRecyclerView();
         } else {
-            showMessage("No se encontraron programas académicos.");
+            showMessage("No se cuenta con programas académicos para postularse");
         }
     }
 
@@ -654,7 +647,7 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
                 Bundle mBundle = data.getExtras();
                 int restaurar = mBundle.getInt(KEY_RESTAURAR);
                 if (restaurar == 1) {
-                    mUniversidadDetallePresenter.validateUser();
+                 //   mUniversidadDetallePresenter.validateUser();
                     return;
                 }
                 Persona mPersona = mBundle.getParcelable(KEY_REGISTRO_UNIVERSITARIO);
@@ -673,5 +666,10 @@ public class DetalleUniversidadActivity extends BaseActivity implements Universi
     public void OnsuccesPostular(PostuladosUniversidades mPostuladosUniversidades) {
         showMessage("Operación realizada con éxito");
         mUniversidadDetallePresenter.updatePersona(mPostuladosUniversidades.mPersona);
+    }
+
+    @Override
+    public void postularUsuario(Persona mPersona) {
+
     }
 }

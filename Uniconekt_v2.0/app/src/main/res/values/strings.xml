@@ -129,5 +129,6 @@
     <string name="no_se_encontr_sitio_web">No se encontró sitio web.</string>
     <string name="no_encontr_correo_electr_nico">No encontró correo electrónico.</string>
     <string name="ver_prospectus">Ver prospectus</string>
+    <string name="title_activity_universidad_detalle">UniversidadDetalleActivity</string>
 
 </resources>

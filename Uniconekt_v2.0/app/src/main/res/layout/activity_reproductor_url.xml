@@ -36,6 +36,7 @@
 
     <com.dwmedios.uniconekt.view.util.VerticalSeekBar
         android:id="@+id/seekBar"
+        android:visibility="gone"
         android:layout_width="50sp"
         android:layout_height="200sp"
         android:layout_marginRight="5sp"

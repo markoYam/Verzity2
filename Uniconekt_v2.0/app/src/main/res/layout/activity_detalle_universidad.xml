@@ -21,7 +21,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleTextAppearance="@android:color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -142,31 +142,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
                     android:layout_height="wrap_content"
                     android:minHeight="50sp"
+                    android:orientation="vertical"
                     android:visibility="visible">
 
                     <TextView
                         android:id="@+id/textViewDescripcion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="49sp"
                         android:layout_marginTop="1dp"
                         android:ellipsize="end"
-                        android:paddingLeft="12dp"
-                        android:text=""
+                        android:minHeight="49sp"
+                        android:layout_marginLeft="5sp"
                         android:paddingStart="12dp"
+                        android:text=""
                         android:textColor="@color/colorPrimary"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="5sp"
-                        android:layout_marginRight="5sp"
-                        android:background="@android:color/darker_gray"></View>
+                        android:textStyle="bold"
+                        android:paddingLeft="12dp" />
 
                 </LinearLayout>
 
@@ -213,14 +207,6 @@
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/viewTelefono"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginRight="5sp"
-                    android:background="@android:color/darker_gray"></View>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -256,14 +242,6 @@
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/viewWeb"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginRight="5sp"
-                    android:background="@android:color/darker_gray"></View>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -297,14 +275,6 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
-
-                <View
-                    android:id="@+id/ViewCorreo"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginRight="5sp"
-                    android:background="@android:color/darker_gray"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -340,12 +310,6 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginRight="5sp"
-                    android:background="@android:color/darker_gray"></View>
 
                 <LinearLayout
                     android:id="@+id/contenedorProspectus"
@@ -399,12 +363,7 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="5sp"
-                        android:layout_marginRight="5sp"
-                        android:background="@android:color/darker_gray"></View>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -459,12 +418,6 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="5sp"
-                        android:layout_marginRight="5sp"
-                        android:background="@android:color/darker_gray"></View>
                 </LinearLayout>
 
                 <LinearLayout
@@ -518,12 +471,6 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="5sp"
-                        android:layout_marginRight="5sp"
-                        android:background="@android:color/darker_gray"></View>
                 </LinearLayout>
 
             </LinearLayout>

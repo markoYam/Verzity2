@@ -24,6 +24,7 @@ import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.PostuladosBecas;
 import com.dwmedios.uniconekt.presenter.BecasDetallePresenter;
 import com.dwmedios.uniconekt.view.activity.PDFViewerActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.UniversidadDetalleActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.ImageUtils;
 import com.dwmedios.uniconekt.view.viewmodel.BecasDetalleViewController;
@@ -174,7 +175,7 @@ public class DetalleBecasActivity extends BaseActivity implements BecasDetalleVi
             switch (view.getId()) {
                 case R.id.imageButtonVerUniversidadBecaDetalle:
                     if (mBecas != null) {
-                        Intent mIntent = new Intent(getApplicationContext(), DetalleUniversidadActivity.class);
+                        Intent mIntent = new Intent(getApplicationContext(), UniversidadDetalleActivity.class);
                         mIntent.putExtra(KEY_DETALLE_UNIVERSIDAD, mBecas.mUniversidad);
                         startActivity(mIntent);
                     } else {
