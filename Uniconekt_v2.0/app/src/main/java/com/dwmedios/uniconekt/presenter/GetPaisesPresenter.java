@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.data.service.ClientService;
-import com.dwmedios.uniconekt.data.service.api.ClientAPI;
 import com.dwmedios.uniconekt.data.service.response.CodigoPostalResponse;
 import com.dwmedios.uniconekt.data.service.response.EstadosResponse;
 import com.dwmedios.uniconekt.data.service.response.PaisesResponse;
@@ -104,6 +103,7 @@ public class GetPaisesPresenter {
 
     public void getEstados(Paises mPaises) {
         mGetPaisesViewController.OnLoading(true);
+
         String json = ConvertModelToStringGson(mPaises);
         if (json != null) {
             mClientService.getAPI().getEstados(json).enqueue(new Callback<EstadosResponse>() {

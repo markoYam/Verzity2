@@ -8,6 +8,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
+
 @DatabaseTable
 public class VentasPaquetes implements Parcelable {
     public static final String ID = "idVentasPaquetes";
@@ -18,7 +19,7 @@ public class VentasPaquetes implements Parcelable {
     public static final String PAQUETE_ACTUAL = "fgPaqueteActual";
     public static final String RECURRENTE = "fgRecurrente";
     public static final String PAQUETE = "Paquete";
-
+    public static final String REFERENCIA = "numReferenciaPayPal";
 
 
     @SerializedName(ID)
@@ -49,11 +50,17 @@ public class VentasPaquetes implements Parcelable {
     @DatabaseField(columnName = RECURRENTE)
     public boolean recurrente;
 
+    @SerializedName(REFERENCIA)
+    @DatabaseField(columnName = REFERENCIA)
+    public String referencia;
+
     @SerializedName(PAQUETE)
     public Paquetes mPaquetes;
 
 
-    public VentasPaquetes(Parcel in) {
+
+
+    protected VentasPaquetes(Parcel in) {
         id = in.readInt();
         id_universidad = in.readInt();
         id_paquete = in.readInt();
@@ -61,11 +68,11 @@ public class VentasPaquetes implements Parcelable {
         fechaVigencia = (java.util.Date) in.readSerializable();
         paqueteActual = in.readByte() != 0;
         recurrente = in.readByte() != 0;
+        referencia = in.readString();
         mPaquetes = in.readParcelable(Paquetes.class.getClassLoader());
     }
 
     public VentasPaquetes() {
-
     }
 
     @Override
@@ -77,6 +84,7 @@ public class VentasPaquetes implements Parcelable {
         dest.writeSerializable(fechaVigencia);
         dest.writeByte((byte) (paqueteActual ? 1 : 0));
         dest.writeByte((byte) (recurrente ? 1 : 0));
+        dest.writeString(referencia);
         dest.writeParcelable(mPaquetes, flags);
     }
 

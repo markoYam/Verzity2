@@ -5,16 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
-import android.os.Bundle;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -346,6 +342,7 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
 
     private void changeVisivility(boolean visible) {
         try {
+
             int viewType = (visible ? View.VISIBLE : View.GONE);
             View cod = (View) mTextInputEditTextCodigo.getParent();
             View estado = (View) mTextInputEditTextEstado.getParent();

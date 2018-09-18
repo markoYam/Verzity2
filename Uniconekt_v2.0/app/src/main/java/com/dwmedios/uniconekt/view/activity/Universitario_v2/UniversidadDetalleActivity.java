@@ -160,7 +160,8 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
 
     @Override
     protected void onPause() {
-        mCustoViewPager.stopHandler();
+        if (mCustoViewPager != null)
+            mCustoViewPager.stopHandler();
         super.onPause();
 
     }

@@ -4,7 +4,6 @@ package com.dwmedios.uniconekt.data.service.api;
 import com.dwmedios.uniconekt.data.service.response.AsesoresResponse;
 import com.dwmedios.uniconekt.data.service.response.BannersResponse;
 import com.dwmedios.uniconekt.data.service.response.CodigoPostalResponse;
-import com.dwmedios.uniconekt.data.service.response.ConfiguracionesResponse;
 import com.dwmedios.uniconekt.data.service.response.CuponCanjeadoResponse;
 import com.dwmedios.uniconekt.data.service.response.CuponResponse;
 import com.dwmedios.uniconekt.data.service.response.DispositivoResponse;
@@ -24,7 +23,6 @@ import com.dwmedios.uniconekt.data.service.response.PostuladoGeneralResponse;
 import com.dwmedios.uniconekt.data.service.response.PostuladosGeneralesResponse;
 import com.dwmedios.uniconekt.data.service.response.PostuladosUniversidadesResponse;
 import com.dwmedios.uniconekt.data.service.response.PostularseBecaResponse;
-import com.dwmedios.uniconekt.data.service.response.SearchUniversidadesResponse;
 import com.dwmedios.uniconekt.data.service.response.TipoCategoriaResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadDetalleResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadResponse;
@@ -34,7 +32,6 @@ import com.dwmedios.uniconekt.data.service.response.VentasPaquetesResponse;
 import com.dwmedios.uniconekt.data.service.response.VideoResponse;
 import com.dwmedios.uniconekt.data.service.response.VisitasBannersResponse;
 import com.dwmedios.uniconekt.data.service.response.becasResponse;
-import com.dwmedios.uniconekt.model.VentasPaquetes;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -42,9 +39,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-/**
- * Created by Luis Cabanas on 19/03/2018.
- */
 
 public interface ClientAPI {
     @GET("getTiposCategorias")
@@ -75,10 +69,10 @@ public interface ClientAPI {
     @POST("RecuperarContrasenia")
     Call<UsuarioResponse> ResetPassword(@Field("json") String json);
 
-    @FormUrlEncoded
-    @POST("IngresarAppUniversitario")
-    Call<DispositivoResponse> LoginUniversitario(@Field("json") String json);
-
+    /* @FormUrlEncoded
+     @POST("IngresarAppUniversitario")
+     Call<DispositivoResponse> LoginUniversitario(@Field("json") String json);
+ */
     @FormUrlEncoded
     @POST("BusquedaUniversidades")
     Call<UniversidadResponse> SearchUniversity(@Field("json") String json);
@@ -115,9 +109,6 @@ public interface ClientAPI {
     @POST("GetFinanciamientosVigentes")
     Call<FinanciamientoResponse> GetFinanciamientos(@Field("json") String json);
 
-    @FormUrlEncoded
-    @POST("SaveVentaPaquete")
-    Call<VentasPaquetesResponse> RegistrarVentaPaquete(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("SetFavorito")
@@ -126,10 +117,6 @@ public interface ClientAPI {
     @FormUrlEncoded
     @POST("VerificarFavorito")
     Call<FavoritosResponse> VerificarFavorito(@Field("json") String json);
-
-    @FormUrlEncoded
-    @POST("GetFavoritos")
-    Call<UniversidadResponse> getFavoritos(@Field("json") String json, @Field("extranjero") boolean extranjero);
 
     @FormUrlEncoded
     @POST("RegistrarUniversidad")
@@ -148,7 +135,7 @@ public interface ClientAPI {
     @POST("EditarPerfil")
     Call<PersonaResponse> EditarPerfil(@Field("json") String json);
 
-    /*   @FormUrlEncoded
+    /*  @FormUrlEncoded
        @POST("ConsultarNotificaciones")
        Call<NotificacionesResponse> ConsultarNotificaciones(@Field("json") String json);
    */
@@ -160,10 +147,12 @@ public interface ClientAPI {
     @POST("CanjearCupon")
     Call<CuponCanjeadoResponse> CanjearCuppon(@Field("json") String json);
 
+    @Deprecated
     @FormUrlEncoded
     @POST("ActualizarCuentaUniversitario")
     Call<PersonaResponse> actualizarCuenta(@Field("json") String json);
 
+    @Deprecated
     @FormUrlEncoded
     @POST("verificarCuentaUniversitario")
     Call<PersonaResponse> verficarCuenta(@Field("json") String json);
@@ -218,5 +207,14 @@ public interface ClientAPI {
     @FormUrlEncoded
     @POST("ConsultarNotificacionesUniversitario")
     Call<NotificacionesResponse> getNotificacionesUniversitario(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("GetFavoritos")
+    Call<UniversidadResponse> getFavoritos(@Field("json") String json, @Field("extranjero") boolean extranjero);
+
+    @FormUrlEncoded
+    @POST("SaveVentaPaquete")
+    Call<VentasPaquetesResponse> RegistrarVentaPaquete(@Field("json") String json);
+
 
 }

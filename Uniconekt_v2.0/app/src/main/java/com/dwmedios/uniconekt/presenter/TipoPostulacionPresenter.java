@@ -1,7 +1,6 @@
 package com.dwmedios.uniconekt.presenter;
 
 import com.dwmedios.uniconekt.model.TipoPostulacion;
-import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.view.viewmodel.TipoPostulacionViewController;
 
 import java.util.ArrayList;
@@ -31,6 +30,8 @@ public class TipoPostulacionPresenter {
         fina.nombre = "Financiamientos";
         fina.tipo = 3;
         mPostulacionList.add(fina);
+
+
         mTipoPostulacionViewController.Onsuccess(mPostulacionList);
     }
 }

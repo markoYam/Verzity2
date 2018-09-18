@@ -5,8 +5,6 @@ import android.util.Log;
 
 import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.data.service.ClientService;
-import com.dwmedios.uniconekt.data.service.response.BannersResponse;
-import com.dwmedios.uniconekt.data.service.response.UniversidadDetalleResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadResponse;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.SearchUniversidades;
@@ -88,15 +86,15 @@ public class UniversidadPresenter {
     }
 
     public Persona getPersona() {
-       return mAllController.getDatosPersona();
+        return mAllController.getDatosPersona();
 
     }
 
     public Persona getDatosPersona() {
         return mAllController.getDatosPersona();
     }
-    public Usuario getUsuario()
-    {
+
+    public Usuario getUsuario() {
         return mAllController.getusuarioPersona();
     }
 

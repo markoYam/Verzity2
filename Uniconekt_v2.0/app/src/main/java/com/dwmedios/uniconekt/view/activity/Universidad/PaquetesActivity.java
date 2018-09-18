@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.data.controller.AllController;
+import com.dwmedios.uniconekt.data.service.response.PaypalResponse;
 import com.dwmedios.uniconekt.model.Paquetes;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
@@ -24,6 +25,7 @@ import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.PaquetesAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.PaquetesViewController;
+import com.google.gson.Gson;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -209,7 +211,7 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
                     DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
                     mHandleDialog.logo = R.drawable.ic_action_information;
                     mHandleDialog.titulo = "Atención";
-                    mHandleDialog.touchOutSide=false;
+                    mHandleDialog.touchOutSide = false;
                     mHandleDialog.contenido = "Ya cuenta con un paquete activo. ¿Desea actualizarlo?";
                     startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 202);
                 } else {
@@ -245,30 +247,23 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
                         .getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirm != null) {
                     try {
-
-                        //informacion extra del pedido
-                        System.out.println(confirm.toJSONObject().toString(4));
                         String detail = confirm.toJSONObject().toString(4);
-                        String state = confirm.getProofOfPayment().getState();
-                        if (state != null) {
-                            if (state.equals("approved")) {
-                                VentasPaquetes mVentasPaquetes = new VentasPaquetes();
-                                Universidad mUniversidad = mPaquetePresenter.getUniversidad();
-                                mVentasPaquetes.id_universidad = mUniversidad.id;
-                                mVentasPaquetes.id_paquete = mPaquetes.id;
-                                mPaquetePresenter.SaveVentapaquete(mVentasPaquetes);                           //llama al formulario de los detalles de la universidad.........
-                            } else {
-                                showMessage("Ocurrió un error al tratar de generar la compra");
-                            }
+                        PaypalResponse mPaypalResponse = new Gson().fromJson(detail, PaypalResponse.class);
+                        if (mPaypalResponse.response.validPay()) {
+                            VentasPaquetes mVentasPaquetes = new VentasPaquetes();
+                            Universidad mUniversidad = mPaquetePresenter.getUniversidad();
+                            mVentasPaquetes.id_universidad = mUniversidad.id;
+                            mVentasPaquetes.id_paquete = mPaquetes.id;
+                            mVentasPaquetes.referencia = mPaypalResponse.response.referencia;
+                            mPaquetePresenter.SaveVentapaquete(mVentasPaquetes);
                         } else {
-                            showMessage("Ocurrió un error al tratar de generar la compra");
+                            Toast.makeText(getApplicationContext(), mPaypalResponse.response.status,
+                                    Toast.LENGTH_LONG).show();
                         }
-                        System.out.println(confirm.getPayment().toJSONObject()
-                                .toString(4));
-                        Toast.makeText(getApplicationContext(), "Orden procesada",
-                                Toast.LENGTH_LONG).show();
 
                     } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), "Ocurrió un error al procesar el pago",
+                                Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }
