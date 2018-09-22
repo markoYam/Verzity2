@@ -128,6 +128,8 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
         DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
         mHandleDialog.logo = R.drawable.ic_action_information;
         mHandleDialog.titulo = "¿Desea cancelar la compra?";
+        mHandleDialog.buttonCancel = true;
+        mHandleDialog.touchOutSide = false;
         mHandleDialog.contenido = "No podrá gozar los beneficios de VERZITY hasta que realice la adquisición de un paquete.";
         startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 201);
     }
@@ -212,6 +214,7 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
                     mHandleDialog.logo = R.drawable.ic_action_information;
                     mHandleDialog.titulo = "Atención";
                     mHandleDialog.touchOutSide = false;
+                    mHandleDialog.buttonCancel = true;
                     mHandleDialog.contenido = "Ya cuenta con un paquete activo. ¿Desea actualizarlo?";
                     startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 202);
                 } else {

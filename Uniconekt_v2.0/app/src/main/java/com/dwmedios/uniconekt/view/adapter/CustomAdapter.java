@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomHolder> {
 
     public List<?> mList;
     public int Layout;
     private ConfigureHolder mConfigureHolder;
+    private configureRadio mConfigureRadio;
 
     public CustomAdapter(List<?> mList, int layout, ConfigureHolder mConfigureHolder) {
         this.mList = mList;
@@ -53,5 +55,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomHold
         void Configure(View itemView, Object mObject);
 
         void Onclick(Object mObject);
+    }
+
+    public interface configureRadio {
+
+        Object configureObjectActual(Object object);
+
+        void onclick(Object m, boolean isCheked);
     }
 }

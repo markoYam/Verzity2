@@ -43,7 +43,6 @@ public class PaquetePresenter {
                         mPaquetesViewController.Onloading(false);
                         if (res != null) {
                             if (res.status == 1) {
-
                                 mPaquetesViewController.OnSucces(res.mPaquetesList);
                             } else {
                                 mPaquetesViewController.OnFailed(res.mensaje);

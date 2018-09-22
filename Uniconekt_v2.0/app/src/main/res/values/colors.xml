@@ -22,6 +22,8 @@
     <color name="Color_buscarUniversidad">#388E3C</color>
     <color name="Color_financiamientos">#0a47e2</color>
     <color name="Color_examen">#ff7b25</color>
+    <color name="Color_detalleAsesor">#ff7b25</color>
+    <color name="Color_detalleAsesor_nombre">#a6787777</color>
     <color name="Color_BotonInicio">#ff7b25</color>
     <color name="Color_becas">#32cb00</color>
     <color name="Color_cupones">#800406</color>

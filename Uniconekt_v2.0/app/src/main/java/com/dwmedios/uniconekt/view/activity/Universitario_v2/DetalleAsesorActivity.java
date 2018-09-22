@@ -1,11 +1,12 @@
 package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,15 +34,18 @@ public class DetalleAsesorActivity extends BaseActivity {
     @BindView(R.id.profile_image)
     ImageView mImageView;
     @BindView(R.id.buttonTelefono)
-    ImageButton mImageButtonTelefono;
+    CardView mImageButtonTelefono;
     @BindView(R.id.buttonCorreo)
-    ImageButton mImageButtonCorreo;
+    CardView mImageButtonCorreo;
     @BindView(R.id.buttonskpe)
-    ImageButton mImageButtonSkype;
-    @BindView(R.id.textViewInfo)
-    TextView mTextView;
-    @BindView(R.id.cardview)
-    CardView mCardView;
+    CardView mImageButtonSkype;
+
+    @BindView(R.id.buttonskpe2)
+    ImageButton skype;
+    @BindView(R.id.buttonCorreo2)
+    ImageButton correo;
+    @BindView(R.id.buttonTelefono2)
+    ImageButton telefono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,75 +68,19 @@ public class DetalleAsesorActivity extends BaseActivity {
         mImageButtonCorreo.setOnClickListener(mOnClickListener);
         mImageButtonTelefono.setOnClickListener(mOnClickListener);
         mImageButtonSkype.setOnClickListener(mOnClickListener);
+        skype.setOnClickListener(mOnClickListener);
+        correo.setOnClickListener(mOnClickListener);
+        telefono.setOnClickListener(mOnClickListener);
         mTextViewNombre.setText(mPersona.nombre);
         if (!isNullOrEmpty(mPersona.foto))
             Glide
                     .with(DetalleAsesorActivity.this)
                     .load(getUrlImage(mPersona.foto, getApplicationContext()))
                     .into(mImageView);
-        Animation in = AnimationUtils.loadAnimation(this, R.anim.slide_up_in);
+      /*  Animation in = AnimationUtils.loadAnimation(this, R.anim.slide_up_in);
         in.setDuration(500);
-        mImageView.startAnimation(in);
+        mImageView.startAnimation(in);*/
         mImageView.setVisibility(View.VISIBLE);
-    }
-
-    Handler mHandler = new Handler();
-    Runnable mRunnable;
-
-    private void changeVisivility(final String text) {
-        if (mRunnable != null) {
-            mHandler.removeCallbacks(mRunnable);
-        }
-
-        if (mCardView.getVisibility() == View.VISIBLE) {
-            Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-            out.setDuration(500);
-            mCardView.startAnimation(out);
-            mCardView.setVisibility(View.INVISIBLE);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mTextView.setText("información no disponible");
-                    Animation in = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-                    in.setDuration(500);
-                    mCardView.startAnimation(in);
-                    mCardView.setVisibility(View.VISIBLE);
-                    if (!isNullOrEmpty(text))
-                        mTextView.setText(text);
-                    else
-                        mTextView.setText("información no disponible");
-
-                }
-            }, 500);
-
-        } else {
-            Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-            in.setDuration(500);
-            mCardView.startAnimation(in);
-            mCardView.setVisibility(View.VISIBLE);
-            if (!isNullOrEmpty(text))
-                mTextView.setText(text);
-            else
-                mTextView.setText("información no disponible");
-        }
-
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (mCardView.getVisibility() == View.VISIBLE) {
-                    Animation out = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    out.setDuration(500);
-                    mCardView.startAnimation(out);
-                    mCardView.setVisibility(View.INVISIBLE);
-                    mImageButtonTelefono.setColorFilter(getResources().getColor(R.color.colorBlanco));
-                    mImageButtonCorreo.setColorFilter(getResources().getColor(R.color.colorBlanco));
-                    mImageButtonSkype.setColorFilter(getResources().getColor(R.color.colorBlanco));
-                } else {
-                    mHandler.removeCallbacksAndMessages(this);
-                }
-            }
-        };
-        mHandler.postDelayed(mRunnable, 5000);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -140,25 +88,62 @@ public class DetalleAsesorActivity extends BaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.buttonTelefono:
-                    changeVisivility(mPersona.telefono);
-                    mImageButtonTelefono.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
-                    mImageButtonCorreo.setColorFilter(getResources().getColor(R.color.colorBlanco));
-                    mImageButtonSkype.setColorFilter(getResources().getColor(R.color.colorBlanco));
+                    call();
+
+                    break;
+                case R.id.buttonTelefono2:
+                    call();
+
                     break;
                 case R.id.buttonCorreo:
-                    changeVisivility(mPersona.correo);
-                    mImageButtonTelefono.setColorFilter(getResources().getColor(R.color.colorBlanco));
-                    mImageButtonCorreo.setColorFilter(getResources().getColor(R.color.colorGris));
-                    mImageButtonSkype.setColorFilter(getResources().getColor(R.color.colorBlanco));
+                    sendMail();
+                    break;
+                case R.id.buttonCorreo2:
+                    sendMail();
                     break;
                 case R.id.buttonskpe:
-                    changeVisivility(mPersona.skype);
-                    mImageButtonTelefono.setColorFilter(getResources().getColor(R.color.colorBlanco));
-                    mImageButtonCorreo.setColorFilter(getResources().getColor(R.color.colorBlanco));
-                    mImageButtonSkype.setColorFilter(getResources().getColor(R.color.Color_skype));
+                    callSkype();
+                    break;
+                case R.id.buttonskpe2:
+                    callSkype();
                     break;
             }
 
         }
     };
+
+    private void sendMail() {
+        if (!isNullOrEmpty(mPersona.correo)) {
+            Intent send = new Intent(Intent.ACTION_SENDTO);
+            String uriText = "mailto:" + Uri.encode(mPersona.correo) +
+                    "?subject=" + Uri.encode("Hola " + mPersona.nombre) +
+                    "&body=" + Uri.encode("");
+            Uri uri = Uri.parse(uriText);
+
+            send.setData(uri);
+            startActivity(Intent.createChooser(send, "Enviar correo electrónico."));
+        }
+    }
+
+    private void callSkype() {
+        try {
+            showMessage("Skype: " + mPersona.skype);
+            Intent sky = new Intent("android.intent.action.VIEW");
+            sky.setData(Uri.parse("skype:" + mPersona.skype));
+            Log.d("UTILS", "tel:" + mPersona.skype);
+            startActivity(sky);
+        } catch (ActivityNotFoundException e) {
+            showMessage("No se encuentra instalado la aplicación de Skype");
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.skype.raider")));
+        }
+    }
+
+    private void call() {
+        if (!isNullOrEmpty(mPersona.telefono)) {
+            String uri = "tel:" + mPersona.telefono;
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse(uri));
+            startActivity(intent);
+        }
+    }
 }

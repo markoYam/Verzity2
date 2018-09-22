@@ -5,16 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -32,7 +30,6 @@ import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.RegistroPresenter;
-import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
@@ -40,7 +37,6 @@ import com.dwmedios.uniconekt.view.util.UtilsFtp.ftpClient;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_ConfirmPassword;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Email_Valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_IsEmpty;
-import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Length_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_MinLength_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Phone_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_required_field;
@@ -57,9 +53,7 @@ import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -67,8 +61,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderUser;
 
 public class RegistroActivity extends BaseActivity implements Validator.ValidationListener, RegistroViewController {
     @BindView(R.id.toolbar)
@@ -244,12 +236,12 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
         RuleDw_base phone = new Dw_Phone_valid("Ingrese un número de teléfono valido");
         RuleDw_base check = new Dw_required_field(mCheckBoxTerminos, "Debe estar de acuerdo con los términos.");
         RuleDw_base password = new Dw_ConfirmPassword(mEditTextContrasenia, "La contraseña y la confirmación no coinciden.");
-        RuleDw_base longitudCaracteres = new Dw_Length_valid("Ingrese un número de teléfono valido", 10);
+       // RuleDw_base longitudCaracteres = new Dw_Length_valid("Ingrese un número de teléfono valido", 14);
         RuleDw_base longitudCaracteresPass = new Dw_MinLength_valid("La contraseña debe tener como mínimo 8 caracteres de longitud.", 8);
 
         mRules_dws.add(new Rules_Dw(mEditTextCorreo, email));
         mRules_dws.add(new Rules_Dw(mEditTextTelefono, phone));
-        mRules_dws.add(new Rules_Dw(mEditTextTelefono, longitudCaracteres));
+        //mRules_dws.add(new Rules_Dw(mEditTextTelefono, longitudCaracteres));
         mRules_dws.add(new Rules_Dw(mEditTextCorreo, email));
         mRules_dws.add(new Rules_Dw(mTextInputEditTextNombre, noEmpty));
         mRules_dws.add(new Rules_Dw(mEditTextReprecentante, noEmpty));

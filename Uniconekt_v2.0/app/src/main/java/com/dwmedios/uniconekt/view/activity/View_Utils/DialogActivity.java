@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import com.dwmedios.uniconekt.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class DialogActivity extends AppCompatActivity {
     public static final String KEY_DIALOG = "KEYSDSDSD";
@@ -30,6 +33,8 @@ public class DialogActivity extends AppCompatActivity {
     TextView mTextViewTitulo;
     @BindView(R.id.textViewDescripcion)
     TextView mTextViewDescripcion;
+    @BindView(R.id.contenedor_logo)
+    LinearLayout mLinearLayout;
     @BindView(R.id.imageViewFoto)
     ImageView imageView;
     private handleDialog mHandleDialog;
@@ -61,6 +66,14 @@ public class DialogActivity extends AppCompatActivity {
             } else {
                 setFinishOnTouchOutside(false);
             }
+            if (mHandleDialog.buttonCancel)
+                mButtonCancelar.setVisibility(View.VISIBLE);
+            else
+                mButtonCancelar.setVisibility(View.GONE);
+            if (!isNullOrEmpty(mHandleDialog.textCancel))
+                mButtonCancelar.setText(mHandleDialog.textCancel);
+            if (!isNullOrEmpty(mHandleDialog.textOk)) mButtonOk.setText(mHandleDialog.textOk);
+            if (mHandleDialog.color != 0) mLinearLayout.setBackgroundColor(mHandleDialog.color);
         }
     }
 
@@ -85,13 +98,21 @@ public class DialogActivity extends AppCompatActivity {
         public String titulo;
         public String contenido;
         public boolean touchOutSide;
+        public boolean buttonCancel;
+        public int color;
+        public String textCancel;
+        public String textOk;
 
 
-        public handleDialog(Parcel in) {
+        protected handleDialog(Parcel in) {
             logo = in.readInt();
             titulo = in.readString();
             contenido = in.readString();
             touchOutSide = in.readByte() != 0;
+            buttonCancel = in.readByte() != 0;
+            color = in.readInt();
+            textCancel = in.readString();
+            textOk = in.readString();
         }
 
         public static final Creator<handleDialog> CREATOR = new Creator<handleDialog>() {
@@ -107,7 +128,6 @@ public class DialogActivity extends AppCompatActivity {
         };
 
         public handleDialog() {
-
         }
 
         @Override
@@ -121,6 +141,10 @@ public class DialogActivity extends AppCompatActivity {
             dest.writeString(titulo);
             dest.writeString(contenido);
             dest.writeByte((byte) (touchOutSide ? 1 : 0));
+            dest.writeByte((byte) (buttonCancel ? 1 : 0));
+            dest.writeInt(color);
+            dest.writeString(textCancel);
+            dest.writeString(textOk);
         }
     }
 

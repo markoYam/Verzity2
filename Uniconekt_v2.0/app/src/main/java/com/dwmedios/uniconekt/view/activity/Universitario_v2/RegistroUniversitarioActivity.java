@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -21,6 +22,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,6 +39,7 @@ import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.GetPaisesPresenter;
 import com.dwmedios.uniconekt.presenter.RegistroUniversitarioPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
+import com.dwmedios.uniconekt.view.activity.View_Utils.UploadImage;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_ConfirmPassword;
@@ -44,6 +48,7 @@ import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_IsEmpty;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_MinLength_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Phone_valid;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Spinner_Valid;
+import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_required_field;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.RuleDw_base;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Rules_Dw;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField;
@@ -97,12 +102,17 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
     Toolbar mToolbar;
     @BindView(R.id.profile_Usuario)
     ImageView mImageView;
+    @BindView(R.id.fabPerfilUniverstario)
+    FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.checkbox_terminos)
+    CheckBox mCheckBox;
     private ValidateField mValidateField;
     private List<Rules_Dw> mRules_dwList;
     private String patchPhoto = null;
     //private String paisSeleccionado = null;
     private String cv_Facebook = null;
     private boolean continueRegister = false;
+    private UploadImage mUploadImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +125,32 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         mGetPaisesPresenter = new GetPaisesPresenter(this, getApplicationContext());
         mRegistroUniversitarioPresenter = new RegistroUniversitarioPresenter(getApplicationContext(), this);
         loadValidations();
+        mUploadImage = new UploadImage(RegistroUniversitarioActivity.this, mResultInfo);
+
         mGetPaisesPresenter.getPaises();
     }
+
+    UploadImage.resultInfo mResultInfo = new UploadImage.resultInfo() {
+        @Override
+        public void Onsucces(String patch) {
+            patchPhoto = patch;
+            //showMessage(patch);
+
+        }
+
+        @Override
+        public void Onfailed(String mensaje) {
+            showMessage(mensaje);
+        }
+
+        @Override
+        public void Onloading(boolean isLoading) {
+            if (isLoading)
+                showOnProgressDialog("Subiendo fotografía...", RegistroUniversitarioActivity.this);
+            else
+                dismissProgressDialog();
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -199,9 +233,11 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
             setTintView(getApplicationContext(), mTextInputEditTextCiudad, R.color.colorGris, R.drawable.ic_action_ciudad);
         }
         mButton.setOnClickListener(mOnClickListener);
+        mFloatingActionButton.setOnClickListener(mOnClickListener);
         mSpinner.setOnItemSelectedListener(mOnItemSelectedListener);
         mTextInputEditTextCodigo.addTextChangedListener(mTextWatcher);
         mTextInputEditTextCodigo.setOnEditorActionListener(mOnEditorActionListener);
+        mCheckBox.setOnCheckedChangeListener(mOnCheckedChangeListener);
         RegistroFacebook();
         changeVisivility(false);
         /**
@@ -217,6 +253,8 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         RuleDw_base spinner_valid = new Dw_Spinner_Valid(mSpinner, "Seleccione su país de origen");
         RuleDw_base longitudCaracteresPass = new Dw_MinLength_valid("La contraseña debe tener como mínimo 8 caracteres de longitud.", 8);
         RuleDw_base password = new Dw_ConfirmPassword(mTextInputEditTextContraseña, "La contraseña y la confirmación no coinciden.");
+        RuleDw_base check = new Dw_required_field(mCheckBox, "Debe estar de acuerdo con los términos.");
+
         /**
          * Agregadon controles a validar
          */
@@ -234,10 +272,18 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         mRules_dwList.add(new Rules_Dw(mTextInputEditTextConfirmacion, longitudCaracteresPass));
         mRules_dwList.add(new Rules_Dw(mTextInputEditTextConfirmacion, campo_requerido));
         mRules_dwList.add(new Rules_Dw(mTextInputEditTextConfirmacion, password));
+        mRules_dwList.add(new Rules_Dw(mCheckBox, check));
         mValidateField = new ValidateField(mRules_dwList, mErrorItem);
 
     }
-
+    CheckBox.OnCheckedChangeListener mOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if (mCheckBox.isChecked()) {
+                mCheckBox.setError(null);
+            }
+        }
+    };
     ValidateField.errorItem mErrorItem = new ValidateField.errorItem() {
         @Override
         public void submitResult(List<Rules_Dw> mRules_dws) {
@@ -284,7 +330,7 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         Direccion mDireccion = new Direccion();
         mDireccion.descripcion = mTextInputEditTextDireccion.getText().toString();
         mDireccion.pais = mSpinner.getSelectedItem().toString();
-        showMessage(mSpinner.getSelectedItem().toString());
+        //showMessage(mSpinner.getSelectedItem().toString());
         mDireccion.estado = mTextInputEditTextEstado.getText().toString();
         mDireccion.municipio = mTextInputEditTextMunicipio.getText().toString();
         mDireccion.codigo_postal = mTextInputEditTextCodigo.getText().toString();
@@ -400,6 +446,7 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mUploadImage.onRequestPermison(requestCode);
         switch (requestCode) {
             case 3: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -438,6 +485,12 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
                 }
             }, 1000);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mUploadImage.OnActivityResult(requestCode, resultCode, data, mImageView);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -520,6 +573,10 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
                             mRegistroUniversitarioPresenter.CrearCuentaAcceso(mUsuario);
                         }
                     }
+                    break;
+                case R.id.fabPerfilUniverstario:
+                    if (mUploadImage != null)
+                        mUploadImage.pickImage();
                     break;
             }
 

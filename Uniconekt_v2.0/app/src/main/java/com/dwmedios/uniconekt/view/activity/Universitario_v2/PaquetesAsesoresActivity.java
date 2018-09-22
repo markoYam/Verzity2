@@ -269,6 +269,8 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
                         DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
                         mHandleDialog.logo = R.drawable.ic_action_information;
                         mHandleDialog.titulo = "Atención";
+                        mHandleDialog.touchOutSide = false;
+                        mHandleDialog.buttonCancel = true;
                         mHandleDialog.contenido = "Ya cuenta con un paquete activo. ¿Desea actualizarlo?";
                         startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 202);
                     }

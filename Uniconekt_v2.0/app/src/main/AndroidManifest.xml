@@ -268,7 +268,8 @@
         <activity
             android:name=".view.activity.Universitario_v2.UniversidadDetalleActivity"
             android:label="@string/title_activity_universidad_detalle"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.activity.Universitario_v2.PresentarCuestionarioActivity"></activity>
     </application>
 
 </manifest>

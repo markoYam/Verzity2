@@ -8,10 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
+    <style name="MyProgressBarTwo" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="colorButtonNormal">#ff6d00</item>
+        <item name="colorControlActivated">#ff6d00</item>
+        <item name="colorControlHighlight">#ff6d00</item>
+        <item name="android:progressDrawable">@drawable/progress</item>
+        <item name="android:minWidth">50dp</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="themeRadio" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">#0091ea</item>
     </style>
 
     <style name="MyFloatingButton" parent="Theme.AppCompat.Light">
