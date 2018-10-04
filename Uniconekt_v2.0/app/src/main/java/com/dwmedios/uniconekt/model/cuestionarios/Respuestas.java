@@ -8,23 +8,29 @@ import com.google.gson.annotations.SerializedName;
 public class Respuestas implements Parcelable {
     public static final String ID = "idRespuesta";
     public static final String NOMBRE = "nbRespuesta";
-    public static final String FOTO = "desRutaFoto";
-    public static final String SELE = "fgSeleccionado";
+    public static final String ID_PREGUNTA = "idPregunta";
+    public static final String IMAGEN = "fgImagen"; //BOL
 
     @SerializedName(ID)
     public int id;
+
+    @SerializedName(ID_PREGUNTA)
+    public int id_pregunta;
+
     @SerializedName(NOMBRE)
     public String nombre;
-    @SerializedName(FOTO)
-    public String foto;
-    @SerializedName(SELE)
+
+    @SerializedName(IMAGEN)
+    public boolean isImagen;
+
     public boolean isSeleccionado;
 
 
-    protected Respuestas(Parcel in) {
+    public Respuestas(Parcel in) {
         id = in.readInt();
+        id_pregunta = in.readInt();
         nombre = in.readString();
-        foto = in.readString();
+        isImagen = in.readByte() != 0;
         isSeleccionado = in.readByte() != 0;
     }
 
@@ -35,8 +41,9 @@ public class Respuestas implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeInt(id_pregunta);
         dest.writeString(nombre);
-        dest.writeString(foto);
+        dest.writeByte((byte) (isImagen ? 1 : 0));
         dest.writeByte((byte) (isSeleccionado ? 1 : 0));
     }
 

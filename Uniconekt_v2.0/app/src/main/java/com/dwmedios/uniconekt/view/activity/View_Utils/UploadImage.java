@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.google.gson.annotations.SerializedName;
 
@@ -55,16 +56,15 @@ public class UploadImage extends BaseActivity {
         }
     }
 
+    private ImageView mImageView;
+
     public void OnActivityResult(int requestCode, int resultCode, Intent data, ImageView mImageView) {
+        if (mImageView != null) this.mImageView = mImageView;
         switch (requestCode) {
             case 500:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     try {
-                        /*InputStream imageStream = mActivity.getContentResolver().openInputStream(selectedImage);
-                        Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-                        mImageView.setImageBitmap(yourSelectedImage);*/
-
                         String patch = getRealPathFromUri(selectedImage);
                         Glide
                                 .with(mActivity)
@@ -73,11 +73,16 @@ public class UploadImage extends BaseActivity {
                         enviarArchivo(selectedImage);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        this.mImageView.setImageResource(R.drawable.profile);
                     }
                 } else {
+                    this.mImageView.setImageResource(R.drawable.profile);
                     Toast.makeText(mActivity, "No se ha seleccionado una fotografía.", Toast.LENGTH_SHORT).show();
-
                 }
+                break;
+
+            default:
+                this.mImageView.setImageResource(R.drawable.profile);
                 break;
         }
     }
@@ -105,8 +110,7 @@ public class UploadImage extends BaseActivity {
                 responseUpload res = response.body();
                 switch (res.estatus) {
                     case 1:
-                        mResultInfo.Onsucces(res.data.toString());
-                        mResultInfo.Onfailed("Fotografía cargada con éxito");
+                        mResultInfo.Onsucces(res.data.toString(),"Fotografía cargada con éxito");
                         break;
                     case 0:
                         mResultInfo.Onfailed(res.mensaje.toString());
@@ -148,7 +152,7 @@ public class UploadImage extends BaseActivity {
     }
 
     public interface resultInfo {
-        void Onsucces(String patch);
+        void Onsucces(String patch,String mensaje);
 
         void Onfailed(String mensaje);
 

@@ -66,7 +66,7 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
     ImageView mImageViewLogo;
     private LoginPresenter mLoginPresenter;
     private CallbackManager callbackManager;
-    private boolean loginFacebook = false;
+    //private boolean loginFacebook = false;
     private Usuario mUsuarioLogin = null;
     private LoginButton mLoginButton;
     private int action = 0;
@@ -110,7 +110,7 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
                                 GraphResponse response) {
 
                             try {
-                                loginFacebook = true;
+                               // loginFacebook = true;
                                 action = 1;
                                 mUsuarioLogin = new Usuario();
                                 mUsuarioLogin.nombre = object.getString("email");
@@ -129,7 +129,7 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
                                     dispositivos.add(mDispositivo);
                                     per.dispositivosList = dispositivos;
                                     //verificar si el usuario ya se encuentra registrado....
-                                    mLoginPresenter.LoginUser(mUsuarioLogin);
+                                    mLoginPresenter.LoginUserFacebook(mUsuarioLogin);
                                 }
                             } catch (JSONException e) {
                                 showMessage("Ocurrió un error al iniciar sesión con Facebook");
@@ -147,13 +147,13 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
         @Override
         public void onCancel() {
             showMessage("Operación cancelada.");
-            loginFacebook = false;
+           // loginFacebook = false;
         }
 
         @Override
         public void onError(FacebookException error) {
             showMessage(error.getMessage());
-            loginFacebook = false;
+            //loginFacebook = false;
         }
     };
 
@@ -244,7 +244,7 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
                             mDispositivo.clave_firebase = SharePrefManager.getInstance(getApplicationContext()).getToken();
                             mDispositivos.add(mDispositivo);
                             mUsuarioLogin.persona.dispositivosList = mDispositivos;
-                            mLoginPresenter.LoginUser(mUsuarioLogin);
+                            mLoginPresenter.LoginUserFacebook(mUsuarioLogin);
                             break;
 
                         case 2:
@@ -302,19 +302,10 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
     }
 
     @Override
-    public void LoginFailed(String mensaje, boolean isError) {
-        if (!isError)
-            if (loginFacebook) {
-                Intent mIntent = new Intent(getApplicationContext(), RegistroUniversitarioActivity.class);
-                mIntent.putExtra(REGISTRO_FACEBOOK, mUsuarioLogin);
-                startActivity(mIntent);
-            } else {
-                showMessage(mensaje);
-            }
-        else {
-            showMessage(mensaje);
-            LoginManager.getInstance().logOut();
-        }
+    public void LoginFailed(String mensaje) {
+        showMessage(mensaje);
+        LoginManager.getInstance().logOut();
+
     }
 
     @Override
@@ -323,5 +314,18 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
             showOnProgressDialog("Cargando...");
         } else
             dismissProgressDialog();
+    }
+
+    @Override
+    public void RegistrarFacebook(Usuario mUsuario) {
+        Intent mIntent = new Intent(getApplicationContext(), RegistroUniversitarioActivity.class);
+        mIntent.putExtra(REGISTRO_FACEBOOK, mUsuarioLogin);
+        startActivity(mIntent);
+    }
+
+    @Override
+    public void MensajeFacebook(String mensaje) {
+        showMessage(mensaje);
+        LoginManager.getInstance().logOut();
     }
 }

@@ -2,7 +2,6 @@ package com.dwmedios.uniconekt.presenter;
 
 import android.content.Context;
 
-import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.data.controller.DireccionController;
 import com.dwmedios.uniconekt.data.controller.DispositivoController;
@@ -10,7 +9,6 @@ import com.dwmedios.uniconekt.data.controller.PersonaController;
 import com.dwmedios.uniconekt.data.controller.UniversidadController;
 import com.dwmedios.uniconekt.data.controller.UsuarioController;
 import com.dwmedios.uniconekt.data.service.ClientService;
-import com.dwmedios.uniconekt.data.service.response.DispositivoResponse;
 import com.dwmedios.uniconekt.data.service.response.UsuarioResponse;
 import com.dwmedios.uniconekt.model.Dispositivo;
 import com.dwmedios.uniconekt.model.Usuario;
@@ -80,6 +78,60 @@ public class LoginPresenter {
                             mLoginViewController.LoginSucces(user);
                         } else {
                             if (res.status != -1) {
+                                mLoginViewController.LoginFailed(res.mensaje);
+                            } else {
+                                mLoginViewController.LoginFailed(ERROR_CONECTION);
+                            }
+
+                        }
+                    } else {
+                        mLoginViewController.LoginFailed(ERROR_CONECTION);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UsuarioResponse> call, Throwable t) {
+                    mLoginViewController.Loading(false);
+                    mLoginViewController.LoginFailed(ERROR_CONECTION);
+                }
+            });
+        } else {
+            mLoginViewController.Loading(false);
+            mLoginViewController.LoginFailed(ERROR_CONECTION);
+        }
+
+    }
+
+    public void LoginUserFacebook(Usuario mUsuario) {
+        mLoginViewController.Loading(true);
+        String json = ConvertModelToStringGson(mUsuario);
+        if (json != null) {
+            mClientService
+                    .getAPI()
+                    .LoginFacebook(json).enqueue(new Callback<UsuarioResponse>() {
+                @Override
+                public void onResponse(Call<UsuarioResponse> call, Response<UsuarioResponse> response) {
+                    mLoginViewController.Loading(false);
+                    UsuarioResponse res = response.body();
+                    if (res != null) {
+                        Usuario user = res.mUsuario;
+                        switch (res.status) {
+                            case 1:
+                                mLoginViewController.LoginSucces(user);
+                                break;
+                            case 0:
+                                mLoginViewController.RegistrarFacebook(user);
+                                break;
+                            case -1:
+                                mLoginViewController.MensajeFacebook(res.mensaje);
+                                break;
+                        }
+                    /*    if (res.status == 1) {
+                            // mLoginViewController.LoginFailed(res.mensaje);
+                            Usuario user = res.mUsuario;
+                            mLoginViewController.LoginSucces(user);
+                        } else {
+                            if (res.status != -1) {
                                 mLoginViewController.LoginFailed(res.mensaje, false);
                             } else {
                                 mLoginViewController.LoginFailed(ERROR_CONECTION, true);
@@ -88,18 +140,19 @@ public class LoginPresenter {
                         }
                     } else {
                         mLoginViewController.LoginFailed(ERROR_CONECTION, true);
+                    }*/
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UsuarioResponse> call, Throwable t) {
                     mLoginViewController.Loading(false);
-                    mLoginViewController.LoginFailed(ERROR_CONECTION, true);
+                    mLoginViewController.LoginFailed(ERROR_CONECTION);
                 }
             });
         } else {
             mLoginViewController.Loading(false);
-            mLoginViewController.LoginFailed(ERROR_CONECTION, true);
+            mLoginViewController.LoginFailed(ERROR_CONECTION);
         }
 
     }

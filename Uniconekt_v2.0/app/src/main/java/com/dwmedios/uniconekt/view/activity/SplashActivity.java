@@ -50,22 +50,38 @@ public class SplashActivity extends BaseActivity implements SplashViewController
     @Override
     protected void onStart() {
         super.onStart();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (checkDatasMovil() || checkWifi()) {
-                    mSplashPresenter.getConguraciones();
-                } else {
-                    showMessage("Sin conexión a internet.");
-                    showConfirmDialog1("Atención", "Sin conexión a internet.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (checkDatasMovil() || checkWifi()) {
+                        mSplashPresenter.getConguraciones();
+                    } else {
+                        showMessage("Sin conexión a internet.");
+                        showConfirmDialog1("Atención", "Sin conexión a internet.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        });
+                    }
                 }
+            }, 500);
+        } else {
+            /*** api <=19*/
+            if (checkDatasMovil() || checkWifi()) {
+                mSplashPresenter.getConguraciones();
+            } else {
+                showMessage("Sin conexión a internet.");
+                showConfirmDialog1("Atención", "Sin conexión a internet.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
             }
-        }, 500);
+        }
+
 
     }
 
@@ -104,7 +120,7 @@ public class SplashActivity extends BaseActivity implements SplashViewController
                 startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
                 finish();
             }
-        }, 2000);
+        }, 1000);
 
     }
 

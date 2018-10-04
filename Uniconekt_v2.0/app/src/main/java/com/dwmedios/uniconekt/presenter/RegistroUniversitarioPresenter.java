@@ -1,7 +1,6 @@
 package com.dwmedios.uniconekt.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.data.service.ClientService;
@@ -31,7 +30,7 @@ public class RegistroUniversitarioPresenter {
     public void CrearCuentaAcceso(Usuario mUsuario) {
         mRegistroUniversitarioViewController.OnLoadingRegistro(true);
         String json = ConvertModelToStringGson(mUsuario);
-        Log.e("registro", json);
+       // Log.e("registro", json);
         if (json != null) {
             mClientService.getAPI().RegisterUniversitario(json).enqueue(new Callback<UsuarioResponse>() {
                 @Override

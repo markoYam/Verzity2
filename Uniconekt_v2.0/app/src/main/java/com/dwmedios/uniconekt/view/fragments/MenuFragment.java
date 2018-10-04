@@ -27,7 +27,7 @@ import com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.CuponesViewActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.SearchUniversidadActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.PresentarCuestionarioActivity;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.EvaluacionesActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.fragments.base.BaseFragment;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
@@ -89,7 +89,8 @@ public class MenuFragment extends BaseFragment implements MenuController {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.cardviewCuponMenu:
-                    startActivity(new Intent(getActivity(), CuponesViewActivity.class));
+                   startActivity(new Intent(getActivity(), CuponesViewActivity.class));
+
                     break;
                 case R.id.cardviewFinanciamientoMenu:
                     FinanciamientoActivity.TYPE_VIEW_F = 1;
@@ -146,7 +147,7 @@ public class MenuFragment extends BaseFragment implements MenuController {
                     startActivity(new Intent(getActivity(), SearchUniversidadActivity.class));
                     break;
                 case examen:
-                    startActivity(new Intent(getActivity(), PresentarCuestionarioActivity.class));
+                    startActivity(new Intent(getActivity(), EvaluacionesActivity.class));
                    // showMessaje("Modulo en construcción");
                     break;
                 case paquetes:

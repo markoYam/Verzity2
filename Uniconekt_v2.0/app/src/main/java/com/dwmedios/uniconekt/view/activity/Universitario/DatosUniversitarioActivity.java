@@ -142,9 +142,9 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
 
     UploadImage.resultInfo mResultInfo = new UploadImage.resultInfo() {
         @Override
-        public void Onsucces(String patch) {
+        public void Onsucces(String patch,String mensaje) {
             patchFoto = patch;
-            //showMessage(patch);
+            showMessage(mensaje);
 
         }
 
@@ -254,7 +254,6 @@ public class DatosUniversitarioActivity extends BaseActivity implements DatosUsu
             spines.setVisibility(View.GONE);
             direccion.setVisibility(View.GONE);
             mSpinner.setVisibility(View.GONE);
-            mEditTextCorreo.setEnabled(false);
             mEditTextCalle.setVisibility(View.GONE);
             if (mPersonaPerfil != null) {
                 if (mPersonaPerfil.foto != null) {

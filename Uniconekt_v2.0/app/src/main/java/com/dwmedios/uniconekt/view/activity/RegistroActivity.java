@@ -30,7 +30,6 @@ import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.RegistroPresenter;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.UtilsFtp.ftpClient;
@@ -207,7 +206,7 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
+               // startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
                 finish();
                 break;
         }
@@ -216,7 +215,7 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
+       // startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
         finish();
         super.onBackPressed();
     }

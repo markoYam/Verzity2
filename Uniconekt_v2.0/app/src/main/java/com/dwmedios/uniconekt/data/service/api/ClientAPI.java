@@ -6,12 +6,15 @@ import com.dwmedios.uniconekt.data.service.response.BannersResponse;
 import com.dwmedios.uniconekt.data.service.response.CodigoPostalResponse;
 import com.dwmedios.uniconekt.data.service.response.CuponCanjeadoResponse;
 import com.dwmedios.uniconekt.data.service.response.CuponResponse;
+import com.dwmedios.uniconekt.data.service.response.DetalleEvaluacionResponse;
 import com.dwmedios.uniconekt.data.service.response.DispositivoResponse;
 import com.dwmedios.uniconekt.data.service.response.EstadosResponse;
+import com.dwmedios.uniconekt.data.service.response.EvaluacionesResponse;
 import com.dwmedios.uniconekt.data.service.response.FavoritosResponse;
 import com.dwmedios.uniconekt.data.service.response.FinanciamientoResponse;
 import com.dwmedios.uniconekt.data.service.response.LicenciaturasResponse;
 import com.dwmedios.uniconekt.data.service.response.NivelAcademicoResponse;
+import com.dwmedios.uniconekt.data.service.response.NotifiacionEstuResponse;
 import com.dwmedios.uniconekt.data.service.response.NotificacionesResponse;
 import com.dwmedios.uniconekt.data.service.response.NotificacionesUniResponse;
 import com.dwmedios.uniconekt.data.service.response.PaisesResponse;
@@ -23,6 +26,8 @@ import com.dwmedios.uniconekt.data.service.response.PostuladoGeneralResponse;
 import com.dwmedios.uniconekt.data.service.response.PostuladosGeneralesResponse;
 import com.dwmedios.uniconekt.data.service.response.PostuladosUniversidadesResponse;
 import com.dwmedios.uniconekt.data.service.response.PostularseBecaResponse;
+import com.dwmedios.uniconekt.data.service.response.RespuestaPersonaResponse;
+import com.dwmedios.uniconekt.data.service.response.ResultadosResponse;
 import com.dwmedios.uniconekt.data.service.response.TipoCategoriaResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadDetalleResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadResponse;
@@ -64,6 +69,10 @@ public interface ClientAPI {
     @FormUrlEncoded
     @POST("IngresarApp")
     Call<UsuarioResponse> Login(@Field("json") String json);
+
+   @FormUrlEncoded
+    @POST("IngresarAppFacebook")
+    Call<UsuarioResponse> LoginFacebook(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("RecuperarContrasenia")
@@ -215,6 +224,27 @@ public interface ClientAPI {
     @FormUrlEncoded
     @POST("SaveVentaPaquete")
     Call<VentasPaquetesResponse> RegistrarVentaPaquete(@Field("json") String json);
+
+    //------------------------------------------------------------------------------------------------------
+    @FormUrlEncoded
+    @POST("getEvaluaciones")
+    Call<EvaluacionesResponse> getEvaluaciones(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("getResultado")
+    Call<ResultadosResponse> getResultado(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("getDetalleEvaluacion")
+    Call<DetalleEvaluacionResponse> getDetalleEvaluacion(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("guardarRespuesta")
+    Call<RespuestaPersonaResponse> guardarRespuesta(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("ActrualizarStatusNotE")
+    Call<NotifiacionEstuResponse> ActualizarNot(@Field("json") String json);
 
 
 }

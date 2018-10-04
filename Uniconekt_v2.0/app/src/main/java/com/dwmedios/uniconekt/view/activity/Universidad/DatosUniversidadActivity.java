@@ -43,6 +43,7 @@ import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.DatosUniversidadPresenter;
 import com.dwmedios.uniconekt.presenter.DatosUsuarioPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
+import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.View_Utils.UploadImage;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.libraryValidate.Rules.Ruledw.Dw_Email_Valid;
@@ -73,6 +74,7 @@ import butterknife.ButterKnife;
 import static com.dwmedios.uniconekt.view.activity.SplashActivity.TYPE_LOGIN_PAQUETES;
 import static com.dwmedios.uniconekt.view.activity.Universidad.SearchUbicacionUniActivity.LAT;
 import static com.dwmedios.uniconekt.view.activity.Universidad.SearchUbicacionUniActivity.LONG;
+import static com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity.KEY_DIALOG;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.EMAIL_EQUIRED;
 import static com.dwmedios.uniconekt.view.util.libraryValidate.Rules.ValidateField.FIELD_REQUIRED;
@@ -182,9 +184,9 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
 
     UploadImage.resultInfo mResultInfo = new UploadImage.resultInfo() {
         @Override
-        public void Onsucces(String patch) {
+        public void Onsucces(String patch, String mensaje) {
             patchImage = patch;
-           // showMessage(patch);
+            showMessage(mensaje);
 
         }
 
@@ -304,6 +306,7 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
     Animation slide_up;
     private Direccion mDireccion;
     private Universidad mUniversidad;
+    private boolean obligar = false;
 
     @Override
     public void LoadInfofromData() {
@@ -316,8 +319,12 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
             if (mUniversidad.descripcion != null) {
                 mTextInputEditTextDescripcion.setText(mUniversidad.descripcion);
             }
-            if (mUniversidad.sitio != null)
+            if (mUniversidad.sitio != null) {
                 mTextInputEditTextSitio.setText(mUniversidad.sitio);
+            } else {
+                // getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                //obligar = true;
+            }
             if (mUniversidad.correo != null)
                 mTextInputEditTextCorreo.setText(mUniversidad.correo);
             if (mUniversidad.telefono != null)
@@ -348,6 +355,17 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
             }  // TODO: 14/05/2018  hace falta la direccion
 
         }
+    }
+
+    private void editFirstProfile() {
+        DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
+        mHandleDialog.logo = R.drawable.ic_action_information;
+        mHandleDialog.titulo = "¿Desea cancelar la edición del perfil universidad?";
+        mHandleDialog.buttonCancel = true;
+        mHandleDialog.touchOutSide = false;
+        mHandleDialog.contenido = "No podrá gozar completamente de los beneficios de VERZITY hasta que finalice el registro exitoso de los datos de su universidad.";
+        startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 201);
+
     }
 
     public class taskImageP extends AsyncTask<Void, Void, Void> {
@@ -633,10 +651,14 @@ public class DatosUniversidadActivity extends BaseActivity implements DatosUnive
             mButtonAnterior.setVisibility(View.INVISIBLE);
         } else {
             TYPE_LOGIN_PAQUETES = 0;
-            Intent intent = new Intent(getApplicationContext(), MainUniversitarioActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
+            if (obligar) {
+                return;
+            } else {
+                Intent intent = new Intent(getApplicationContext(), MainUniversitarioActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 

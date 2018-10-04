@@ -49,6 +49,16 @@
         <item name="android:textColor">#fff</item>
     </style>
 
+    <style name="buttonDesing_Pentiente" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/Color_examen</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="buttonDesing_Continuar" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/colorrojo</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
     <style name="buttonDesing_financiamiento" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/Color_financiamientos</item>
         <item name="android:textColor">#fff</item>
@@ -191,6 +201,19 @@
         <item name="android:windowMinWidthMinor">50%</item>
     </style>
 
+    <style name="NewDialogNot" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowMinWidthMajor">95%</item>
+        <item name="android:windowMinWidthMinor">95%</item>
+    </style>
     <style name="DialogActivity" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>

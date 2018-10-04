@@ -1,58 +1,108 @@
 package com.dwmedios.uniconekt.presenter;
 
-import android.os.Handler;
+import android.content.Context;
+import android.util.Log;
 
-import com.dwmedios.uniconekt.model.GuardarRespuesta;
-import com.dwmedios.uniconekt.model.cuestionarios.Cuestionario;
-import com.dwmedios.uniconekt.model.cuestionarios.Respuestas;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.PresentarCuestionarioActivity;
+import com.dwmedios.uniconekt.data.service.ClientService;
+import com.dwmedios.uniconekt.data.service.response.DetalleEvaluacionResponse;
+import com.dwmedios.uniconekt.data.service.response.RespuestaPersonaResponse;
+import com.dwmedios.uniconekt.data.service.response.ResultadosResponse;
+import com.dwmedios.uniconekt.model.cuestionarios.EvaluacionesPersona;
+import com.dwmedios.uniconekt.model.cuestionarios.RespuestasPersona;
 import com.dwmedios.uniconekt.view.util.Utils;
+import com.dwmedios.uniconekt.view.viewmodel.CustomViewController;
 import com.dwmedios.uniconekt.view.viewmodel.PresentarCuestionarioViewController;
-import com.google.gson.Gson;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class PresentarCuestionarioPresenter {
     private PresentarCuestionarioViewController mPresentarCuestionarioViewController;
+    private Context mContext;
+    private ClientService mClientService;
+    private CustomViewController mCustomViewController;
 
-    public PresentarCuestionarioPresenter(PresentarCuestionarioViewController mPresentarCuestionarioViewController) {
+    public PresentarCuestionarioPresenter(PresentarCuestionarioViewController mPresentarCuestionarioViewController, Context mContext, CustomViewController mCustomViewController) {
         this.mPresentarCuestionarioViewController = mPresentarCuestionarioViewController;
+        this.mContext = mContext;
+        this.mClientService = new ClientService(mContext);
+        this.mCustomViewController = mCustomViewController;
     }
 
-    public void getCuestionario(Cuestionario mCuestionario) {
+    public void getCuestionario(EvaluacionesPersona mEvaluacionesPersona) {
         mPresentarCuestionarioViewController.OnLoading(true);
-        String json = Utils.ConvertModelToStringGson(mCuestionario);
-        Gson mGson = new Gson();
-        PresentarCuestionarioActivity.cuestionarioResponse mResponse = mGson.fromJson(ok, PresentarCuestionarioActivity.cuestionarioResponse.class);
-        mCuestionario = mResponse.mCuestionario;
-        final Cuestionario finalMCuestionario = mCuestionario;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPresentarCuestionarioViewController.OnLoading(false);
-                mPresentarCuestionarioViewController.OnsuccesGetCuestionario(finalMCuestionario);
-            }
-        }, 2000);
+        String json = Utils.ConvertModelToStringGson(mEvaluacionesPersona);
+        if (json != null) {
+            Log.e("cuestionario", json);
+            mClientService.getAPI().getDetalleEvaluacion(json).enqueue(new Callback<DetalleEvaluacionResponse>() {
+                @Override
+                public void onResponse(Call<DetalleEvaluacionResponse> call, Response<DetalleEvaluacionResponse> response) {
+                    mPresentarCuestionarioViewController.OnLoading(false);
+                    DetalleEvaluacionResponse res = response.body();
+                    switch (res.status) {
+                        case 1:
+                            mPresentarCuestionarioViewController.OnsuccesGetCuestionario(res.detalleEvaluacionViewModel);
+                            break;
+                        case 0:
+                            mPresentarCuestionarioViewController.Onfailed(res.mensaje);
+                            break;
+                        case -1:
+                            mPresentarCuestionarioViewController.Onfailed(error);
+                            break;
+                    }
+                }
 
-        /*if (json != null) {
-            mPresentarCuestionarioViewController.OnsuccesGetCuestionario(mCuestionario);
+                @Override
+                public void onFailure(Call<DetalleEvaluacionResponse> call, Throwable t) {
+                    mPresentarCuestionarioViewController.OnLoading(false);
+                    mPresentarCuestionarioViewController.Onfailed(error);
+                }
+            });
         } else {
             mPresentarCuestionarioViewController.OnLoading(false);
-            mPresentarCuestionarioViewController.Onfailed("Ocurrio un error");
-        }*/
+            mPresentarCuestionarioViewController.Onfailed(error);
+        }
     }
 
-    public void GuardarRespuesta(GuardarRespuesta mGuardarRespuesta, final Respuestas mRespuestas) {
+    private String error = "Ha ocurrido un error al consultar los cuestionarios.";
+    private String error2 = "Ha ocurrido un error al guardar la respuesta.";
+
+    public void GuardarRespuesta(RespuestasPersona mGuardarRespuesta) {
         mPresentarCuestionarioViewController.OnLoading(true);
         String json = Utils.ConvertModelToStringGson(mGuardarRespuesta);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPresentarCuestionarioViewController.OnLoading(false);
+        if (json != null) {
+            Log.e("guardar R", json);
+            mClientService.getAPI().guardarRespuesta(json).enqueue(new Callback<RespuestaPersonaResponse>() {
+                @Override
+                public void onResponse(Call<RespuestaPersonaResponse> call, Response<RespuestaPersonaResponse> response) {
+                    mPresentarCuestionarioViewController.OnLoading(false);
+                    RespuestaPersonaResponse res = response.body();
+                    switch (res.status) {
+                        case 1:
+                            mPresentarCuestionarioViewController.OnsuccesGuardarRespuesta(res.mRespuestasPersona);
+                            break;
+                        case 0:
+                            mPresentarCuestionarioViewController.OnfailedRespuesta(res.mensaje);
+                            break;
+                        case -1:
+                            mPresentarCuestionarioViewController.closeCuestionario(error2);
+                            break;
+                    }
+                }
 
-                mPresentarCuestionarioViewController.OnsuccesGuardarRespuesta(mRespuestas);
+                @Override
+                public void onFailure(Call<RespuestaPersonaResponse> call, Throwable t) {
+                    mPresentarCuestionarioViewController.OnLoading(false);
+                    mPresentarCuestionarioViewController.closeCuestionario(error2);
+                }
+            });
+        } else {
+            mPresentarCuestionarioViewController.OnLoading(false);
+            mPresentarCuestionarioViewController.closeCuestionario(error2);
+        }
 
-            }
-        }, 1000);
      /*     if (json != null) {
             mPresentarCuestionarioViewController.OnsuccesGuardarRespuesta(mCuestionario);
         } else {
@@ -62,169 +112,43 @@ public class PresentarCuestionarioPresenter {
 */
     }
 
-    private final String ok = "{\n" +
-            "  \"Estatus\": 1,\n" +
-            "  \"Data\": {\n" +
-            "    \"nbCuestionario\": \"nbCuestionario Demo\",\n" +
-            "    \"Preguntas\": [\n" +
-            "      {\n" +
-            "        \"idPregunta\": 1,\n" +
-            "        \"nbPregunta\": \"<p><span style=\\\"color: #2c4467; font-family: Roboto, sans-serif; background-color: rgba(255, 255, 255, 0.3);\\\">El n&uacute;mero 0.25 es igual a la suma de:</span></p>\",\n" +
-            "        \"desPregunta\": \"Demo desPregunta\",\n" +
-            "        \"Estatus\": {\n" +
-            "          \"idEstatus\": 1,\n" +
-            "          \"desEstatus\": \"Pendiente\"\n" +
-            "        },\n" +
-            "        \"TipoPregunta\": {\n" +
-            "          \"idTipoPregunta\": 12,\n" +
-            "          \"desTipoPregunta\": \"Selección múltiple\"\n" +
-            "        },\n" +
-            "        \"Respuestas\": [\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 1,\n" +
-            "            \"nbRespuesta\": \"1/4\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 2,\n" +
-            "            \"nbRespuesta\": \"1/5\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 3,\n" +
-            "            \"nbRespuesta\": \"1/6\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 4,\n" +
-            "            \"nbRespuesta\": \"1/7\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          }\n" +
-            "        ]\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"idPregunta\": 2,\n" +
-            "        \"nbPregunta\": \"<p><img title=\\\"\\frac{4}{9}m^{2}\\\" src=\\\"http://latex.codecogs.com/gif.latex?\\frac{4}{9}m^{2}\\\" /></p> \",\n" +
-            "        \"desPregunta\": \"Demo desPregunta 2\",\n" +
-            "        \"Estatus\": {\n" +
-            "          \"idEstatus\": 1,\n" +
-            "          \"desEstatus\": \"Pendiente\"\n" +
-            "        },\n" +
-            "        \"TipoPregunta\": {\n" +
-            "          \"idTipoPregunta\": 12,\n" +
-            "          \"desTipoPregunta\": \"Selección múltiple\"\n" +
-            "        },\n" +
-            "        \"Respuestas\": [\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 1,\n" +
-            "            \"nbRespuesta\": \"Demo 1\",\n" +
-            "            \"desRutaFoto\": \"https://4.bp.blogspot.com/-9RCRJrebl-w/VuqdXNTI2oI/AAAAAAAAAUI/FfGB0Fwuy_wa_5W-etfpi9CMUNtDnQl4w/w1200-h630-p-k-no-nu/colegio-cerrado.jpg\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 2,\n" +
-            "            \"nbRespuesta\": \"Demo 2\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 3,\n" +
-            "            \"nbRespuesta\": \"Demo 3\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 4,\n" +
-            "            \"nbRespuesta\": \"Demo 4\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          }\n" +
-            "        ]\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"idPregunta\": 2,\n" +
-            "        \"nbPregunta\": \"<p>Hola mundo</p> \",\n" +
-            "        \"desPregunta\": \"Demo desPregunta 2\",\n" +
-            "        \"Estatus\": {\n" +
-            "          \"idEstatus\": 1,\n" +
-            "          \"desEstatus\": \"Pendiente\"\n" +
-            "        },\n" +
-            "        \"TipoPregunta\": {\n" +
-            "          \"idTipoPregunta\": 12,\n" +
-            "          \"desTipoPregunta\": \"Selección múltiple\"\n" +
-            "        },\n" +
-            "        \"Respuestas\": [\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 1,\n" +
-            "            \"nbRespuesta\": \"Demo 1\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 2,\n" +
-            "            \"nbRespuesta\": \"Demo 2\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 3,\n" +
-            "            \"nbRespuesta\": \"Demo 3\",\n" +
-            "            \"desRutaFoto\": \"https://image.shutterstock.com/image-vector/classical-school-building-bus-isolated-260nw-306667898.jpg\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 4,\n" +
-            "            \"nbRespuesta\": \"Demo 4\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          }\n" +
-            "        ]\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"idPregunta\": 2,\n" +
-            "        \"nbPregunta\": \"<div class=\\\"row\\\"><p>&iquest;Qu&eacute; agencia es la m&aacute;s barata despu&eacute;s de aplicar el descuento por pago en efectivo? Redondea el resultado a la unidad m&aacute;s cercana.</p><div class=\\\"col l12 m12 s12 center-align\\\"><img class=\\\"responsive-img\\\" style=\\\"display: block; margin-left: auto; margin-right: auto;\\\" src=\\\"http://rcsa-dab1.com/files/files/mszddjlmkevhb03.png\\\" /></div></div>\",\n" +
-            "        \"desPregunta\": \"Demo desPregunta 2\",\n" +
-            "        \"Estatus\": {\n" +
-            "          \"idEstatus\": 1,\n" +
-            "          \"desEstatus\": \"Pendiente\"\n" +
-            "        },\n" +
-            "        \"TipoPregunta\": {\n" +
-            "          \"idTipoPregunta\": 12,\n" +
-            "          \"desTipoPregunta\": \"Selección múltiple\"\n" +
-            "        },\n" +
-            "        \"Respuestas\": [\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 1,\n" +
-            "            \"nbRespuesta\": \"Demo 1\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 2,\n" +
-            "            \"nbRespuesta\": \"Demo 2\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 3,\n" +
-            "            \"nbRespuesta\": \"Demo 3\",\n" +
-            "            \"desRutaFoto\": \"https://planosinfin.com/wp-content/uploads/2015/08/escuelas77-770x631.jpg\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          },\n" +
-            "          {\n" +
-            "            \"idRespuesta\": 4,\n" +
-            "            \"nbRespuesta\": \"Demo 4\",\n" +
-            "            \"desRutaFoto\": \"\",\n" +
-            "            \"fgSeleccionado\": false\n" +
-            "          }\n" +
-            "        ]\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  },\n" +
-            "  \"Mensaje\": \"Operación realizada con éxito.\"\n" +
-            "}";
+
+    String error3 = "Ha ocurrido un error al consultar los resultados";
+
+    public void getResultado(EvaluacionesPersona mEvaluacionesPersona) {
+        mCustomViewController.OnLoading(true);
+        String json = Utils.ConvertModelToStringGson(mEvaluacionesPersona);
+        if (json != null) {
+            Log.e("Ok", json);
+            mClientService.getAPI().getResultado(json).enqueue(new Callback<ResultadosResponse>() {
+                @Override
+                public void onResponse(Call<ResultadosResponse> call, Response<ResultadosResponse> response) {
+                    mCustomViewController.OnLoading(false);
+                    ResultadosResponse mEvaluacionesResponse = response.body();
+                    switch (mEvaluacionesResponse.status) {
+                        case 1:
+                            mCustomViewController.OnSucces(mEvaluacionesResponse.mResultados);
+                            break;
+                        case 0:
+                            mCustomViewController.Onfailed2(mEvaluacionesResponse.mensaje);
+                            break;
+                        case -1:
+                            mCustomViewController.Onfailed2(error3);
+                            break;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResultadosResponse> call, Throwable t) {
+                    mCustomViewController.OnLoading(false);
+                    mCustomViewController.Onfailed2(error3);
+                }
+            });
+        } else {
+            mCustomViewController.OnLoading(false);
+            mCustomViewController.Onfailed2(error3);
+        }
+
+    }
+
 }

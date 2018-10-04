@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -269,7 +267,27 @@
             android:name=".view.activity.Universitario_v2.UniversidadDetalleActivity"
             android:label="@string/title_activity_universidad_detalle"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.activity.Universitario_v2.PresentarCuestionarioActivity"></activity>
+        <activity
+            android:name=".view.activity.Universitario_v2.PresentarCuestionarioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario_v2.EvaluacionesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Universitario_v2.ResultadoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewDialogAsesor" />
+        <activity
+            android:name=".view.activity.Universitario_v2.NotificacionUniversitarioActivity"
+            android:exported="true"
+            android:theme="@style/NewDialogNot"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="ACTIVITY_NOTIFICATIONS_UNIVERSITARIO" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

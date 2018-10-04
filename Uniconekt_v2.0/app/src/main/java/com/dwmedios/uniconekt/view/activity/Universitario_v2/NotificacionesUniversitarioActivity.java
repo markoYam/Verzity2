@@ -1,5 +1,6 @@
 package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -38,7 +39,7 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
     RecyclerView mRecyclerView;
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    private NotificacionUniversitarioPresenter mNotificacionUniversitarioPresenter;
+    public NotificacionUniversitarioPresenter mNotificacionUniversitarioPresenter;
     private CustomAdapter mCustomAdapter;
 
     @Override
@@ -61,8 +62,8 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
 
     @Override
     protected void onStart() {
-        super.onStart();
         mNotificacionUniversitarioPresenter.getNotificaciones();
+        super.onStart();
     }
 
     @Override
@@ -152,13 +153,15 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showMessage(mNotificaciones.asunto);
+                    startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
+                    //showMessage(mNotificaciones.asunto);
                 }
             });
             mImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showMessage(mNotificaciones.asunto);
+                    startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
+                    // showMessage(mNotificaciones.asunto);
                 }
             });
         }
@@ -168,6 +171,13 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
 
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 200) {
+            mNotificacionUniversitarioPresenter.getNotificaciones();
+        }
+    }
 
     private void EmpyRecycler() {
         mTextView.setVisibility(View.VISIBLE);

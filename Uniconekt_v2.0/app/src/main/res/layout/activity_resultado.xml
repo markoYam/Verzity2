@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="250sp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp"
+    app:cardUseCompatPadding="true"
+    tools:context=".view.activity.Universitario_v2.ResultadoActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/contenedor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
+                android:background="@drawable/borde_redondo">
+
+                <ImageButton
+                    android:id="@+id/buttonOk"
+                    android:layout_width="30sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="30sp"
+                    android:background="@color/colorTrasparente"
+                    android:src="@drawable/ic_action_transit_enterexit" />
+
+                <TextView
+                    android:id="@+id/textViewTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/profile_image"
+                    android:layout_toRightOf="@+id/profile_image"
+                    android:text="Demo Evaluacion"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:background="@color/colorGrisBajo2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewPuntaje"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="100"
+                        android:textSize="19sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Puntaje obtenido" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/webviewMensaje"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5sp"
+                tools:ignore="WebViewLayout"></WebView>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

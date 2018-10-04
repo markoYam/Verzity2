@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/banner"
+        android:layout_above="@+id/ViewPagerCustom"
         android:orientation="vertical">
 
         <include layout="@layout/tolbar"></include>
@@ -30,11 +30,11 @@
         app:indicator_gravity="right"
         app:indicator_miss="@drawable/svg_indicator_icon_miss" />
 !-->
-    <android.support.v4.view.ViewPager
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/ViewPagerCustom"
         android:layout_width="match_parent"
         android:layout_height="200sp"
         android:layout_alignParentBottom="true"
-        android:background="#ffffff"></android.support.v4.view.ViewPager>
+        android:background="#ffffff"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

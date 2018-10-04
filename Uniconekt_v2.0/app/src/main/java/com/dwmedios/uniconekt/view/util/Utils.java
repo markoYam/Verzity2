@@ -41,6 +41,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 /**
  * Created by mYam on 16/04/2018.
@@ -301,44 +302,49 @@ public class Utils {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                File foto = new File(Folder_rutaPerfil + "/" + nombreArchivo);
-                if (!foto.exists()) {
-                    //eliminar
-                    String url = urlDownload;
-                    if (url != null) {
+                if(!isNullOrEmpty(urlDownload) && !isNullOrEmpty(nombreArchivo)) {
+                    File foto = new File(Folder_rutaPerfil + "/" + nombreArchivo);
+                    if (!foto.exists()) {
+                        //eliminar
+                        String url = urlDownload;
+                        if (url != null) {
 
-                        URL u = new URL(url);
-                        InputStream is = u.openStream();
+                            URL u = new URL(url);
+                            InputStream is = u.openStream();
 
-                        DataInputStream dis = new DataInputStream(is);
+                            DataInputStream dis = new DataInputStream(is);
 
-                        byte[] buffer = new byte[1024];
-                        int length;
-                        File folder = new File(Folder_rutaPerfil);
+                            byte[] buffer = new byte[1024];
+                            int length;
+                            File folder = new File(Folder_rutaPerfil);
 
-                        boolean succ = true;
-                        if (!folder.exists()) {
-                            succ = folder.mkdirs();
-                        } else {
-                            File[] files = folder.listFiles();
-                            for (File mFile : files) {
-                                mFile.delete();
+                            boolean succ = true;
+                            if (!folder.exists()) {
+                                succ = folder.mkdirs();
+                            } else {
+                                File[] files = folder.listFiles();
+                                for (File mFile : files) {
+                                    mFile.delete();
+                                }
+                            }
+
+                            if (succ) {
+                                FileOutputStream fos = new FileOutputStream(new File((Folder_rutaPerfil + "/" + nombreArchivo)));
+                                while ((length = dis.read(buffer)) > 0) {
+                                    fos.write(buffer, 0, length);
+                                }
+                                success = true;
+                            } else {
+
                             }
                         }
 
-                        if (succ) {
-                            FileOutputStream fos = new FileOutputStream(new File((Folder_rutaPerfil + "/" + nombreArchivo)));
-                            while ((length = dis.read(buffer)) > 0) {
-                                fos.write(buffer, 0, length);
-                            }
-                            success = true;
-                        } else {
-
-                        }
-                    }
-
-                } else
-                    Existe = true;
+                    } else
+                        Existe = true;
+                }else
+                {
+                    success=false;
+                }
             } catch (MalformedURLException mue) {
                 Log.e("SYNC getUpdate", "malformed url error", mue);
             } catch (IOException ioe) {
@@ -355,9 +361,13 @@ public class Utils {
             if (success) {
                 if (mDownloadImage != null)
                     mDownloadImage.Onsucces((Folder_rutaPerfil + "/" + nombreArchivo));
+                else
+                    mDownloadImage.Onsucces(null);
             } else {
                 if (Existe) {
                     mDownloadImage.Onsucces((Folder_rutaPerfil + "/" + nombreArchivo));
+                } else {
+                    mDownloadImage.Onsucces(null);
                 }
             }
         }

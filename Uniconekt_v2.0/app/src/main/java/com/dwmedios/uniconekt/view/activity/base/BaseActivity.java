@@ -13,6 +13,8 @@ import android.net.NetworkInfo;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
@@ -44,6 +46,14 @@ public class BaseActivity extends BaseApp {
         void onFinish(String text);
     }
 
+    protected void onHomePressed() {
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        if (upIntent == null || !NavUtils.shouldUpRecreateTask(this, upIntent)) {
+            finish();
+        } else {
+            TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+        }
+    }
     public boolean validatePermison(String permison, Activity onresult, int CodeResult) {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), permison) == PackageManager.PERMISSION_GRANTED) {
             return true;

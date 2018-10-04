@@ -75,9 +75,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5sp"
-                        android:text="Una vez registrado, el nombre no se podrá cambiar posteriormente."
+                        android:layout_marginBottom="5sp"
+                        android:text="Asegúrese de escribir correctamente su nombre, una vez concluido el registro no podrá modificarse."
                         android:textColor="@color/colorrojo"
-                        android:textSize="11dp" />
+                        android:textSize="11sp" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"

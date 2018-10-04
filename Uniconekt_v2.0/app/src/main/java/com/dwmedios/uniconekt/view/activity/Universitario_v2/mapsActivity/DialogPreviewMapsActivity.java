@@ -2,7 +2,6 @@ package com.dwmedios.uniconekt.view.activity.Universitario_v2.mapsActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +14,8 @@ import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class DialogPreviewMapsActivity extends BaseActivity {
 
@@ -44,7 +45,13 @@ public class DialogPreviewMapsActivity extends BaseActivity {
     private void loadDialog() {
         mUniversidad = getIntent().getExtras().getParcelable(KEY_UNIVERSIDAD_DIALOGO);
         mTextViewNombre.setText(mUniversidad.nombre);
-        mTextViewDescripcion.setText(mUniversidad.descripcion);
+        if (!isNullOrEmpty(mUniversidad.mDireccion.toString())) {
+            String des = mUniversidad.descripcion.replace("\r", "");
+            String des2 = des.replace("\n", "");
+            mTextViewDescripcion.setText(des2);
+        } else {
+            mTextViewDescripcion.setText("");
+        }
         mButtonCancelar.setOnClickListener(mOnClickListener);
         mButtonVer.setOnClickListener(mOnClickListener);
     }

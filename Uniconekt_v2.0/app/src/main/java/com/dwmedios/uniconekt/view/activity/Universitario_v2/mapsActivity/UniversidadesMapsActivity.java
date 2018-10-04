@@ -14,7 +14,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -270,6 +269,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
     @Override
     public void onLocationChanged(Location location) {
         this.mLocationLast = location;
+        if (markerListLocation == null) marcarMiUbicacion(mLocationLast, crearVistausuario(null));
         LoadImageUser();
         //marcarMiUbicacion(location);
     }
@@ -282,6 +282,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                 LatLng coordenadas = new LatLng(location.getLatitude(), location.getLongitude());
                 if (markerListLocation != null) {
                     markerListLocation.setPosition(coordenadas);
+                    markerListLocation.setIcon(BitmapDescriptorFactory.fromBitmap(mBitmap));
                 } else {
                     markerListLocation = mMap.addMarker(new MarkerOptions()
                             .position(coordenadas)
@@ -406,10 +407,13 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
         markerImageView.setImageResource(R.drawable.ic_action_user_profile);
 
-        File mFile = new File(uriImage);
-        Uri imageUri = Uri.fromFile(mFile);
-        Bitmap myBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
-        markerImageView.setImageBitmap(myBitmap);
+        if (!isNullOrEmpty(uriImage)) {
+            File mFile = new File(uriImage);
+            Bitmap myBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
+            markerImageView.setImageBitmap(myBitmap);
+        } else {
+            markerImageView.setImageResource(R.drawable.profile);
+        }
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
         customMarkerView.buildDrawingCache();

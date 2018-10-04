@@ -16,11 +16,6 @@ public class TipoPostulacionPresenter {
     public void getTipoPostulacion() {
         List<TipoPostulacion> mPostulacionList = new ArrayList<>();
 
-        TipoPostulacion universidad = new TipoPostulacion();
-        universidad.nombre = "Universidad";
-        universidad.tipo = 1;
-        mPostulacionList.add(universidad);
-
         TipoPostulacion beca = new TipoPostulacion();
         beca.nombre = "Becas";
         beca.tipo = 2;
@@ -31,6 +26,10 @@ public class TipoPostulacionPresenter {
         fina.tipo = 3;
         mPostulacionList.add(fina);
 
+        TipoPostulacion universidad = new TipoPostulacion();
+        universidad.nombre = "Universidad";
+        universidad.tipo = 1;
+        mPostulacionList.add(universidad);
 
         mTipoPostulacionViewController.Onsuccess(mPostulacionList);
     }

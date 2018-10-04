@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -132,14 +133,15 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
 
     UploadImage.resultInfo mResultInfo = new UploadImage.resultInfo() {
         @Override
-        public void Onsucces(String patch) {
+        public void Onsucces(String patch,String mensaje) {
             patchPhoto = patch;
-            //showMessage(patch);
+            showMessage(mensaje);
 
         }
 
         @Override
         public void Onfailed(String mensaje) {
+            mImageView.setImageResource(R.drawable.profile);
             showMessage(mensaje);
         }
 
@@ -276,6 +278,7 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         mValidateField = new ValidateField(mRules_dwList, mErrorItem);
 
     }
+
     CheckBox.OnCheckedChangeListener mOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -331,10 +334,10 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         mDireccion.descripcion = mTextInputEditTextDireccion.getText().toString();
         mDireccion.pais = mSpinner.getSelectedItem().toString();
         //showMessage(mSpinner.getSelectedItem().toString());
-        mDireccion.estado = mTextInputEditTextEstado.getText().toString();
-        mDireccion.municipio = mTextInputEditTextMunicipio.getText().toString();
-        mDireccion.codigo_postal = mTextInputEditTextCodigo.getText().toString();
-        mDireccion.ciudad = mTextInputEditTextCiudad.getText().toString();
+        mDireccion.estado = ((mTextInputEditTextEstado.getVisibility() == View.VISIBLE) ? mTextInputEditTextEstado.getText().toString() : null);
+        mDireccion.municipio = ((mTextInputEditTextMunicipio.getVisibility() == View.VISIBLE) ? mTextInputEditTextMunicipio.getText().toString() : null);
+        mDireccion.codigo_postal = (mTextInputEditTextCodigo.getVisibility() == View.VISIBLE) ? mTextInputEditTextCodigo.getText().toString() : null;
+        mDireccion.ciudad = (mTextInputEditTextCiudad.getVisibility() == View.VISIBLE) ? mTextInputEditTextCiudad.getText().toString() : null;
 
         mPersona.direccion = mDireccion;
 
@@ -390,10 +393,10 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         try {
 
             int viewType = (visible ? View.VISIBLE : View.GONE);
-            View cod = (View) mTextInputEditTextCodigo.getParent();
-            View estado = (View) mTextInputEditTextEstado.getParent();
-            View municipio = (View) mTextInputEditTextMunicipio.getParent();
-            View ciudad = (View) mTextInputEditTextCiudad.getParent();
+            View cod = (TextInputLayout) mTextInputEditTextCodigo.getParent().getParent();
+            View estado = (TextInputLayout) mTextInputEditTextEstado.getParent().getParent();
+            View municipio = (TextInputLayout) mTextInputEditTextMunicipio.getParent().getParent();
+            View ciudad = (TextInputLayout) mTextInputEditTextCiudad.getParent().getParent();
             mTextInputEditTextCodigo.setVisibility(viewType);
             mTextInputEditTextEstado.setVisibility(viewType);
             mTextInputEditTextMunicipio.setVisibility(viewType);

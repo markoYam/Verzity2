@@ -33,6 +33,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomHold
     }
 
     @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
     public int getItemCount() {
         return (mList != null && mList.size() > 0 ? mList.size() : 0);
     }

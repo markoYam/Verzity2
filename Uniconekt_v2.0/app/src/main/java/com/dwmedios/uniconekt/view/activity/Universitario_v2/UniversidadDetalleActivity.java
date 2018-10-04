@@ -35,6 +35,7 @@ import com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.animation_demo.demoAnimation;
 import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
+import com.dwmedios.uniconekt.view.util.ViewPagerCarrusel;
 import com.dwmedios.uniconekt.view.util.demo.CustoViewPager;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadDetalleViewController;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -46,6 +47,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.relex.circleindicator.CircleIndicator;
 
 import static com.dwmedios.uniconekt.view.activity.Universidad.UbicacionUniversidadActivity.KEY_UBICACION_UNIVERSIDAD;
 import static com.dwmedios.uniconekt.view.activity.Universitario.BecasActivity.KEY_BECAS;
@@ -102,6 +104,8 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
     private boolean isValidaPostular = false;
     private UniversidadDetallePresenter mUniversidadDetallePresenter;
     private Universidad mUniversidad;
+    @BindView(R.id.indicador)
+    CircleIndicator mCircleIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,10 +140,42 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
             ConfigureViewPager(mUniversidad.mFotosUniversidades);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private void ConfigureViewPager(List<FotosUniversidades> mFotosUniversidades) {
         if (!isListEmpty(mFotosUniversidades)) {
             mImageViewDefault.setVisibility(View.GONE);
             mViewPager.setVisibility(View.VISIBLE);
+
+          /*  BannerViewImage.getInstance(getApplicationContext()).start(mImageViewDefault, mFotosUniversidades, new BannerViewImage.listener() {
+                @Override
+                public int onsuccess(Object mObject) {
+                    FotosUniversidades mFotosUniversidades = (FotosUniversidades) mObject;
+                    ImageLoader.getInstance().displayImage(getUrlImage(mFotosUniversidades.rutaFoto, UniversidadDetalleActivity.this), mImageViewDefault, OptionsImageLoaderDark);
+
+                    return 300;
+                }
+            });*/
+
+            ViewPagerCarrusel
+                    .getInstance(getApplicationContext(), R.layout.row_custom_recycler)
+                    .setTiempo(3000)
+                    .setListener(new ViewPagerCarrusel.listener() {
+                        @Override
+                        public View view(Object m, View mView) {
+                            FotosUniversidades mFotosUniversidades = (FotosUniversidades) m;
+                            ImageView mImageView = mView.findViewById(R.id.ImageviewRow);
+                            ImageLoader.getInstance().displayImage(getUrlImage(mFotosUniversidades.rutaFoto, UniversidadDetalleActivity.this), mImageView, OptionsImageLoaderDark);
+                            return mView;
+                        }
+                    })
+                    .start(mViewPager, mFotosUniversidades);
+            // mCircleIndicator.setViewPager(mViewPager);
+           /* mViewPager.setVisibility(View.VISIBLE);
             mCustoViewPager = new CustoViewPager(mFotosUniversidades, UniversidadDetalleActivity.this, mViewPager);
             mCustoViewPager.setmHandleView(new CustoViewPager.handleView() {
                 @Override
@@ -151,7 +187,7 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
                     return mView;
                 }
             });
-            mCustoViewPager.start();
+            mCustoViewPager.start();*/
         } else {
             mImageViewDefault.setVisibility(View.VISIBLE);
             mViewPager.setVisibility(View.GONE);
@@ -160,8 +196,7 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
 
     @Override
     protected void onPause() {
-        if (mCustoViewPager != null)
-            mCustoViewPager.stopHandler();
+        ViewPagerCarrusel.getInstance(getApplicationContext(), R.layout.row_custom_recycler).stop();
         super.onPause();
 
     }
@@ -268,8 +303,15 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
     }
 
     @Override
+    protected void onDestroy() {
+        ViewPagerCarrusel.getInstance(getApplicationContext(), R.layout.row_custom_recycler).stop();
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) finish();
+        if (item.getItemId() == android.R.id.home)
+            finish();
         return true;
     }
 

@@ -23,28 +23,35 @@ import android.widget.TextView;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.GuardarRespuesta;
 import com.dwmedios.uniconekt.model.cuestionarios.Cuestionario;
-import com.dwmedios.uniconekt.model.cuestionarios.Preguntas;
+import com.dwmedios.uniconekt.model.cuestionarios.DetalleEvaluacionViewModel;
+import com.dwmedios.uniconekt.model.cuestionarios.EvaluacionesPersona;
+import com.dwmedios.uniconekt.model.cuestionarios.PreguntasViewModel;
 import com.dwmedios.uniconekt.model.cuestionarios.Respuestas;
+import com.dwmedios.uniconekt.model.cuestionarios.RespuestasPersona;
+import com.dwmedios.uniconekt.model.cuestionarios.Resultados;
 import com.dwmedios.uniconekt.presenter.PresentarCuestionarioPresenter;
 import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
+import com.dwmedios.uniconekt.view.util.CustomToast;
 import com.dwmedios.uniconekt.view.util.ImageUtils;
+import com.dwmedios.uniconekt.view.viewmodel.CustomViewController;
 import com.dwmedios.uniconekt.view.viewmodel.PresentarCuestionarioViewController;
-import com.google.gson.annotations.SerializedName;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.ResultadoActivity.KEY_RESULTADO;
 import static com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity.KEY_DIALOG;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
-public class PresentarCuestionarioActivity extends BaseActivity implements PresentarCuestionarioViewController {
+
+public class PresentarCuestionarioActivity extends BaseActivity implements PresentarCuestionarioViewController, CustomViewController {
     public static final String RESUELTO = "RESUELTO";
+    public static final String KEY_PRESENTAR = "746957_KEY";
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.cardTerminar)
@@ -68,24 +75,28 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
     @BindView(R.id.contenedorNest)
     NestedScrollView mNestedScrollView;
     int posicionActual = 1, numPreguntas = 0, posicionLista = 0;
-    Cuestionario mCuestionario;
+
     private CustomAdapter mCustomAdapter;
-    private List<Respuestas> mRespuestasList;
+    //private List<Respuestas> mRespuestasList;
     private PresentarCuestionarioPresenter mPresentarCuestionarioPresenter;
     private int idRespuestSelccionada = -1;
+    private EvaluacionesPersona mEvaluacionesPersona;
+    private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
+    private List<PreguntasViewModel> preguntasViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_presentar_cuestionario);
         ButterKnife.bind(this);
-        mToolbar.setTitle("Cuestionario Demo");
+        // mToolbar.setTitle("Cuestionario Demo");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mPresentarCuestionarioPresenter = new PresentarCuestionarioPresenter(this);
+        mEvaluacionesPersona = getIntent().getExtras().getParcelable(KEY_PRESENTAR);
+        mPresentarCuestionarioPresenter = new PresentarCuestionarioPresenter(this, getApplicationContext(), this);
         mCardViewResponder.setOnClickListener(mOnClickListener);
         mCardViewTerminar.setOnClickListener(mOnClickListener);
-        mPresentarCuestionarioPresenter.getCuestionario(new Cuestionario());
+        mPresentarCuestionarioPresenter.getCuestionario(mEvaluacionesPersona);
 
     }
 
@@ -110,64 +121,88 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public void onBackPressed() {
         finalizar();
     }
 
-    private void configurePregunta(Preguntas pregunta) {
+    private void configurePregunta(PreguntasViewModel pregunta) {
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient());
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
-        String mostrarFinal = template.replace("@body", pregunta.nombre);
+        String mostrarFinal = template.replace("@body", pregunta.mPreguntas.nombre);
         mWebView.loadData(mostrarFinal, "text/html; charset=utf-8", "UTF-8");
         configureRecyclerView(pregunta.mRespuestasList);
     }
 
-    private void loadFirt(Cuestionario mCuestionario) {
-        if (mCuestionario != null) {
-            this.mCuestionario = mCuestionario;
-            restaurarFormulario();
-            if (mCuestionario.mPreguntasList != null && mCuestionario.mPreguntasList.size() > 0) {
-                numPreguntas = mCuestionario.mPreguntasList.size();
-                if (numPreguntas > 0) {
-                    mProgressBar.setMax(mCuestionario.mPreguntasList.size());
-                    if (posicionActual <= numPreguntas) {
-                        mTextViewCount.setText((posicionActual) + "/" + numPreguntas);
-                        mProgressBar.setProgress((posicionActual));
-                    } else {
-                        mTextViewCount.setText((posicionActual) + "/" + numPreguntas);
-                        mProgressBar.setProgress(posicionActual);
-                    }
+    private void loadFirt() {
+        try {
 
+
+            if (detalleEvaluacionViewModel != null) {
+                if (detalleEvaluacionViewModel.preguntasViewModelList != null && detalleEvaluacionViewModel.preguntasViewModelList.size() > 0) {
+                    this.preguntasViewModel = detalleEvaluacionViewModel.preguntasViewModelList;
+                    restaurarFormulario();
+
+                    numPreguntas = preguntasViewModel.size();
+
+                    if (numPreguntas > 0) {
+                        mProgressBar.setMax(preguntasViewModel.size());
+                        if (posicionActual <= numPreguntas) {
+                            mTextViewCount.setText((posicionActual) + "/" + numPreguntas);
+                            mProgressBar.setProgress((posicionActual));
+                        } else {
+                            mTextViewCount.setText((posicionActual) + "/" + numPreguntas);
+                            mProgressBar.setProgress(posicionActual);
+                        }
+
+                    }
+                    configurePregunta(preguntasViewModel.get(posicionLista));
+
+
+                } else {
+                    //no se encontraron preguntas.
+                    showMessage("La evaluación no cuenta con preguntas asignadas. ");
+                    finish();
                 }
-                configurePregunta(mCuestionario.mPreguntasList.get(posicionLista));
             } else {
-                showMessage("No hay preguntas");
+                //Ocurrio un error en la evaluacion
+                showMessage("Ha ocurrido un error al presentar la evaluación ");
                 finish();
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showMessage("Ha ocurrido un error al presentar la evaluación ");
+            finish();
         }
     }
 
     private void siguiente() {
 
-        if (mCuestionario != null && mCuestionario.mPreguntasList != null && mCuestionario.mPreguntasList.size() > 0) {
+        if (preguntasViewModel != null && preguntasViewModel.size() > 0) {
             if (idRespuestSelccionada != -1) {
                 if (posicionActual <= numPreguntas) {
-                    GuardarRespuesta mGuardarRespuesta = new GuardarRespuesta();
-                    mGuardarRespuesta.idCuestionario = mCuestionario.id;
-                    mGuardarRespuesta.idPregunta = mCuestionario.mPreguntasList.get(posicionLista).id;
-                    List<Respuestas> respuestasList = new ArrayList<>();
-                    Respuestas mRespuestas = new Respuestas();
-                    mRespuestas.id = idRespuestSelccionada;
-                    respuestasList.add(mRespuestas);
-                    mGuardarRespuesta.mRespuestasList = this.mRespuestasList;
-                    mPresentarCuestionarioPresenter.GuardarRespuesta(mGuardarRespuesta, mRespuestas);
+                    PreguntasViewModel mPreguntas = preguntasViewModel.get(posicionLista);
+
+                    RespuestasPersona mRespuestasPersona = new RespuestasPersona();
+                    mRespuestasPersona.idEvaluacion = detalleEvaluacionViewModel.id_evaluacion;
+                    mRespuestasPersona.idEvaluacion_Persona = detalleEvaluacionViewModel.id_evaluacion_persona;
+                    mRespuestasPersona.idPersona = detalleEvaluacionViewModel.id_persona;
+                    mRespuestasPersona.idPregunta = mPreguntas.mPreguntas.id;
+                    mRespuestasPersona.idRespuesta = idRespuestSelccionada;
+
+                    mPresentarCuestionarioPresenter.GuardarRespuesta(mRespuestasPersona);
                 } else {
                     if ((posicionActual) == (numPreguntas)) {
                         mTextViewResponder.setText("Finalizar");
-                        showMessage("llego a fin sig");
+                        //showMessage("llego a fin sig");
                     }
                 }
             } else {
@@ -205,27 +240,35 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
         switch (requestCode) {
             case 200:
                 if (resultCode == RESULT_OK) {
-                    //guardar y finalizar
-                    showMessage("bye");
+                    Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     finish();
                 }
                 break;
             case 201:
                 if (resultCode == RESULT_OK) {
-                    //guardar y finalizar
-                    showMessage("bye");
+                    Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     finish();
                 }
+                break;
+            case 202:
+                Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
 
-    public void configureRecyclerView(List<Respuestas> mPreguntas) {
-        mRespuestasList = mPreguntas;
-        if (mPreguntas != null && mPreguntas.size() > 0) {
+    public void configureRecyclerView(List<Respuestas> mRespuestasList) {
+
+        if (mRespuestasList != null && mRespuestasList.size() > 0) {
             mTextViewEmpty.setVisibility(View.GONE);
             // mSwipeRefreshLayout.setRefreshing(false);
-            mCustomAdapter = new CustomAdapter(mPreguntas, R.layout.row_preguntas, mConfigureHolder);
+            mCustomAdapter = new CustomAdapter(mRespuestasList, R.layout.row_preguntas, mConfigureHolder);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setHasFixedSize(true);
@@ -256,65 +299,68 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
             } else {
                 mRadioButton.setText("");
             }
+            if (mRespuesta.isSeleccionado) {
+                mRadioButton.setChecked(true);
+            } else {
+                mRadioButton.setChecked(false);
 
-            if (!isNullOrEmpty(mRespuesta.foto)) {
+            }
+
+            if (mRespuesta.isImagen) {
+                mRadioButton.setText("");
                 mImageView.setVisibility(View.VISIBLE);
-                ImageLoader.getInstance().displayImage(mRespuesta.foto, mImageView, ImageUtils.OptionsImageLoaderItems);
+                ImageLoader.getInstance().displayImage(ImageUtils.getUrlImage(mRespuesta.nombre, getApplicationContext()), mImageView, ImageUtils.OptionsImageLoaderItems);
             } else {
                 mImageView.setVisibility(View.GONE);
             }
-            if (mRespuesta.isSeleccionado) {
-                //Asignar el id de la respuesta seleccionada
-                idRespuestSelccionada = mRespuesta.id;
-               // showMessage(mRespuesta.nombre + "-" + idRespuestSelccionada);
-                mRadioButton.setChecked(true);
-            } else
-                mRadioButton.setChecked(false);
+
             mRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (mRespuestasList != null && mRespuestasList.size() > 0) {
-                        for (int i = 0; i < mRespuestasList.size(); i++) {
-                            if (mRespuestasList.get(i).id == mRespuesta.id) {
-                                mRespuestasList.get(i).isSeleccionado = isChecked;
+                    if (preguntasViewModel.get(posicionLista).mRespuestasList != null && preguntasViewModel.get(posicionLista).mRespuestasList.size() > 0) {
+                        for (int i = 0; i < preguntasViewModel.get(posicionLista).mRespuestasList.size(); i++) {
+                            if (preguntasViewModel.get(posicionLista).mRespuestasList.get(i).id == mRespuesta.id) {
+                                preguntasViewModel.get(posicionLista).mRespuestasList.get(i).isSeleccionado = isChecked;
+                                idRespuestSelccionada = mRespuesta.id;
                             } else {
-                                mRespuestasList.get(i).isSeleccionado = !isChecked;
+                                preguntasViewModel.get(posicionLista).mRespuestasList.get(i).isSeleccionado = !isChecked;
                             }
                         }
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 if (mCustomAdapter != null) {
-                                    mCustomAdapter.mList = mRespuestasList;
+                                    // mCustomAdapter.mList = mRespuestasList;
                                     mCustomAdapter.notifyDataSetChanged();
                                     mRecyclerView.setAdapter(mCustomAdapter);
                                 }
                             }
-                        }, 100);
+                        }, 50);
                     }
                 }
             });
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mRespuestasList != null && mRespuestasList.size() > 0) {
-                        for (int i = 0; i < mRespuestasList.size(); i++) {
-                            if (mRespuestasList.get(i).id == mRespuesta.id) {
-                                mRespuestasList.get(i).isSeleccionado = true;
+                    if (preguntasViewModel.get(posicionLista).mRespuestasList != null && preguntasViewModel.get(posicionLista).mRespuestasList.size() > 0) {
+                        for (int i = 0; i < preguntasViewModel.get(posicionLista).mRespuestasList.size(); i++) {
+                            if (preguntasViewModel.get(posicionLista).mRespuestasList.get(i).id == mRespuesta.id) {
+                                preguntasViewModel.get(posicionLista).mRespuestasList.get(i).isSeleccionado = true;
+                                idRespuestSelccionada = mRespuesta.id;
                             } else {
-                                mRespuestasList.get(i).isSeleccionado = false;
+                                preguntasViewModel.get(posicionLista).mRespuestasList.get(i).isSeleccionado = false;
                             }
                         }
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 if (mCustomAdapter != null) {
-                                    mCustomAdapter.mList = mRespuestasList;
+                                    // mCustomAdapter.mList = mRespuestasList;
                                     mCustomAdapter.notifyDataSetChanged();
                                     mRecyclerView.setAdapter(mCustomAdapter);
                                 }
                             }
-                        }, 250);
+                        }, 50);
                     }
                 }
             });
@@ -334,24 +380,48 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
 
     private void restaurarFormulario() {
         int position = 0;
-        for (Preguntas mPreguntas : mCuestionario.mPreguntasList) {
+        for (PreguntasViewModel mPreguntas : preguntasViewModel) {
             position++;
-            if (mPreguntas.mEstatus.estatusNot.equals(RESUELTO)) {
+            if (mPreguntas.isResuelto) {
                 posicionActual = (position + 1);
                 posicionLista = position;
-                break;
             }
         }
     }
 
+
     @Override
-    public void OnsuccesGetCuestionario(Cuestionario mCuestionario) {
-        loadFirt(mCuestionario);
+    public void OnsuccesGetCuestionario(DetalleEvaluacionViewModel detalleEvaluacionViewModel) {
+        this.detalleEvaluacionViewModel = detalleEvaluacionViewModel;
+        getSupportActionBar().setTitle(detalleEvaluacionViewModel.mEvaluaciones.nombre);
+        loadFirt();
+    }
+
+    @Override
+    public void OnSucces(List<?> mObjectsList) {
+
+    }
+
+    @Override
+    public void OnSucces(Object mObjectsList) {
+        Resultados mResultados = (Resultados) mObjectsList;
+        startActivityForResult(new Intent(getApplicationContext(), ResultadoActivity.class).putExtra(KEY_RESULTADO, mResultados), 202);
+    }
+
+    @Override
+    public void OnSucces(List<?> mObjectsList, int tipo) {
+
     }
 
     @Override
     public void Onfailed(String mensaje) {
         showMessage(mensaje);
+    }
+
+    @Override
+    public void Onfailed2(String mensaje) {
+        showMessage(mensaje);
+        finish();
     }
 
     @Override
@@ -362,23 +432,20 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
             dismissProgressDialog();
     }
 
+
     @Override
     public void GuardarRespuesta(GuardarRespuesta mGuardarRespuesta, Respuestas mRespuestas) {
         showMessage("En contrucción");
     }
 
-    private boolean isUltimo() {
-        if (posicionActual == numPreguntas) {
-            showMessage("llego a fin");
-            return true;
-        } else
-            return false;
-    }
-
     @Override
-    public void OnsuccesGuardarRespuesta(Respuestas mRespuestas) {
-        if (mCuestionario != null && mCuestionario.mPreguntasList != null && mCuestionario.mPreguntasList.size() > 0) {
+    public void OnsuccesGuardarRespuesta(RespuestasPersona mRespuestas) {
+        if (preguntasViewModel != null && preguntasViewModel.size() > 0) {
             if (!isUltimo()) {
+                CustomToast.getInstance(PresentarCuestionarioActivity.this)
+                        .setMessage("Guardado correctamente")
+                        .setype(CustomToast.tipo.succes)
+                        .build();
                 mNestedScrollView.scrollTo(0, 0);
                 posicionActual++;
                 posicionLista++;
@@ -388,26 +455,43 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
                 }
                 mTextViewCount.setText((posicionActual) + "/" + numPreguntas);
                 mProgressBar.setProgress((posicionActual));
-                configurePregunta(mCuestionario.mPreguntasList.get(posicionLista));
+                configurePregunta(preguntasViewModel.get(posicionLista));
             } else {
-                showMessage("Cuestionario finalizado");
-                VerResultado();
+                //showMessage("Cuestionario finalizado");
+                // VerResultado();
                 //finalizar cuestionario
+                mPresentarCuestionarioPresenter.getResultado(mEvaluacionesPersona);
             }
 
         }
-        //showMessage("En contrucción");
+
     }
 
+    @Override
+    public void OnfailedRespuesta(String mensaje) {
+        showMessage(mensaje);
+        Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void closeCuestionario(String mensaje) {
+
+    }
+
+    private boolean isUltimo() {
+        if (posicionActual == numPreguntas) {
+            //  showMessage("llego a fin");
+            return true;
+        } else
+            return false;
+    }
 
     @Override
     public void getResultado(Cuestionario mCuestionario) {
         showMessage("En contrucción");
-    }
-
-    public class cuestionarioResponse {
-        @SerializedName("Data")
-        public Cuestionario mCuestionario;
     }
 
 

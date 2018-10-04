@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.data.controller.AllController;
@@ -229,6 +228,17 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
             }
         }
     };
+
+    public void retryBuy() {
+        DialogActivity.handleDialog mHandleDialog = new DialogActivity.handleDialog();
+        mHandleDialog.logo = R.drawable.ic_action_information;
+        mHandleDialog.titulo = "Atención";
+        mHandleDialog.buttonCancel = true;
+        mHandleDialog.touchOutSide = false;
+        mHandleDialog.contenido = "No fue posible realizar la compra. ¿Reintentar?";
+        startActivityForResult(new Intent(getApplicationContext(), DialogActivity.class).putExtra(KEY_DIALOG, mHandleDialog), 202);
+    }
+
     private Paquetes mPaquetes;
     private Paquetes comprarNuevo;
 
@@ -260,14 +270,17 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
                             mVentasPaquetes.referencia = mPaypalResponse.response.referencia;
                             mPaquetePresenter.SaveVentapaquete(mVentasPaquetes);
                         } else {
-                            Toast.makeText(getApplicationContext(), mPaypalResponse.response.status,
-                                    Toast.LENGTH_LONG).show();
+                            /*Toast.makeText(getApplicationContext(), mPaypalResponse.response.status,
+                                    Toast.LENGTH_LONG).show();*/
+                           // retryBuy(mPaypalResponse.response);
+                            retryBuy();
                         }
 
                     } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), "Ocurrió un error al procesar el pago",
-                                Toast.LENGTH_LONG).show();
+                        /*Toast.makeText(getApplicationContext(), "Ocurrió un error al procesar el pago",
+                                Toast.LENGTH_LONG).show();*/
                         e.printStackTrace();
+                        retryBuy();
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {

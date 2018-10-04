@@ -29,6 +29,7 @@ public class NotificacionUniversitarioPresenter {
     public void getNotificaciones() {
         mUniversitarioViewController.OnLoading(true);
         Persona mPersona = mAllController.getDatosPersona();
+        mPersona.dispositivosList=mAllController.getDispositivo();
         String json = Utils.ConvertModelToStringGson(mPersona);
         if (json != null) {
             mClientService.getAPI().getNotificacionesUniversitario(json).enqueue(new Callback<NotificacionesResponse>() {

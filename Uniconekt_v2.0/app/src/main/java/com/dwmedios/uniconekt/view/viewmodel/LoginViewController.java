@@ -10,9 +10,13 @@ public interface LoginViewController {
 
     void LoginSucces(Usuario mUsuario);
 
-    void LoginFailed(String mensaje,boolean isError);
+    void LoginFailed(String mensaje);
 
     void Loading(boolean loading);
+
+    void RegistrarFacebook(Usuario mUsuario);
+
+    void MensajeFacebook(String mensaje);
 
 
 }

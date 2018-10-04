@@ -18,6 +18,7 @@
         <RadioButton
             android:id="@+id/radio"
             android:textSize="15sp"
+            android:layout_centerVertical="true"
             android:theme="@style/themeRadio"
             android:text="¿Este es una pregunta?"
             android:layout_width="wrap_content"
@@ -29,8 +30,9 @@
             android:id="@+id/imagenPregunta"
             android:layout_width="100sp"
             android:layout_height="100sp"
-            android:layout_below="@+id/radio"
-            android:layout_marginTop="2sp"
+            android:layout_toRightOf="@+id/radio"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
             android:visibility="gone"
             android:layout_marginLeft="5sp"
             app:srcCompat="@drawable/defaultt" />

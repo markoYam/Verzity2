@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,9 +33,9 @@ import com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversid
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.mapsActivity.UniversidadesMapsActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
+import com.dwmedios.uniconekt.view.util.BannerViewImage;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
-import com.dwmedios.uniconekt.view.util.demo.CustoViewPager;
 import com.dwmedios.uniconekt.view.viewmodel.SearchUniversidadViewController;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -68,7 +67,7 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
     /*  @BindView(R.id.banner)
       Banner mBanner;*/
     @BindView(R.id.ViewPagerCustom)
-    ViewPager mViewPager;
+    ImageView mImageView;
     private MenuAdapter menuAdapter;
 
     @Override
@@ -109,6 +108,8 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
             abrirMapa();
         }
         mSearchUniversidadesPresenter.getBanners();
+        //BannerViewImage.getInstance(getApplicationContext()).start();
+
     }
 
     @Override
@@ -119,8 +120,9 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
 
     @Override
     public void onBackPressed() {
-        if (mCustoViewPager != null) mCustoViewPager.stopHandler();
         super.onBackPressed();
+        BannerViewImage.getInstance(getApplicationContext()).finishBanner();
+        finish();
     }
 
 
@@ -277,11 +279,10 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
         configureBanner();
     }
 
-    CustoViewPager mCustoViewPager;
 
     private void configureBanner() {
-        mViewPager.setVisibility(View.VISIBLE);
-        mCustoViewPager = new CustoViewPager(mBannersList, SearchUniversidadActivity.this, mViewPager);
+        mImageView.setVisibility(View.VISIBLE);
+       /* mCustoViewPager = new CustoViewPager(mBannersList, SearchUniversidadActivity.this, mViewPager);
         mCustoViewPager.setmHandleView(new CustoViewPager.handleView() {
             @Override
             public View handleView(View mView, final Object mObject, int postion) {
@@ -302,24 +303,43 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
             }
         });
         mCustoViewPager.start();
+        BannerView mBannerView= new BannerView(mBannersList,getSupportFragmentManager());
+        mBannerView.start(mViewPager);*/
+        BannerViewImage.getInstance(getApplicationContext()).start(mImageView, mBannersList, new BannerViewImage.listener() {
+            @Override
+            public int onsuccess(Object mObject) {
+                final Banners mBanners = (Banners) mObject;
+                ImageLoader.getInstance().displayImage(getUrlImage(((Banners) mObject).foto, SearchUniversidadActivity.this), mImageView, OptionsImageLoaderDark);
+                mSearchUniversidadesPresenter.RegistrarVisitaBanner(mBanners);
+                mImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mSearchUniversidadesPresenter.RegistrarVisita(mBanners);
+                    }
+                });
+                return mBanners.tiempoo;
+            }
+        });
+       /* BannerViewRecyclerView mBannerViewRecyclerView= new BannerViewRecyclerView(getApplicationContext());
+        mBannerViewRecyclerView.start(mRecyclerViewBanner,mBannersList);*/
     }
 
     @Override
     public void OnfailedBanners(String mensaje) {
-        mViewPager.setVisibility(View.GONE);
+        mImageView.setVisibility(View.GONE);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mCustoViewPager != null) mCustoViewPager.stopHandler();
-
+        BannerViewImage.getInstance(getApplicationContext()).stop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mCustoViewPager != null) mCustoViewPager.stopHandler();
+        BannerViewImage.getInstance(getApplicationContext()).finishBanner();
     }
 
     @Override

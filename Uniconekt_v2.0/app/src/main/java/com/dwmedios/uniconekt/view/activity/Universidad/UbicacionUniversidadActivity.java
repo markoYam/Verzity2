@@ -3,23 +3,35 @@ package com.dwmedios.uniconekt.view.activity.Universidad;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 
 import com.dwmedios.uniconekt.R;
+import com.dwmedios.uniconekt.data.controller.AllController;
+import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
+import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,12 +42,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,12 +62,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlFacebook;
+import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
+import static com.facebook.internal.Utility.isNullOrEmpty;
+
 public class UbicacionUniversidadActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final String KEY_UBICACION_UNIVERSIDAD = "key_universidad_";
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     private Universidad mUniversidad;
-
+    AllController mAllController;
     GoogleMap mMap;
 
     @Override
@@ -67,6 +85,7 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mAllController = new AllController(getApplicationContext());
     }
 
 
@@ -95,7 +114,7 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
 
     @Override
     protected void onDestroy() {
-        if(mGoogleApiClient!=null)mGoogleApiClient.disconnect();
+        if (mGoogleApiClient != null) mGoogleApiClient.disconnect();
         super.onDestroy();
     }
 
@@ -122,9 +141,14 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
             if (mLastLocation != null) {
+                if (markerListLocation == null)
+                    marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                LoadImageUser();
                 mostrarDireccion();
             } else {
-                miUbicacion();
+                if (markerListLocation == null)
+                    marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                LoadImageUser();
             }
         } else {
             mostrarDireccion();
@@ -132,7 +156,7 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
     }
 
     public void mostrarDireccion() {
-        mMap.clear();
+        //mMap.clear();
         List<String> per = new ArrayList<>();
         per.add(Manifest.permission.ACCESS_FINE_LOCATION);
         per.add(Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -146,14 +170,8 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
                             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                                 mMap.setMyLocationEnabled(true);
 
-
-                                LatLng coordenadas = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                                CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 15.5f);
-                                mMap.animateCamera(miUbicacion);
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(coordenadas)
-                                        .title("Mi ubicación")
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_university_student)));
+                                //    marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                                //   LoadImageUser();
 
 
                                 Float lat = Float.parseFloat(mUniversidad.mDireccion.latitud);
@@ -162,7 +180,7 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
                                 mMap.addMarker(new MarkerOptions()
                                         .position(uni)
                                         .title(mUniversidad.nombre)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_school_map)));
+                                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.border_maker1, R.layout.marker_demo, false))));
                                 LatLng miUbicacionVer = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                                 String url = getUrl(miUbicacionVer, uni);
                                 Log.d("onMapClick", url.toString());
@@ -174,45 +192,160 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
                             }
                         } else {
                             showMessage("No se encontró la dirección de la universidad.");
-                            mMap.setMyLocationEnabled(true);
-                            LatLng coordenadas = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                            CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 15.5f);
-                            mMap.animateCamera(miUbicacion);
-                            mMap.addMarker(new MarkerOptions()
-                                    .position(coordenadas)
-                                    .title("Mi ubicación")
-
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_university_student)));
+                            // marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                            // LoadImageUser();
                         }
                     } else {
                         showMessage("No se encontró la dirección de la universidad.");
-                        mMap.setMyLocationEnabled(true);
-                        LatLng coordenadas = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                        CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 15.5f);
-                        mMap.animateCamera(miUbicacion);
-                        mMap.addMarker(new MarkerOptions()
-                                .position(coordenadas)
-                                .title("Mi ubicación")
-
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_university_student)));
+                        // marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                        //  LoadImageUser();
                     }
                 } else {
                     mMap.setMyLocationEnabled(true);
-                    LatLng coordenadas = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                    CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 15.5f);
-                    mMap.animateCamera(miUbicacion);
-                    mMap.addMarker(new MarkerOptions()
-                            .position(coordenadas)
-                            .title("Mi ubicación")
-
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_university_student)));
+                    //  marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                    // LoadImageUser();
                 }
             } else {
                 showMessage("Ocurrió un error al obtener su ubicación");
                 //  finish();
-                conectLocation();
+
+                //  marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                // conectLocation();
             }
         }
+    }
+
+    public class uri {
+        public String uri;
+        public String nombre;
+    }
+
+    private uri getUri() {
+        Persona mPersona = mAllController.getDatosPersona();
+        uri mUri = new uri();
+        if (mPersona != null) {
+            if (!isNullOrEmpty(mPersona.foto)) {
+                String[] string = mPersona.foto.split("/");
+                mUri.nombre = string[string.length - 1];
+                mUri.uri = getUrlImage(mPersona.foto, getApplicationContext());
+            } else {
+                Usuario mUsuario = mAllController.getusuarioPersona();
+                if (mUsuario != null) {
+                    mUri.uri = getUrlFacebook(mUsuario.cv_facebook);
+                    mUri.nombre = "PefilFacebook.jpg";
+                }
+            }
+        } else {
+            Usuario mUsuario = mAllController.getusuarioPersona();
+            if (mUsuario != null) {
+                if (!isNullOrEmpty(mUsuario.cv_facebook)) {
+                    mUri.uri = getUrlFacebook(mUsuario.cv_facebook);
+                    mUri.nombre = "PefilFacebook.jpg";
+                }
+            }
+        }
+        return mUri;
+    }
+
+    private Bitmap crearVistausuario(String uriImage) {
+
+        View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_usuario, null);
+        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
+        markerImageView.setImageResource(R.drawable.ic_action_user_profile);
+
+        if (!isNullOrEmpty(uriImage)) {
+            File mFile = new File(uriImage);
+            Bitmap myBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
+            markerImageView.setImageBitmap(myBitmap);
+        } else {
+            markerImageView.setImageResource(R.drawable.profile);
+        }
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null)
+            drawable.draw(canvas);
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
+    }
+
+    private void LoadImageUser() {
+        uri uri = getUri();
+        new Utils.DownloadImage(uri.uri, mDownloadImageInterface, uri.nombre).execute();
+    }
+
+    private String mpatch;
+
+    Utils.DownloadImage.downloadImageInterface mDownloadImageInterface = new Utils.DownloadImage.downloadImageInterface() {
+        @Override
+        public void Onsucces(String patch) {
+            mpatch = patch;
+            if (mLastLocation != null) {
+                //if (mBitmap == null)
+                Bitmap mBitmap = crearVistausuario(patch);
+                marcarMiUbicacion(mLastLocation, mBitmap);
+            }
+        }
+    };
+    Marker markerListLocation = null;
+
+    private void marcarMiUbicacion(Location location, Bitmap mBitmap) {
+        if (location != null && mMap != null) {
+            if (mLastLocation != null) {
+                LatLng coordenadas = new LatLng(location.getLatitude(), location.getLongitude());
+                if (markerListLocation != null) {
+                    markerListLocation.setPosition(coordenadas);
+                    markerListLocation.setIcon(BitmapDescriptorFactory.fromBitmap(mBitmap));
+                } else {
+                    markerListLocation = mMap.addMarker(new MarkerOptions()
+                            .position(coordenadas)
+                            .title("Mi ubicación")
+                            .icon(BitmapDescriptorFactory.fromBitmap(mBitmap)));
+                    CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 4f);
+                    mMap.animateCamera(miUbicacion);
+                }
+            }
+        } else {
+            mLastLocation = location;
+            LatLng coordenadas = new LatLng(location.getLatitude(), location.getLongitude());
+            if (markerListLocation != null) {
+                markerListLocation.setPosition(coordenadas);
+            } else {
+                markerListLocation = mMap.addMarker(new MarkerOptions()
+                        .position(coordenadas)
+                        .title("Mi ubicación")
+                        .icon(BitmapDescriptorFactory.fromBitmap(mBitmap)));
+                CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 4f);
+                mMap.animateCamera(miUbicacion);
+
+            }
+        }
+    }
+
+    private Bitmap getMarkerBitmapFromView(int resId, int layout, boolean isUser) {
+
+        View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(layout, null);
+        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
+        if (!isUser)
+            markerImageView.setImageResource(resId);
+        //configureCabeceras(markerImageView);
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null)
+            drawable.draw(canvas);
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
     }
 
     @Override
@@ -235,6 +368,9 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
                 public void onLocationChanged(Location location) {
                     mLastLocation = location;
                     mostrarDireccion();
+                    if (markerListLocation == null)
+                        marcarMiUbicacion(mLastLocation, crearVistausuario(null));
+                    LoadImageUser();
                 }
 
                 @Override
@@ -271,7 +407,8 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
             mLastLocation = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
             if (mLastLocation != null) {
                 //   showMessage(String.valueOf(mLastLocation.getLatitude()) + String.valueOf(mLastLocation.getLongitude()) + "-> manual");
-                mostrarDireccion();
+                //mostrarDireccion();
+                LoadImageUser();
             }
             return;
         }
@@ -452,7 +589,8 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
         String output = "json";
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=AIzaSyAdoRAAgr9jLrPubtOtncrL9OH9Y8pJtcE";
+        //String url2 = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters + "&key=" + MY_API_KEY
 
 
         return url;

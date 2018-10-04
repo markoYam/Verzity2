@@ -32,6 +32,17 @@
     <option name="id" value="Android" />
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://win-2kimk7ombmu/svn/161801UNIC/Aplicacion/Movil/Android/VERZITY/Verzity/Uniconekt_v2.0" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
 </project>
