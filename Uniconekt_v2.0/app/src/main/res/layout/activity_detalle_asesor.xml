@@ -15,7 +15,7 @@
             android:id="@+id/profile_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/defaultt" />
+            app:srcCompat="@drawable/ic_user_profile" />
 
         <TextView
             android:id="@+id/nombre"
@@ -25,7 +25,7 @@
             android:paddingBottom="5sp"
             android:paddingLeft="5sp"
             android:paddingTop="5sp"
-            android:text="Marco Yam"
+            android:text=""
             android:textColor="@color/colorBlanco"
             android:textSize="16sp" />
 

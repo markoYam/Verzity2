@@ -18,7 +18,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:padding="5dp"
-            android:src="@drawable/defaultt"
+            android:src="@drawable/ic_user_profile"
             app:civ_border_color="#FFff"
             app:civ_border_width="2dp" />
 

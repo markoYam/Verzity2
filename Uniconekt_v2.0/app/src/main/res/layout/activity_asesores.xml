@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/uvv_black"
     android:orientation="vertical"
     tools:context=".view.activity.Universitario_v2.AsesoresActivity">
@@ -19,21 +20,26 @@
     </LinearLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menu_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
-        android:theme="@style/MyFloatingButton"
-        android:tint="@android:color/white"
-        app:fab_size="normal"
-        android:clickable="true"
-        app:fab_colorPressed="@color/Color_financiamientos"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp" />
+        app:fab_labelStyle="@style/Etiquetas"
+        fab:fab_addButtonColorNormal="?attr/colorPrimary"
+        fab:fab_addButtonSize="normal"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorPrimaryDark"
+            fab:fab_icon="@drawable/ic_comprar_paquete"
+            fab:fab_size="mini"
+            fab:fab_title="Consultar paquetes" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </RelativeLayout>

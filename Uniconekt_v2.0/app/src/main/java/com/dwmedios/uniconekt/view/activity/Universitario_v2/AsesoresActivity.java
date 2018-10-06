@@ -2,7 +2,6 @@ package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,6 +21,7 @@ import com.dwmedios.uniconekt.presenter.AsesorPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.AsesoresViewController;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.List;
 
@@ -47,7 +47,9 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
     private CustomAdapter mCustomAdapter;
     private AsesorPresenter mAsesorPresenter;
     @BindView(R.id.fab)
-    FloatingActionButton mFloatingActionButton;
+    com.getbase.floatingactionbutton.FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.menu_fab)
+    FloatingActionsMenu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +123,12 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
         switch (typeViewAsesor) {
             case 0:
                 getSupportActionBar().setTitle("Mis asesores");
-                mFloatingActionButton.show();
+                menu.setVisibility(View.VISIBLE);
                 mAsesorPresenter.getMisAsesores();
                 break;
             case 1:
                 getSupportActionBar().setTitle("Seleccionar asesor ");
-                mFloatingActionButton.hide();
+                menu.setVisibility(View.GONE);
                 mAsesorPresenter.getAsesores();
                 break;
         }
@@ -180,7 +182,7 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
                         .load(getUrlImage(mPersona.foto, getApplicationContext()))
                         .into(mImageView);
             else
-                mImageView.setImageResource(R.drawable.profile);
+                mImageView.setImageResource(R.drawable.ic_user_profile);
         }
 
         @Override

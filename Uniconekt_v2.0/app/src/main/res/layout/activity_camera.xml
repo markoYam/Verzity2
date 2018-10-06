@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10sp"
-                android:src="@drawable/ic_menu_camera"
+
                 android:theme="@style/MyFloatingButton"
                 android:tint="@color/colorBlanco"
                 app:fab_size="normal" />

@@ -46,10 +46,10 @@ public class PresentarCuestionarioPresenter {
                             mPresentarCuestionarioViewController.OnsuccesGetCuestionario(res.detalleEvaluacionViewModel);
                             break;
                         case 0:
-                            mPresentarCuestionarioViewController.Onfailed(res.mensaje);
+                            mPresentarCuestionarioViewController.OnfailedRespuesta(res.mensaje);
                             break;
                         case -1:
-                            mPresentarCuestionarioViewController.Onfailed(error);
+                            mPresentarCuestionarioViewController.OnfailedRespuesta(error);
                             break;
                     }
                 }
@@ -57,12 +57,12 @@ public class PresentarCuestionarioPresenter {
                 @Override
                 public void onFailure(Call<DetalleEvaluacionResponse> call, Throwable t) {
                     mPresentarCuestionarioViewController.OnLoading(false);
-                    mPresentarCuestionarioViewController.Onfailed(error);
+                    mPresentarCuestionarioViewController.OnfailedRespuesta(error);
                 }
             });
         } else {
             mPresentarCuestionarioViewController.OnLoading(false);
-            mPresentarCuestionarioViewController.Onfailed(error);
+            mPresentarCuestionarioViewController.OnfailedRespuesta(error);
         }
     }
 

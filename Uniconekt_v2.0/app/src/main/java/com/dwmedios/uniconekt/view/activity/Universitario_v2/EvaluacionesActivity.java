@@ -26,6 +26,7 @@ import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActiv
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
 import com.dwmedios.uniconekt.view.viewmodel.CustomViewController;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.PresentarCuestionarioActivity.KEY_PRESENTAR;
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.ResultadoActivity.KEY_RESULTADO;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class EvaluacionesActivity extends BaseActivity implements CustomViewController {
 
@@ -45,6 +48,8 @@ public class EvaluacionesActivity extends BaseActivity implements CustomViewCont
     TextView mTextViewEmpty;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton mFloatingActionButton;
     private CustomAdapter mCustomAdapter;
     public EvaluacionesPresenter mEvaluacionesPresenter;
     private SearchView mSearchView;
@@ -58,12 +63,22 @@ public class EvaluacionesActivity extends BaseActivity implements CustomViewCont
         mToolbar.setTitle("Cuestionarios");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Cambiar el color del toolbar y status bar
+        setStatusBarGradiant(this, R.drawable.status_examen);
+        changeColorToolbar(getSupportActionBar(), R.color.Color_examen, EvaluacionesActivity.this);
+
         mEvaluacionesPresenter = new EvaluacionesPresenter(this, getApplicationContext());
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mSwipeRefreshLayout.setRefreshing(true);
                 mEvaluacionesPresenter.getEvaluaciones();
+            }
+        });
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), PaquetesAsesoresActivity.class));
             }
         });
     }

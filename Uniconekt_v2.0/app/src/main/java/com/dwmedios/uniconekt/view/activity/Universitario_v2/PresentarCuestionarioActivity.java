@@ -142,6 +142,27 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
         configureRecyclerView(pregunta.mRespuestasList);
     }
 
+    private String template = "<!DOCTYPE html>\n" +
+            "<head>\n" +
+            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+            "<style type=\"text/css\">\n" +
+            "img{\n" +
+            "      max-width:100% !important;\n" +
+            "      border-radius: .25rem;\n" +
+            "      height:50% !important;\n" +
+            "}\n" +
+            ".main{\n" +
+            "      width: 100%\n" +
+            "}\n" +
+            "</style>\n" +
+            "</head>\n" +
+            "<body style=\"font-family: Verdana;\">\n" +
+            "      <div class=\"main\">\n" +
+            "            @body\n" +
+            "      </div>\n" +
+            "</body>\n" +
+            "</html>";
+
     private void loadFirt() {
         try {
 
@@ -286,6 +307,7 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
         RadioButton mRadioButton;
         ImageView mImageView;
         CardView mCardView;
+        TextView mTextView;
 
         @Override
         public void Configure(View itemView, Object mObject) {
@@ -293,11 +315,15 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
             mRadioButton = itemView.findViewById(R.id.radio);
             mImageView = itemView.findViewById(R.id.imagenPregunta);
             mCardView = itemView.findViewById(R.id.cardview);
+            mTextView = itemView.findViewById(R.id.textViewContenido);
 
             if (!isNullOrEmpty(mRespuesta.nombre)) {
-                mRadioButton.setText(mRespuesta.nombre);
+                mTextView.setVisibility(View.VISIBLE);
+                mTextView.setText(mRespuesta.nombre.toString());
             } else {
                 mRadioButton.setText("");
+                mTextView.setVisibility(View.GONE);
+                mImageView.setVisibility(View.GONE);
             }
             if (mRespuesta.isSeleccionado) {
                 mRadioButton.setChecked(true);
@@ -308,10 +334,12 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
 
             if (mRespuesta.isImagen) {
                 mRadioButton.setText("");
+                mTextView.setVisibility(View.GONE);
                 mImageView.setVisibility(View.VISIBLE);
                 ImageLoader.getInstance().displayImage(ImageUtils.getUrlImage(mRespuesta.nombre, getApplicationContext()), mImageView, ImageUtils.OptionsImageLoaderItems);
             } else {
                 mImageView.setVisibility(View.GONE);
+                mTextView.setVisibility(View.VISIBLE);
             }
 
             mRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -494,36 +522,4 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
         showMessage("En contrucción");
     }
 
-
-    private String template = "<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head>\n" +
-            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-            "<style>\n" +
-            "* {\n" +
-            "  box-sizing: border-box;\n" +
-            "}\n" +
-            ".main {\n" +
-            "  float: left;\n" +
-            "  width: 100%;\n" +
-            "  height: 100%;\n" +
-            "  padding: 0 20px;\n" +
-            "  overflow: hidden;\n" +
-            "}\n" +
-            ".responsive-img\n" +
-            "{\n" +
-            "  max-width:100%;\n" +
-            "  height:auto;\n" +
-            "}\n" +
-            "\n" +
-            "</style>\n" +
-            "</head>\n" +
-            "<body style=\"font-family:Verdana; width: 100%;height: 100%\">\n" +
-            "  <div class=\"main\">\n" +
-            "@body\n" +
-            "  </div>\n" +
-            "\n" +
-            "\n" +
-            "</body>\n" +
-            "</html>";
 }

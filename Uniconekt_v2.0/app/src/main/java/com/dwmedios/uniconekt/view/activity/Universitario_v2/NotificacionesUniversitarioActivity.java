@@ -153,6 +153,7 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    NotificacionUniversitarioActivity.active = false;
                     startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
                     //showMessage(mNotificaciones.asunto);
                 }
@@ -160,6 +161,7 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
             mImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    NotificacionUniversitarioActivity.active = false;
                     startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
                     // showMessage(mNotificaciones.asunto);
                 }

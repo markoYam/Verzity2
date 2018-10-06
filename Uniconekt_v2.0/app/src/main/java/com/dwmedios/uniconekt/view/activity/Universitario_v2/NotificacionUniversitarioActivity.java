@@ -32,6 +32,7 @@ import static com.dwmedios.uniconekt.view.util.Utils.configurefechaCompleted;
 import static com.dwmedios.uniconekt.view.util.Utils.getDays;
 
 public class NotificacionUniversitarioActivity extends BaseActivity {
+    public static boolean active = true;
     @BindView(R.id.textViewTitulo)
     TextView mTextViewTitulo;
     @BindView(R.id.textViewMensaje)
@@ -53,9 +54,27 @@ public class NotificacionUniversitarioActivity extends BaseActivity {
         ButterKnife.bind(this);
         mButtonEvaluaciones.setOnClickListener(mOnClickListener);
         mButtonPresentar.setOnClickListener(mOnClickListener);
+
+        if (active) {
+            mButtonEvaluaciones.setVisibility(View.VISIBLE);
+        } else
+            mButtonEvaluaciones.setVisibility(View.GONE);
+
         setMargin();
         getInfo();
         actualizarStatus();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NotificacionUniversitarioActivity.active = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        NotificacionUniversitarioActivity.active = true;
     }
 
     private void setMargin() {
@@ -111,6 +130,13 @@ public class NotificacionUniversitarioActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        NotificacionUniversitarioActivity.active = true;
+    }
+
+    @Override
+    public void finish() {
+        NotificacionUniversitarioActivity.active = true;
+        super.finish();
     }
 
     public void setDatos() {

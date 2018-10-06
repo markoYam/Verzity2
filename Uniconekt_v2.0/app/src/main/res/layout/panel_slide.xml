@@ -43,7 +43,6 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center_horizontal"
                         android:drawableTint="@color/colorPrimaryDark"
-                        android:src="@drawable/ic_menu_camera"
                         app:civ_border_color="#FFff"
                         app:civ_border_width="2dp" />
 
