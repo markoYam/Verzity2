@@ -35,6 +35,7 @@ import com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.animation_demo.demoAnimation;
 import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
+import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.ViewPagerCarrusel;
 import com.dwmedios.uniconekt.view.util.demo.CustoViewPager;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadDetalleViewController;
@@ -58,6 +59,8 @@ import static com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoA
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.ProspectusActivity.KEY_PROSPECTUS;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderDark;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class UniversidadDetalleActivity extends BaseActivity implements UniversidadDetalleViewController {
@@ -106,13 +109,17 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
     private Universidad mUniversidad;
     @BindView(R.id.indicador)
     CircleIndicator mCircleIndicator;
-
+    boolean extranjero=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_universidad_detalle);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
+        extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+        if (extranjero) {
+            setStatusBarGradiant(UniversidadDetalleActivity.this, R.drawable.status_uni_extra);
+        }
         mUniversidadDetallePresenter = new UniversidadDetallePresenter(this, getApplicationContext());
         final Universidad uni = getIntent().getExtras().getParcelable(KEY_DETALLE_UNIVERSIDAD);
         getSupportActionBar().setTitle("");
@@ -221,6 +228,7 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
                             in.setDuration(500);
                             floatingActionsMenu.startAnimation(in);
                             floatingActionsMenu.setVisibility(View.GONE);
+
                         }
                     }
                     //mCollapsingToolbarLayout.setTitle("Marco Aurelio Yam");
@@ -243,6 +251,11 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
 
                             }
                         }, 500);
+
+                        if (extranjero) {
+                            setStatusBarGradiant(UniversidadDetalleActivity.this, R.drawable.status_uni_extra);
+                            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, UniversidadDetalleActivity.this);
+                        }
                         //Ocultar
                      /*   Animation textAfuera = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
                         textAfuera.setDuration(500);
@@ -289,6 +302,11 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
 
                             }
                         }, 500);
+
+                        if (extranjero) {
+                            setStatusBarGradiant(UniversidadDetalleActivity.this, R.drawable.status_uni_extra);
+                            changeColorToolbar(getSupportActionBar(), R.color.colorTrasparente, UniversidadDetalleActivity.this);
+                        }
                         //Ocultar
 
                        /* //Mostrar Texto

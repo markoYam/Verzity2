@@ -23,6 +23,7 @@ import com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity;
 import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.PaquetesAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.PaquetesViewController;
 import com.google.gson.Gson;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -196,6 +197,7 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mPaquetesAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(),R.anim.layout_animation,mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmptyRecyclerView();
@@ -244,7 +246,7 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
 
     public void paypayPayament(Paquetes mPaquetes) {
         this.mPaquetes = mPaquetes;
-        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaquetes.costo), "MXN", mPaquetes.nombre, PayPalPayment.PAYMENT_INTENT_ORDER);
+        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaquetes.costo), "MXN", mPaquetes.nombre, PayPalPayment.PAYMENT_INTENT_SALE);
         Intent mIntent = new Intent(this, PaymentActivity.class);
         mIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, mPayPalConfiguration);
         mIntent.putExtra(PaymentActivity.EXTRA_PAYMENT, mPayPalPayment);

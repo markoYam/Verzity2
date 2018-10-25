@@ -118,7 +118,7 @@ public class DetalleCuponActivity extends BaseActivity implements DetalleCuponVi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+               this.onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }

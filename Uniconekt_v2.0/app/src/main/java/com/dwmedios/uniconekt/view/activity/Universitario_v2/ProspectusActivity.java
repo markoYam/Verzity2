@@ -2,9 +2,8 @@ package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +16,10 @@ import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.ClasViewModel;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.ProspectusPresenter;
-import com.dwmedios.uniconekt.view.activity.Universitario.SearchUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario.VideosActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
+import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.ProspectusViewController;
 
 import java.util.List;
@@ -29,6 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.VideosActivity.KEY_VIDEO;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class ProspectusActivity extends BaseActivity implements ProspectusViewController {
@@ -54,6 +55,11 @@ public class ProspectusActivity extends BaseActivity implements ProspectusViewCo
         mToolbar.setTitle("Prospectus");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+        if (extranjero) {
+            setStatusBarGradiant(ProspectusActivity.this, R.drawable.status_uni_extra);
+            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, ProspectusActivity.this);
+        }
         mProspectusPresenter = new ProspectusPresenter(this, getApplicationContext());
         mProspectusPresenter.crearMenu();
         loadInfo();

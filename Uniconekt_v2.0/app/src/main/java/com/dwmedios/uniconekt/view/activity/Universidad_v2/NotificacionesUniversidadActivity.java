@@ -1,6 +1,8 @@
 package com.dwmedios.uniconekt.view.activity.Universidad_v2;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -9,10 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
+import com.dwmedios.uniconekt.UniconektApplication;
 import com.dwmedios.uniconekt.model.NotificacionUniversidad;
 import com.dwmedios.uniconekt.model.Notificaciones;
 import com.dwmedios.uniconekt.presenter.NotificacionesUniPresenter;
@@ -39,23 +44,19 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
     private ViewPager mViewPager;
     public NotificacionesUniPresenter mNotificacionesUniPresenter;
     private TabLayout mTabLayout;
+    private static int postionLoad = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificaciones_universidad);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Notificaciones");
-
-
         mViewPager = (ViewPager) findViewById(R.id.container);
-
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mNotificacionesUniPresenter = new NotificacionesUniPresenter(getApplicationContext(), this);
-
     }
 
     @Override
@@ -84,11 +85,30 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
     public void Onsucces(List<NotificacionUniversidad> mNotificacionUniversidads) {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mNotificacionUniversidads);
         mViewPager.setAdapter(null);
+        mViewPager.setOnPageChangeListener(mOnPageChangeListener);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         mViewPager.setCurrentItem(Utils.current_item);
     }
+
+    ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            Utils.current_item = position;
+            Log.e("view pager", position + "");
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 
     @Override
     public void Onloading(boolean isLoading) {
@@ -110,6 +130,11 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
         mNotificacionesUniPresenter.mNotificacionesUniPresenter();
     }
 
+    public void cargarNot() {
+        Utils.current_item = mViewPager.getCurrentItem();
+        mNotificacionesUniPresenter.mNotificacionesUniPresenter();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -126,6 +151,8 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
         RecyclerView mRecyclerView;
         //@BindView(R.id.textView_empyRecycler)
         TextView mTextView;
+        SwipeRefreshLayout mSwipeRefreshLayout;
+        Context mContext;
         //ImageButton mButtonTodos;
         ImageButton mButtonVisto;
         ImageButton mButtonPendientes;
@@ -140,10 +167,11 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
         public PlaceholderFragment() {
         }
 
-        public static PlaceholderFragment newInstance(NotificacionUniversidad mNotificacionUniversidads, int position) {
+        public static PlaceholderFragment newInstance(NotificacionUniversidad mNotificacionUniversidads, int position, Context mContext) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             fragment.mNotificacionUniversidads = mNotificacionUniversidads;
             fragment.position = position;
+            fragment.mContext = mContext;
             Bundle args = new Bundle();
             fragment.setArguments(args);
             return fragment;
@@ -157,6 +185,7 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
             //ButterKnife.bind(getContext(), rootView);
             mRecyclerView = rootView.findViewById(R.id.recyclerview_utils);
             mTextView = rootView.findViewById(R.id.textView_empyRecycler);
+            mSwipeRefreshLayout = rootView.findViewById(R.id.swiperefresh);
             //mButtonTodos = rootView.findViewById(R.id.buttonTodos);
             mButtonVisto = rootView.findViewById(R.id.buttonVisto);
             mButtonPendientes = rootView.findViewById(R.id.buttonPendiente);
@@ -173,7 +202,24 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
             layoutVistos.setOnClickListener(mOnClickListener);
             layoutTodos.setOnClickListener(mOnClickListener);
             layoutPendietentes.setOnClickListener(mOnClickListener);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    try {
+                        final Activity finalCurrentActivity = ((UniconektApplication) mContext).getCurrentActivity();
+                        Utils.current_item = position;
+                        if (finalCurrentActivity instanceof NotificacionesUniversidadActivity) {
+                            if (((NotificacionesUniversidadActivity) finalCurrentActivity).mNotificacionesUniPresenter != null) {
+                                ((NotificacionesUniversidadActivity) finalCurrentActivity).cargarNot();
+                            }
+                        }
 
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
 
             return rootView;
         }
@@ -234,9 +280,6 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
                     layoutVistos.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
                     layoutPendietentes.setBackgroundColor(getResources().getColor(R.color.colorBlanco));
 
-                    //Color text boton
-                    /*mButtonTodos.setColorFilter(getResources().getColor(R.color.colorBlanco),
-                            PorterDuff.Mode.SRC_ATOP);*/
                     mButtonVisto.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
                             PorterDuff.Mode.SRC_ATOP);
                     mButtonPendientes.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
@@ -260,8 +303,7 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
                     mButtonVisto.setColorFilter(getResources().getColor(R.color.colorBlanco),
                             PorterDuff.Mode.SRC_ATOP);
                     mButtonVisto.setBackgroundColor(getResources().getColor(R.color.colorTrasparente));
-                    /*mButtonTodos.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
-                            PorterDuff.Mode.SRC_ATOP);*/
+
                     mButtonPendientes.setColorFilter(getResources().getColor(R.color.colorPrimaryDark),
                             PorterDuff.Mode.SRC_ATOP);
 
@@ -320,7 +362,8 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 mRecyclerView.setAdapter(mNotificacionAdapter);
-                mNotificacionAdapter.notifyDataSetChanged();
+                Utils.setAnimRecyclerView(getActivity(), R.anim.layout_animation, mRecyclerView);
+
             } else {
                 mRecyclerView.setAdapter(null);
                 mTextView.setVisibility(View.VISIBLE);
@@ -347,7 +390,7 @@ public class NotificacionesUniversidadActivity extends BaseActivity implements N
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(mNotificacionUniversidads.get(position), position);
+            return PlaceholderFragment.newInstance(mNotificacionUniversidads.get(position), position, getApplicationContext());
         }
 
         @Override

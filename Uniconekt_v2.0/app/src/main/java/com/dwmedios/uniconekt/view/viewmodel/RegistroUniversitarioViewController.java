@@ -6,4 +6,6 @@ public interface RegistroUniversitarioViewController {
     void OnsuccesRegistro(Usuario mUsuario);
     void OnFailedRegistro(String mensaje);
     void OnLoadingRegistro(boolean isLoading);
+
+    void setTerminos(String contenido);
 }

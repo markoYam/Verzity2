@@ -2,15 +2,20 @@ package com.dwmedios.uniconekt.view.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.SplashPresenter;
@@ -21,6 +26,8 @@ import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.SplashViewController;
+
+import java.security.MessageDigest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +45,9 @@ public class SplashActivity extends BaseActivity implements SplashViewController
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+        Glide.with(getApplicationContext())
+                .load(R.drawable.logo_white)
+                .into(mImageView);
         mSplashPresenter = new SplashPresenter(SplashActivity.this, this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
@@ -45,6 +55,26 @@ public class SplashActivity extends BaseActivity implements SplashViewController
             mImageView.startAnimation(in);
             mImageView.setVisibility(View.VISIBLE);
         }
+     //  System.out.print("Key"+generarHash());
+    }
+
+    public String generarHash() {
+        PackageInfo mPackageInfo;
+        String key = null;
+        try {
+            mPackageInfo = getPackageManager().getPackageInfo("com.dwmedios.uniconekt", PackageManager.GET_SIGNATURES);
+            for (Signature mSignature : mPackageInfo.signatures)
+
+            {
+                MessageDigest messageDigest;
+                messageDigest = MessageDigest.getInstance("SHA");
+                messageDigest.update(mSignature.toByteArray());
+                key = new String(Base64.encode(messageDigest.digest(), 0));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return key;
     }
 
     @Override

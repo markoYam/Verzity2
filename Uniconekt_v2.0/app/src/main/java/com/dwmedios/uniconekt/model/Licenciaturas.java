@@ -16,7 +16,6 @@ public class Licenciaturas implements Parcelable {
     public String nombre;
     @SerializedName(NIVEL)
     public NivelEstudios mNivelEstudios;
-
     public boolean ischeCked;
 
 

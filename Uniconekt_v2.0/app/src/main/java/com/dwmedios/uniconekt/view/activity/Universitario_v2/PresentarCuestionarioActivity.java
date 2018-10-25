@@ -261,24 +261,24 @@ public class PresentarCuestionarioActivity extends BaseActivity implements Prese
         switch (requestCode) {
             case 200:
                 if (resultCode == RESULT_OK) {
-                    Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
+                  /*  Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    startActivity(intent);*/
                     finish();
                 }
                 break;
             case 201:
                 if (resultCode == RESULT_OK) {
-                    Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
+                   /* Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    startActivity(intent);*/
                     finish();
                 }
                 break;
             case 202:
-                Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
+              /*  Intent intent = new Intent(getApplicationContext(), EvaluacionesActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                startActivity(intent);*/
                 finish();
                 break;
         }

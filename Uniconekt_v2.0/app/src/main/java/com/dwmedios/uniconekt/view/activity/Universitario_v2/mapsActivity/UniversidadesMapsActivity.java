@@ -12,18 +12,20 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Persona;
@@ -36,6 +38,9 @@ import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.UniversidadViewController;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,6 +57,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,17 +72,20 @@ import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
-public class UniversidadesMapsActivity extends BaseActivity implements OnMapReadyCallback, UniversidadViewController, LocationListener {
+public class UniversidadesMapsActivity extends BaseActivity implements OnMapReadyCallback, UniversidadViewController, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     private UniversidadPresenter mUniversidadPresenter;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.linearmapa)
-    LinearLayout mLinearLayout;
+    RelativeLayout mLinearLayout;
+    @BindView(R.id.floatingMap)
+    FloatingActionButton mFloatingActionButton;
     LocationManager locationManager;
     String locationProvider;
     private List<Universidad> mUniversidadList;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +106,43 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         initializeLocationManager();
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLocationLast != null) {
+                    LatLng mLatLng = new LatLng(mLocationLast.getLatitude(), mLocationLast.getLongitude());
+                    CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(mLatLng, 4f);
+                    mMap.animateCamera(miUbicacion);
+                    mFloatingActionButton.setVisibility(View.GONE);
+                }
+            }
+        });
+      //  LoadFirt();
+    }
+
+    TextToSpeech mTextToSpeech;
+    int result;
+
+    private void LoadFirt() {
+        mTextToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    Locale spanish = new Locale("es", "ES");
+                    result = mTextToSpeech.setLanguage(spanish);
+                } else {
+                    showMessage("No soportado...");
+                }
+            }
+        });
+    }
+
+    public void speak(String text) {
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            showMessage("Not support languaje");
+        } else {
+            mTextToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null);
+        }
     }
 
     Bitmap mBitmap;
@@ -109,6 +155,27 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
 
     public void buscarUniversidades() {
         mUniversidadPresenter.Search(new SearchUniversidades(), 0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mGoogleApiClient != null) mGoogleApiClient.disconnect();
+        super.onDestroy();
+    }
+
+    void conectLocation() {
+        if (mGoogleApiClient == null)
+
+        {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(UniversidadesMapsActivity.this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
     }
 
     @Override
@@ -133,7 +200,35 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                         startActivityForResult(mIntent, 200);
             }
         });
+        this.conectLocation();
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 10, new android.location.LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    mLocationLast = location;
+                    if (markerListLocation == null)
+                        marcarMiUbicacion(mLocationLast, crearVistausuario(null));
+                    LoadImageUser();
+                }
 
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String s) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String s) {
+
+                }
+            });
+            return;
+        }
     }
 
     GoogleMap.OnInfoWindowClickListener mOnInfoWindowClickListener = new GoogleMap.OnInfoWindowClickListener() {
@@ -164,7 +259,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                     break;
                 }
             }
-
+            //speak(mUniversidadEnviar.nombre);
             mIntent.putExtra(KEY_UNIVERSIDAD_DIALOGO, mUniversidadEnviar);
             isViewDialog = true;
         } catch (Exception e) {
@@ -173,6 +268,7 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
 
         CameraUpdate maker = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13.5f);
         mMap.animateCamera(maker);
+        mFloatingActionButton.setVisibility(View.VISIBLE);
     }
 
     private boolean isViewDialog = false;
@@ -205,7 +301,6 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
     @Override
     protected void onPause() {
         super.onPause();
-        this.locationManager.removeUpdates(this);
     }
 
     @Override
@@ -217,26 +312,12 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
     protected void onResume() {
 
         super.onResume();
-        List<String> mStrings = new ArrayList<String>();
-        mStrings.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        mStrings.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        validatePermison(mStrings, this, 101);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            this.locationManager.requestLocationUpdates(this.locationProvider, 400, 1, this);
-        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case 101:
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    this.locationManager.requestLocationUpdates(this.locationProvider, 400, 1, this);
-                } else {
-                    showMessage("Permisos no otorgados");
-                }
-                break;
             case 100:
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mMap.setMyLocationEnabled(true);
@@ -266,13 +347,6 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
 
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        this.mLocationLast = location;
-        if (markerListLocation == null) marcarMiUbicacion(mLocationLast, crearVistausuario(null));
-        LoadImageUser();
-        //marcarMiUbicacion(location);
-    }
 
     Marker markerListLocation = null;
 
@@ -313,21 +387,6 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
     Location mLocationLast = null;
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    @Override
     public void OnSuccessSeach(List<Universidad> mUniversidadList, int type) {
         this.mUniversidadList = mUniversidadList;
         try {
@@ -357,27 +416,15 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
                 }
 
             }
-            loadCurrentLocation();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private void loadCurrentLocation() {
-        Location location = null;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            location = locationManager.getLastKnownLocation(locationProvider);
-        }
-        if (location != null) {
-
-            onLocationChanged(location);
         }
     }
 
     @Override
     public void Onfailed(String mensaje) {
         showMessage(mensaje);
-        loadCurrentLocation();
+        conectLocation();
     }
 
     private Bitmap getMarkerBitmapFromView(int resId, int layout, boolean isUser) {
@@ -432,6 +479,35 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
         this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         this.locationProvider = locationManager.getBestProvider(criteria, false);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mLocationLast = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            if (mLocationLast != null) {
+                if (markerListLocation == null)
+                    marcarMiUbicacion(mLocationLast, crearVistausuario(null));
+                LoadImageUser();
+            } else {
+                if (markerListLocation == null)
+                    marcarMiUbicacion(mLocationLast, crearVistausuario(null));
+                LoadImageUser();
+            }
+        } else {
+            //mostrarDireccion();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     public class uri {

@@ -33,5 +33,6 @@
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="18dp" />
+
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

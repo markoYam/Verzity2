@@ -1,7 +1,9 @@
 package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,16 +12,22 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.presenter.AsesorPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.AsesoresViewController;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -33,7 +41,7 @@ import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class AsesoresActivity extends BaseActivity implements AsesoresViewController {
-    public static int typeViewAsesor = 0;
+    public static int typeViewAsesor = 1;
     public static final String KEY_RETUNR_DATA = "KEY5475674DFDFDFDFWFW";
     public static final String KEY_TRANSITIONS_ASESOR = "KEY1_ASESOR85251";
     @BindView(R.id.swiperefresh)
@@ -149,6 +157,7 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mCustomAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
 
@@ -165,24 +174,51 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
     CustomAdapter.ConfigureHolder mConfigureHolder = new CustomAdapter.ConfigureHolder() {
         ImageView mImageView;
         TextView mTextView;
-        ImageButton mImageButton;
+        TextView mTextViewDescripcion;
+        Button mImageButton;
         CardView mCardView;
+        LinearLayout mLinearLayout;
 
         @Override
         public void Configure(View itemView, Object mObject) {
             Persona mPersona = (Persona) mObject;
             mImageView = itemView.findViewById(R.id.imageAsesor);
             mTextView = itemView.findViewById(R.id.texviewNombreAsesor);
+            mTextViewDescripcion = itemView.findViewById(R.id.textViewDescripcion);
             mImageButton = itemView.findViewById(R.id.imagebuttom);
+            mLinearLayout = itemView.findViewById(R.id.contenedorDescripcion);
             mCardView = itemView.findViewById(R.id.cardAsesor);
             mTextView.setText(mPersona.nombre);
-            if (!isNullOrEmpty(mPersona.foto))
+
+            if (!isNullOrEmpty(mPersona.desPersona)) {
+                mLinearLayout.setVisibility(View.VISIBLE);
+                mTextViewDescripcion.setText(mPersona.desPersona);
+            } else {
+                mLinearLayout.setVisibility(View.GONE);
+                mTextViewDescripcion.setText("");
+            }
+
+            if (!isNullOrEmpty(mPersona.foto)) {
                 Glide
                         .with(AsesoresActivity.this)
                         .load(getUrlImage(mPersona.foto, getApplicationContext()))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                mImageView.setImageResource(R.drawable.profile);
+                                return true;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        })
                         .into(mImageView);
-            else
-                mImageView.setImageResource(R.drawable.ic_user_profile);
+            }
+            else {
+                mImageView.setImageResource(R.drawable.profile);
+            }
         }
 
         @Override
@@ -192,18 +228,18 @@ public class AsesoresActivity extends BaseActivity implements AsesoresViewContro
                 @Override
                 public void onClick(View v) {
                     //showMessage(mPersona.nombre);
-                    switch (typeViewAsesor) {
-                        case 0: /*detalle*/
+                  /*  switch (typeViewAsesor) {
+                        case 0:
                             startActivity(new Intent(getApplicationContext(), DetalleAsesorActivity.class).putExtra(KEY_USUARIO, mPersona));
 
                             break;
-                        case 1: /*finalizar*/
+                        case 1:
                             Intent mIntent = getIntent();
                             mIntent.putExtra(KEY_RETUNR_DATA, mPersona);
                             setResult(RESULT_OK, mIntent);
                             finish();
                             break;
-                    }
+                    }*/
                 }
             });
             mImageButton.setOnClickListener(new View.OnClickListener() {

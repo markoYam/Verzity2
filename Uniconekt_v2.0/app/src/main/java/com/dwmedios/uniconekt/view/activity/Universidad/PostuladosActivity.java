@@ -1,10 +1,8 @@
 package com.dwmedios.uniconekt.view.activity.Universidad;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +12,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.Licenciaturas;
 import com.dwmedios.uniconekt.model.PostuladosGeneral;
 import com.dwmedios.uniconekt.model.TipoPostulacion;
 import com.dwmedios.uniconekt.presenter.PostuladosGeneralesPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.adapter.LicenciaturasAdapter;
 import com.dwmedios.uniconekt.view.adapter.PostuladosAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.PostuladosGeneralesViewController;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
@@ -120,7 +117,7 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mPostuladosAdapter);
             mRecyclerView.addItemDecoration(mStickyRecyclerHeadersDecoration);
-            mPostuladosAdapter.notifyDataSetChanged();
+            Utils.setAnimRecyclerView(getApplicationContext(),R.anim.layout_animation,mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmptyRecyclerView();

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Dispositivo;
 import com.dwmedios.uniconekt.model.Persona;
@@ -77,6 +78,9 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
+        Glide.with(getApplicationContext())
+                .load(R.drawable.logo_green)
+                .into(mImageViewLogo);
         mLoginPresenter = new LoginPresenter(this, getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -172,7 +176,6 @@ public class LoginActivity2 extends BaseActivity implements LoginViewController 
             setTintView(getApplicationContext(), mTextInputEditTextContraseña, R.color.colorPrimaryDark, R.drawable.ic_action_ic_contrasea);
 
         }
-
     }
 
     public void onclickControls() {

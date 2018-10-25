@@ -12,6 +12,7 @@ import com.dwmedios.uniconekt.model.cuestionarios.EvaluacionesPersona;
 import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.CustomViewController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,7 +35,6 @@ public class EvaluacionesPresenter {
     }
 
 
-
     public void getEvaluaciones() {
         mCustomViewController.OnLoading(true);
         Persona mPersona = mAllController.getDatosPersona();
@@ -49,7 +49,21 @@ public class EvaluacionesPresenter {
                         EvaluacionesResponse mEvaluacionesResponse = response.body();
                         switch (mEvaluacionesResponse.status) {
                             case 1:
-                                mCustomViewController.OnSucces(mEvaluacionesResponse.mEvaluacionesPersonas, 0);
+                                List<EvaluacionesPersona> unoList = new ArrayList<>();
+                                List<EvaluacionesPersona> ceroList = new ArrayList<>();
+                                List<EvaluacionesPersona> ListGeneral = new ArrayList<>();
+                                for (int i = 0; i < mEvaluacionesResponse.mEvaluacionesPersonas.size(); i++) {
+                                    mEvaluacionesResponse.mEvaluacionesPersonas.get(i).mEvaluaciones.changeNameSection();
+                                    if (mEvaluacionesResponse.mEvaluacionesPersonas.get(i).mEvaluaciones.isPaga == 1)
+                                        unoList.add(mEvaluacionesResponse.mEvaluacionesPersonas.get(i));
+                                    else {
+                                        ceroList.add(mEvaluacionesResponse.mEvaluacionesPersonas.get(i));
+                                    }
+                                }
+                                ListGeneral.addAll(ceroList);
+                                ListGeneral.addAll(unoList);
+
+                                mCustomViewController.OnSucces(ListGeneral, 0);
                                 break;
                             case 0:
                                 mCustomViewController.Onfailed(mEvaluacionesResponse.mensaje);

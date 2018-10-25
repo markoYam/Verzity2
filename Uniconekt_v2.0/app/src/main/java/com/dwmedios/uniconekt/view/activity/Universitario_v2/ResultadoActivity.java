@@ -5,7 +5,6 @@ import android.text.Html;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -49,7 +48,8 @@ public class ResultadoActivity extends BaseActivity {
     private void configurePregunta(String pregunta) {
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new WebViewClient());
+        /** quitar cliente para que los hipervinculos los abra en otro navegador**/
+        // mWebView.setWebViewClient(new WebViewClient());
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
         String mostrarFinal = template.replace("@body", pregunta);

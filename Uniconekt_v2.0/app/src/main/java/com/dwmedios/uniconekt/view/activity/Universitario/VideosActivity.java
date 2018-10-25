@@ -26,6 +26,7 @@ import com.dwmedios.uniconekt.presenter.VideosPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.ReproductorUrlActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.VideoAdapter;
+import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.VideoViewController;
 
 import java.util.List;
@@ -35,6 +36,8 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.VideoViewActivity.KEY_VIDEO_VIEWER;
 import static com.dwmedios.uniconekt.view.util.Transitions.Transisciones.createTransitions;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class VideosActivity extends BaseActivity implements VideoViewController {
@@ -61,6 +64,11 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Videos");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+        if (extranjero) {
+            setStatusBarGradiant(VideosActivity.this, R.drawable.status_uni_extra);
+            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, VideosActivity.this);
+        }
         mVideosPresenter = new VideosPresenter(this, getApplicationContext());
         this.configureView();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

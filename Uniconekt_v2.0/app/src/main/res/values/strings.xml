@@ -9,9 +9,12 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="facebook_app_id">1840745639558180</string>
-    <string name="fb_login_protocol_scheme">fb1840745639558180</string>
+
+    <string name="facebook_app_id">1923076964664418</string>
+    <string name="fb_login_protocol_scheme">fb1923076964664418</string>
+
     <string name="title_activity_maps">Map</string>
+    <string name="google_maps_key_release">AIzaSyDbQGybp5lzx90sGPgHc_a5WhhJyVP-80o</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -130,5 +133,7 @@
     <string name="no_encontr_correo_electr_nico">No encontró correo electrónico.</string>
     <string name="ver_prospectus">Ver prospectus</string>
     <string name="title_activity_universidad_detalle">UniversidadDetalleActivity</string>
+    <string name="title_activity_mis_asesor">MisAsesorActivity</string>
+
 
 </resources>

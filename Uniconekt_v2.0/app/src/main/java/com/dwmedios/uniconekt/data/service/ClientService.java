@@ -27,7 +27,8 @@ public class ClientService {
     public static final String URL_API = "http://192.168.100.38/Uniconekt/service/UNICONEKT.asmx/";
     public static final String URL_MULTIMEDIA = "http://192.168.100.38/Uniconekt";
 
-    public static final String URL_BASE_TEMP = "http://www.dwmedios.com/";
+    public static final String URL_BASE_TEMP = "http://www.dwmedios.com/Apps/";
+    //public static final String URL_BASE_TEMP = "http://www.dwmedios.com/";
 
     public ClientService(Context mContext) {
         this.mContext = mContext;

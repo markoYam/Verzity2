@@ -16,17 +16,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
+import com.dwmedios.uniconekt.data.controller.AllController;
+import com.dwmedios.uniconekt.data.service.ClientService;
+import com.dwmedios.uniconekt.data.service.response.NotifiacionEstuResponse;
+import com.dwmedios.uniconekt.model.Dispositivo;
+import com.dwmedios.uniconekt.model.NotificacionStatus;
 import com.dwmedios.uniconekt.model.Notificaciones;
+import com.dwmedios.uniconekt.model.cuestionarios.EvaluacionesPersona;
 import com.dwmedios.uniconekt.presenter.NotificacionUniversitarioPresenter;
+import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.NotificacionUniversitarioViewController;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import static com.dwmedios.uniconekt.view.activity.Universitario_v2.PresentarCuestionarioActivity.KEY_PRESENTAR;
 import static com.dwmedios.uniconekt.view.util.Utils.configurefechaCompleted;
 import static com.dwmedios.uniconekt.view.util.Utils.getDays;
 
@@ -62,7 +74,8 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
 
     @Override
     protected void onStart() {
-        mNotificacionUniversitarioPresenter.getNotificaciones();
+        if (!isProces)
+            mNotificacionUniversitarioPresenter.getNotificaciones();
         super.onStart();
     }
 
@@ -70,10 +83,16 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Utils.startActivityUp(getApplicationContext(), MainUniversitarioActivity.class);
                 finish();
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Utils.startActivityUp(getApplicationContext(), MainUniversitarioActivity.class);
     }
 
     @Override
@@ -91,6 +110,8 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mCustomAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
+
         } else {
             mRecyclerView.setAdapter(null);
 
@@ -153,17 +174,30 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    NotificacionUniversitarioActivity.active = false;
-                    startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
+                    actualizarStatus(mNotificaciones.id);
+                  //  NotificacionUniversitarioActivity.active = false;
+                    //startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
                     //showMessage(mNotificaciones.asunto);
+                    EvaluacionesPersona mEvaluacionesPersona = new EvaluacionesPersona();
+                    mEvaluacionesPersona.idEvaluacion = mNotificaciones.id_discriminador;
+                    mEvaluacionesPersona.idPersona = mNotificaciones.id_persona_recibe;
+                    startActivity(new Intent(getApplicationContext(), PresentarCuestionarioActivity.class).putExtra(KEY_PRESENTAR, mEvaluacionesPersona));
+
                 }
             });
             mImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    NotificacionUniversitarioActivity.active = false;
-                    startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
+                    actualizarStatus(mNotificaciones.id);
+                  //  NotificacionUniversitarioActivity.active = false;
+                   // startActivityForResult(new Intent(getApplicationContext(), NotificacionUniversitarioActivity.class).putExtra("msg1", mNotificaciones), 200);
                     // showMessage(mNotificaciones.asunto);
+
+                    EvaluacionesPersona mEvaluacionesPersona = new EvaluacionesPersona();
+                    mEvaluacionesPersona.idEvaluacion = mNotificaciones.id_discriminador;
+                    mEvaluacionesPersona.idPersona = mNotificaciones.id_persona_recibe;
+                    startActivity(new Intent(getApplicationContext(), PresentarCuestionarioActivity.class).putExtra(KEY_PRESENTAR, mEvaluacionesPersona));
+
                 }
             });
         }
@@ -173,6 +207,35 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
 
         }
     };
+    AllController mAllController;
+    ClientService mClientService;
+
+    public void actualizarStatus(int idNot) {
+        mAllController = new AllController(getApplicationContext());
+        mClientService = new ClientService(getApplicationContext());
+        Dispositivo mPersona = mAllController.getDispositivoPersona();
+        NotificacionStatus mNotificacionStatus = new NotificacionStatus();
+        mNotificacionStatus.id_notificacion = idNot;
+        mNotificacionStatus.id_dispositivo = mPersona.id;
+
+        String json = Utils.ConvertModelToStringGson(mNotificacionStatus);
+        if (json != null) {
+            mClientService.getAPI().ActualizarNot(json).enqueue(new Callback<NotifiacionEstuResponse>() {
+                @Override
+                public void onResponse(Call<NotifiacionEstuResponse> call, Response<NotifiacionEstuResponse> response) {
+                    //exito...........
+                }
+
+                @Override
+                public void onFailure(Call<NotifiacionEstuResponse> call, Throwable t) {
+//fallo..................
+                }
+            });
+        } else {
+//Error
+        }
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -194,8 +257,11 @@ public class NotificacionesUniversitarioActivity extends BaseActivity implements
         this.EmpyRecycler();
     }
 
+    boolean isProces = false;
+
     @Override
     public void OnLoading(boolean isLoading) {
+        this.isProces = isLoading;
         if (isLoading)
             showOnProgressDialog("Cargando...");
         else

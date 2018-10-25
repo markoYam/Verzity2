@@ -5,6 +5,7 @@ import android.content.Context;
 import com.dwmedios.uniconekt.data.controller.AllController;
 import com.dwmedios.uniconekt.data.service.ClientService;
 import com.dwmedios.uniconekt.data.service.response.UsuarioResponse;
+import com.dwmedios.uniconekt.model.Configuraciones;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.view.viewmodel.RegistroUniversitarioViewController;
 
@@ -13,6 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.dwmedios.uniconekt.view.util.Utils.ConvertModelToStringGson;
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class RegistroUniversitarioPresenter {
     private AllController mAllController;
@@ -30,7 +32,7 @@ public class RegistroUniversitarioPresenter {
     public void CrearCuentaAcceso(Usuario mUsuario) {
         mRegistroUniversitarioViewController.OnLoadingRegistro(true);
         String json = ConvertModelToStringGson(mUsuario);
-       // Log.e("registro", json);
+        // Log.e("registro", json);
         if (json != null) {
             mClientService.getAPI().RegisterUniversitario(json).enqueue(new Callback<UsuarioResponse>() {
                 @Override
@@ -63,6 +65,19 @@ public class RegistroUniversitarioPresenter {
         } else {
             mRegistroUniversitarioViewController.OnLoadingRegistro(false);
             mRegistroUniversitarioViewController.OnFailedRegistro("Ocurrió un error en el registro.");
+        }
+    }
+
+    public void getTerminos() {
+        try {
+            Configuraciones mConfiguraciones = mAllController.getConfiguraciones();
+            if (mConfiguraciones != null) {
+                if (!isNullOrEmpty(mConfiguraciones.terminos)) {
+                    mRegistroUniversitarioViewController.setTerminos(mConfiguraciones.terminos);
+                }
+            }
+        } catch (Exception ex) {
+
         }
     }
 

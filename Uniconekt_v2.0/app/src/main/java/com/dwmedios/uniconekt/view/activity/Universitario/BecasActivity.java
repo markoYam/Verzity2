@@ -26,6 +26,7 @@ import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.BecasPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.BecasAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.BecasViewController;
 
 import java.util.List;
@@ -235,6 +236,7 @@ public class BecasActivity extends BaseActivity implements BecasViewController {
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mBecasAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmptyRecyclerView();
@@ -267,6 +269,7 @@ public class BecasActivity extends BaseActivity implements BecasViewController {
             mSearchView.onActionViewCollapsed();
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 

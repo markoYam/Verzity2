@@ -25,6 +25,7 @@ import com.dwmedios.uniconekt.model.Cupones;
 import com.dwmedios.uniconekt.presenter.CuponesPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CuponAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.CuponesViewController;
 
 import java.util.List;
@@ -83,6 +84,17 @@ public class CuponesViewActivity extends BaseActivity implements CuponesViewCont
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!mSearchView.isIconified())
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mSearchView.onActionViewCollapsed();
+        }else {
+            Utils.startActivityUp(getApplicationContext(), MainUniversitarioActivity.class);
+        }
     }
 
     @Override
@@ -160,6 +172,7 @@ public class CuponesViewActivity extends BaseActivity implements CuponesViewCont
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mCuponAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmptyRecyclerView();

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -11,9 +12,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.dwmedios.uniconekt.data.service.api.apiConfiguraciones;
@@ -64,6 +68,26 @@ public class Utils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void setAnimRecyclerView(Context mContext, int anim, RecyclerView mRecyclerView) {
+        LayoutAnimationController mLayoutAnimationController = AnimationUtils.loadLayoutAnimation(mContext, anim);
+        mRecyclerView.setLayoutAnimation(mLayoutAnimationController);
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        mRecyclerView.scheduleLayoutAnimation();
+
+    }
+
+    public static void startActivityUp(Context mContext, Class<?> mActivity) {
+        try {
+            Intent intent = new Intent(mContext, mActivity);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     public static String ConvertModelToStringGson(Object mObject) {
@@ -302,7 +326,7 @@ public class Utils {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                if(!isNullOrEmpty(urlDownload) && !isNullOrEmpty(nombreArchivo)) {
+                if (!isNullOrEmpty(urlDownload) && !isNullOrEmpty(nombreArchivo)) {
                     File foto = new File(Folder_rutaPerfil + "/" + nombreArchivo);
                     if (!foto.exists()) {
                         //eliminar
@@ -341,9 +365,8 @@ public class Utils {
 
                     } else
                         Existe = true;
-                }else
-                {
-                    success=false;
+                } else {
+                    success = false;
                 }
             } catch (MalformedURLException mue) {
                 Log.e("SYNC getUpdate", "malformed url error", mue);

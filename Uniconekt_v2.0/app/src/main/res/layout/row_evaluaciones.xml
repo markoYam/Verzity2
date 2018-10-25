@@ -20,29 +20,29 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5sp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:id="@+id/imageCuestionario"
+                android:layout_width="70sp"
+                android:layout_height="70sp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="5sp"
                 android:layout_marginTop="5sp"
-                android:tint="@color/colorPrimary"
-                app:srcCompat="@drawable/evaluacion" />
+                android:layout_marginBottom="5sp"
+                app:srcCompat="@drawable/eva" />
 
             <TextView
                 android:id="@+id/textViewEnombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginLeft="10sp"
-                android:layout_marginRight="5sp"
                 android:layout_marginTop="5sp"
+                android:layout_marginBottom="10sp"
+                android:layout_marginRight="5sp"
                 android:text="Nombre Evaluacion"
+                android:textAlignment="center"
                 android:textColor="@color/uvv_black"
                 android:textSize="16sp" />
-
         </LinearLayout>
 
         <View
@@ -52,7 +52,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40sp">
+            android:layout_height="50sp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -64,37 +64,43 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="5sp"
+                    android:layout_marginLeft="10sp"
                     android:text="PENDIENTE"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/buttonEpresentar0"
-                    android:layout_width="wrap_content"
+                    android:layout_width="140sp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5sp"
                     android:text="VER RESULTADO"
-                    android:visibility="gone"
-                    android:theme="@style/buttonDesing" />
-                   <Button
+                    android:textSize="12sp"
+                    android:theme="@style/buttonDesing"
+                    android:visibility="gone" />
+
+                <Button
                     android:id="@+id/buttonEpresentar1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="140sp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5sp"
                     android:text="CONTINUAR"
-                       android:visibility="gone"
-                    android:theme="@style/buttonDesing_Continuar" />
-                   <Button
+                    android:textSize="12sp"
+                    android:theme="@style/buttonDesing_Continuar"
+                    android:visibility="gone" />
+
+                <Button
                     android:id="@+id/buttonEpresentar2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="140sp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5sp"
                     android:text="PRESENTAR"
-                    android:theme="@style/buttonDesing_Pentiente" />
+                    android:textSize="12sp"
+                    android:theme="@style/buttonDesing_Pentiente"
+                    android:visibility="visible" />
 
             </RelativeLayout>
 

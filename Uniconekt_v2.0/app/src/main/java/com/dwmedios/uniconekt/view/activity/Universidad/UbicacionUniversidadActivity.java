@@ -31,6 +31,7 @@ import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
+import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -64,6 +65,8 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlFacebook;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class UbicacionUniversidadActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -82,6 +85,11 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Ubicación");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+        if (extranjero) {
+            setStatusBarGradiant(UbicacionUniversidadActivity.this, R.drawable.status_uni_extra);
+            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, UbicacionUniversidadActivity.this);
+        }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

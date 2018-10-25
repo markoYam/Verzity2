@@ -298,18 +298,29 @@
 
                     </LinearLayout>
 
-                    <CheckBox
-                        android:id="@+id/checkbox_terminos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:focusableInTouchMode="true"
-                        android:text="Acepto términos y condiciones."
-                        android:textColor="@color/colorGris"
-                        android:textStyle="italic"
-                        android:theme="@style/MyCheckBox" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
+                        <CheckBox
+                            android:id="@+id/checkbox_terminos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:focusableInTouchMode="true"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/colorGris"
+                            android:textStyle="italic"
+                            android:theme="@style/MyCheckBox" />
+
+                        <TextView
+                            android:id="@+id/texviewTerminos"
+                            android:layout_width="match_parent"
+                            android:textColorLink="@color/colorPrimaryDark"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="wrap_content"
+                            android:text="Acepto términos y condiciones." />
+                    </LinearLayout>
                     <Button
                         android:id="@+id/buttonRegistrar"
                         android:layout_width="200dp"

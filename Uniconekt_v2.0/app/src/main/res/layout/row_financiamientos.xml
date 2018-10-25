@@ -65,6 +65,7 @@
 
                     <TextView
                         android:id="@+id/autor"
+                        android:layout_marginLeft="5sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Universidad que ofrece el financiamiento"
@@ -78,6 +79,7 @@
                         android:layout_height="wrap_content"
                         android:text="Nombre Universidad"
                         android:textColor="#000"
+                        android:layout_marginLeft="5sp"
                         android:textStyle="bold"
                         android:textSize="12dp" />
                 </LinearLayout>

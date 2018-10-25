@@ -11,12 +11,12 @@ public class PaypalResponse implements Parcelable{
     public paypalObject response;
 
     public class paypalObject {
-        public static final String ID = "id";
+       // public static final String ID = "id";
         public static final String ESTATUS = "state";
-        public static final String REFERENCIA = "order_id";
+        public static final String REFERENCIA = "id";
         public static final String key = "approved";
-        @SerializedName(ID)
-        public String id;
+       // @SerializedName(ID)
+       // public String id;
         @SerializedName(ESTATUS)
         public String status;
         @SerializedName(REFERENCIA)

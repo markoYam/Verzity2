@@ -13,6 +13,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -22,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dwmedios.uniconekt.R;
@@ -113,6 +116,9 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
     @BindView(R.id.fabPerfil)
     FloatingActionButton mFloatingActionButton;
 
+    @BindView(R.id.texviewTerminos)
+    TextView mTextViewTerminos;
+
     private RegistroViewController mRegistroViewController;
     private RegistroPresenter mRegistroPresenter;
     private Validator mValidator;
@@ -146,6 +152,7 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
         // getImei();
         configureActivity();
         rules();
+        mRegistroPresenter.getTerminos();
     }
 
     private void configureActivity() {
@@ -206,7 +213,7 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-               // startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
+                // startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
                 finish();
                 break;
         }
@@ -215,7 +222,7 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
 
     @Override
     public void onBackPressed() {
-       // startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
+        // startActivity(new Intent(getApplicationContext(), LoginActivity2.class));
         finish();
         super.onBackPressed();
     }
@@ -235,7 +242,7 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
         RuleDw_base phone = new Dw_Phone_valid("Ingrese un número de teléfono valido");
         RuleDw_base check = new Dw_required_field(mCheckBoxTerminos, "Debe estar de acuerdo con los términos.");
         RuleDw_base password = new Dw_ConfirmPassword(mEditTextContrasenia, "La contraseña y la confirmación no coinciden.");
-       // RuleDw_base longitudCaracteres = new Dw_Length_valid("Ingrese un número de teléfono valido", 14);
+        // RuleDw_base longitudCaracteres = new Dw_Length_valid("Ingrese un número de teléfono valido", 14);
         RuleDw_base longitudCaracteresPass = new Dw_MinLength_valid("La contraseña debe tener como mínimo 8 caracteres de longitud.", 8);
 
         mRules_dws.add(new Rules_Dw(mEditTextCorreo, email));
@@ -434,6 +441,20 @@ public class RegistroActivity extends BaseActivity implements Validator.Validati
 
     @Override
     public void UserReturn(Usuario usuario) {
+
+    }
+
+    @Override
+    public void setTerminos(String contenido) {
+        try {
+            mTextViewTerminos.setText(Html.fromHtml(
+                    "<a href='" + contenido + "'>Acepto términos y condiciones.</a>"));
+            mTextViewTerminos.setClickable(true);
+            mTextViewTerminos.setMovementMethod(LinkMovementMethod.getInstance());
+
+        } catch (Exception ex) {
+
+        }
 
     }
 }

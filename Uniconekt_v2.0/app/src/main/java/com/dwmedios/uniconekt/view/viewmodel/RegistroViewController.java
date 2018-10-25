@@ -1,10 +1,6 @@
 package com.dwmedios.uniconekt.view.viewmodel;
 
-import com.dwmedios.uniconekt.model.Item;
-import com.dwmedios.uniconekt.model.TipoCategoria;
 import com.dwmedios.uniconekt.model.Usuario;
-
-import java.util.List;
 
 /**
  * Created by mYam on 16/04/2018.
@@ -19,5 +15,7 @@ public interface RegistroViewController {
     void showProgress(boolean visible);
 
     void UserReturn(Usuario usuario);
+
+    void setTerminos(String contenido);
 
 }

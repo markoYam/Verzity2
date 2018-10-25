@@ -27,6 +27,8 @@ public class UniconektApplication extends Application {
                 .build();
         ImageLoader.getInstance().init(configuration);
         BaseApp mBaseApp= new BaseApp();
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+       // AppEventsLogger.activateApp(this);
     }
 
     private Activity mCurrentActivity = null;

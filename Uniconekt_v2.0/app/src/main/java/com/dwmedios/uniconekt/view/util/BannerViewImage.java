@@ -38,7 +38,8 @@ public class BannerViewImage {
         this.mImageView = mImageView;
         this.mObjectsList = mObjectsList;
         this.mListener = mListener;
-        this.continuar = true;
+        mBannerViewImage.continuar = true;
+        mBannerViewImage.isFinished = false;
         desordenar();
         handle();
     }
@@ -87,36 +88,60 @@ public class BannerViewImage {
     private boolean isFinished;
 
     public void finishBanner() {
-        if (mBannerViewImage != null) {
-            mBannerViewImage.continuar = false;
-            if (mHandler != null) {
-                mHandler.removeCallbacks(mRunnable);
+        try {
+            if (mBannerViewImage != null) {
+                mBannerViewImage.continuar = false;
+                if (mHandler != null) {
+                    mHandler.removeCallbacks(mRunnable);
+                }
+                isFinished = true;
+            } else {
+                this.continuar = false;
+                if (mHandler != null) {
+                    mHandler.removeCallbacks(mRunnable);
+                }
+                isFinished = true;
             }
+        } catch (Exception ex) {
             isFinished = true;
-        } else {
             this.continuar = false;
-            if (mHandler != null) {
-                mHandler.removeCallbacks(mRunnable);
-            }
-            isFinished = true;
         }
+
     }
 
     public void stop() {
-        if (mBannerViewImage != null)
-            mBannerViewImage.continuar = false;
-        else {
+        try {
+            if (mBannerViewImage != null) {
+                mImageView.setVisibility(View.GONE);
+                mBannerViewImage.continuar = false;
+            } else {
+                this.continuar = false;
+                mImageView.setVisibility(View.GONE);
+            }
+        } catch (Exception ex) {
             this.continuar = false;
         }
+
     }
 
     public void start() {
-        if (mBannerViewImage != null)
-            mBannerViewImage.continuar = true;
-        else {
+        try {
+            if (mBannerViewImage != null) {
+                mImageView.setVisibility(View.VISIBLE);
+                mBannerViewImage.continuar = true;
+                mBannerViewImage.isFinished = false;
+            } else {
+                this.continuar = true;
+                mImageView.setVisibility(View.VISIBLE);
+                mBannerViewImage.isFinished = false;
+            }
+            handle();
+        } catch (Exception ex) {
+            mBannerViewImage.isFinished = false;
             this.continuar = true;
+            handle();
         }
-        handle();
+
     }
 
     int posicion = 0;

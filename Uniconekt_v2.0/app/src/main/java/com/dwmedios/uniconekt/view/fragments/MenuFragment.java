@@ -31,6 +31,7 @@ import com.dwmedios.uniconekt.view.activity.Universitario_v2.EvaluacionesActivit
 import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 import com.dwmedios.uniconekt.view.fragments.base.BaseFragment;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.MenuController;
 
 import java.util.List;
@@ -70,7 +71,6 @@ public class MenuFragment extends BaseFragment implements MenuController {
         ButterKnife.bind(this, master);
         mSwipeRefreshLayout.setBackgroundColor(Color.parseColor("#000000"));
         menuPresenter = new MenuPresenter(this, getActivity());
-        menuPresenter.ConfigureMenu();
         mCardViewCupon.setOnClickListener(mOnClickListener);
         mCardViewFinanciamiento.setOnClickListener(mOnClickListener);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -82,6 +82,12 @@ public class MenuFragment extends BaseFragment implements MenuController {
         });
 
         return master;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        menuPresenter.ConfigureMenu();
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -123,6 +129,13 @@ public class MenuFragment extends BaseFragment implements MenuController {
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(menuAdapter);
+            if(typeUser==2)
+            {
+                Utils.setAnimRecyclerView(getActivity(),R.anim.layout_animation,mRecyclerView);
+            }else
+            {
+                Utils.setAnimRecyclerView(getActivity(),R.anim.layout_menu_anim,mRecyclerView);
+            }
         } else {
             mRecyclerView.setAdapter(null);
             this.empyRecycler();

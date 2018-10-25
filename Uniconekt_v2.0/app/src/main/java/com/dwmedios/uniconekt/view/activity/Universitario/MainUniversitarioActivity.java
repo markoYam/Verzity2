@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +27,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.ClasViewModel;
 import com.dwmedios.uniconekt.model.Notificaciones;
@@ -32,10 +40,9 @@ import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.MenuPresenter;
 import com.dwmedios.uniconekt.view.activity.Universidad.DatosUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.Universidad_v2.NotificacionesUniversidadActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2;
+import com.dwmedios.uniconekt.view.activity.Universitario_v2.MisAsesorActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.NotificacionesUniversitarioActivity;
-import com.dwmedios.uniconekt.view.activity.Universitario_v2.PaquetesAsesoresActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.fragments.MenuFragment;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
@@ -50,7 +57,6 @@ import java.util.List;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_VER_PERFIL_REPRESENTANTE;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_VER_PERFIL_UNIVERSITARIO;
-import static com.dwmedios.uniconekt.view.activity.Universitario_v2.AsesoresActivity.typeViewAsesor;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 
 public class MainUniversitarioActivity extends BaseActivity
@@ -171,6 +177,7 @@ public class MainUniversitarioActivity extends BaseActivity
     }
 
     FragmentManager fragmentManager = getSupportFragmentManager();
+    int delay = 300;
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -188,31 +195,51 @@ public class MainUniversitarioActivity extends BaseActivity
             menuPresenter.closeSesion();
         }
         if (id == R.id.menu_perfil) {
-            startActivity(new Intent(getApplicationContext(), DatosUniversidadActivity.class));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(getApplicationContext(), DatosUniversidadActivity.class));
+                }
+            }, delay);
         }
         if (id == R.id.menu_perfil_universitario) {
-            if (SharePrefManager.getInstance(getApplicationContext()).getTypeUser() == 1) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (SharePrefManager.getInstance(getApplicationContext()).getTypeUser() == 1) {
 
-                KEY_VER_PERFIL_UNIVERSITARIO = true;
-                KEY_VER_PERFIL_REPRESENTANTE = false;
-                startActivity(new Intent(getApplicationContext(), DatosUniversitarioActivity.class));
-            } else if (SharePrefManager.getInstance(getApplicationContext()).getTypeUser() == 2) {
-                KEY_VER_PERFIL_UNIVERSITARIO = false;
-                KEY_VER_PERFIL_REPRESENTANTE = true;
-                startActivity(new Intent(getApplicationContext(), DatosUniversitarioActivity.class));
-            }
+                        KEY_VER_PERFIL_UNIVERSITARIO = true;
+                        KEY_VER_PERFIL_REPRESENTANTE = false;
+                        startActivity(new Intent(getApplicationContext(), DatosUniversitarioActivity.class));
+                    } else if (SharePrefManager.getInstance(getApplicationContext()).getTypeUser() == 2) {
+                        KEY_VER_PERFIL_UNIVERSITARIO = false;
+                        KEY_VER_PERFIL_REPRESENTANTE = true;
+                        startActivity(new Intent(getApplicationContext(), DatosUniversitarioActivity.class));
+                    }
+                }
+            }, delay);
+
         }
         if (id == R.id.menu_mensajes) {
-            //getSupportActionBar().setTitle("Notificaciones");
-            int type = SharePrefManager.getInstance(getApplicationContext()).getTypeUser();
-            if (type == 1)
-                startActivity(new Intent(getApplicationContext(), NotificacionesUniversitarioActivity.class));
-            else
-                startActivity(new Intent(getApplicationContext(), NotificacionesUniversidadActivity.class));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    int type = SharePrefManager.getInstance(getApplicationContext()).getTypeUser();
+                    if (type == 1)
+                        startActivity(new Intent(getApplicationContext(), NotificacionesUniversitarioActivity.class));
+                    else
+                        startActivity(new Intent(getApplicationContext(), NotificacionesUniversidadActivity.class));
+                }
+            }, delay);
         }
         if (id == R.id.menu_mis_asesores) {
-            typeViewAsesor = 0;
-            startActivity(new Intent(getApplicationContext(), AsesoresActivity.class));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(getApplicationContext(), MisAsesorActivity.class));
+                }
+            }, delay);
+
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -256,13 +283,47 @@ public class MainUniversitarioActivity extends BaseActivity
                 mTextViewCorreo.setText(mPersona.correo);
                 mTextViewNombre.setText(mPersona.nombre);
                 if (mPersona.foto != null) {
-                    new taskImageP(getUrlImage(mPersona.foto, getApplicationContext())).execute();
+                    Glide.with(getApplicationContext())
+                            .load(getUrlImage(mPersona.foto, getApplicationContext()))
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    mImageViewFoto.setImageResource(R.drawable.profile);
+                                    return true;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            })
+                            .into(mImageViewFoto);
+
+                    //new taskImageP(getUrlImage(mPersona.foto, getApplicationContext())).execute();
                     // ImageLoader.getInstance().displayImage(getUrlImage(mPersona.foto, getApplicationContext()), mImageViewFoto, OptionsImageLoaderUser);
                 } else {
                     if (mUsuario != null) {
+
                         if (mUsuario.cv_facebook != null) {
                             //  mImageViewFoto.setVisibility(View.GONE);
                             // mProfilePictureView.setVisibility(View.VISIBLE);
+                            String url = "https://graph.facebook.com/" + mUsuario.cv_facebook + "/picture?type=large";
+                            Glide.with(getApplicationContext())
+                                    .load(url)
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            mImageViewFoto.setImageResource(R.drawable.profile);
+                                            return true;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            return false;
+                                        }
+                                    })
+                                    .into(mImageViewFoto);
+
                             new taskImage(mUsuario.cv_facebook).execute();
                             //  mProfilePictureView.setProfileId(mUsuario.cv_facebook);
                         }

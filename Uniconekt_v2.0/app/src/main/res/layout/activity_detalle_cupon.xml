@@ -166,7 +166,7 @@
             android:layout_marginRight="10dp"
             android:elevation="5dp"
             android:src="@drawable/ic_action_cupon"
-            android:theme="@style/MyFloatingButton"
+            android:theme="@style/MyFloatingButtonCupon"
             app:fab_size="normal" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

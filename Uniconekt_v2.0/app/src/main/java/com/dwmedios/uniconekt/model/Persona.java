@@ -27,6 +27,7 @@ public class Persona implements Parcelable {
 
     public static final String PAQUETE_ASESOR = "VentasPaquetesAsesores";
     public static final String SKYPE = "desSkype";
+    public static final String DES_PERSONA = "desPersona";
 
     @SerializedName(ID)
     @DatabaseField(columnName = ID, id = true, index = true)
@@ -70,6 +71,8 @@ public class Persona implements Parcelable {
     @SerializedName(SKYPE)
     public String skype;
 
+    @SerializedName(DES_PERSONA)
+    public String desPersona;
 
     protected Persona(Parcel in) {
         id = in.readInt();
@@ -84,6 +87,7 @@ public class Persona implements Parcelable {
         mTipoPersonas = in.readParcelable(TipoPersonas.class.getClassLoader());
         mVentaPaqueteAsesors = in.createTypedArrayList(VentaPaqueteAsesor.CREATOR);
         skype = in.readString();
+        desPersona = in.readString();
     }
 
     public Persona() {
@@ -103,6 +107,7 @@ public class Persona implements Parcelable {
         dest.writeParcelable(mTipoPersonas, flags);
         dest.writeTypedList(mVentaPaqueteAsesors);
         dest.writeString(skype);
+        dest.writeString(desPersona);
     }
 
     @Override

@@ -33,6 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversidadActivity.KEY_DETALLE_UNIVERSIDAD;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class VisualizarUniversidadesActivity extends BaseActivity implements UniversidadViewController {
@@ -60,6 +62,11 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
         mToolbar.setTitle("Universidades");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+        if (extranjero) {
+            setStatusBarGradiant(VisualizarUniversidadesActivity.this, R.drawable.status_uni_extra);
+            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, VisualizarUniversidadesActivity.this);
+        }
         mUniversidadPresenter = new UniversidadPresenter(this, getApplicationContext());
         //falta el swipe
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -229,6 +236,7 @@ public class VisualizarUniversidadesActivity extends BaseActivity implements Uni
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mUniversidadAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             mUniversidadAdapter.notifyDataSetChanged();

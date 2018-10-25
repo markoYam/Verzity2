@@ -19,6 +19,8 @@ import com.dwmedios.uniconekt.presenter.NivelAcademicoPresenter;
 import com.dwmedios.uniconekt.view.activity.Universitario.SearchLicenciaturasActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
+import com.dwmedios.uniconekt.view.util.SharePrefManager;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.NivelAcademicoViewController;
 
 import java.util.List;
@@ -27,6 +29,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario.SearchLicenciaturasActivity.KEY_NIVEL;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class FiltrarNivelAcademicoActivity extends BaseActivity implements NivelAcademicoViewController {
     @BindView(R.id.recyclerview_utils)
@@ -48,6 +52,11 @@ public class FiltrarNivelAcademicoActivity extends BaseActivity implements Nivel
         mToolbar.setTitle("Seleccionar Nivel académico");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+        if (extranjero) {
+            setStatusBarGradiant(FiltrarNivelAcademicoActivity.this, R.drawable.status_uni_extra);
+            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, FiltrarNivelAcademicoActivity.this);
+        }
         mNivelAcademicoPresenter = new NivelAcademicoPresenter(getApplicationContext(), this);
         mNivelAcademicoPresenter.getNivelesAcademicos();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,6 +99,7 @@ public class FiltrarNivelAcademicoActivity extends BaseActivity implements Nivel
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mCustomAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
 

@@ -3,13 +3,11 @@ package com.dwmedios.uniconekt.presenter;
 import android.content.Context;
 
 import com.dwmedios.uniconekt.data.controller.AllController;
-import com.dwmedios.uniconekt.data.controller.ItemController;
 import com.dwmedios.uniconekt.data.controller.RegistroController;
 import com.dwmedios.uniconekt.data.service.ClientService;
 import com.dwmedios.uniconekt.data.service.response.UsuarioResponse;
-import com.dwmedios.uniconekt.model.Item;
+import com.dwmedios.uniconekt.model.Configuraciones;
 import com.dwmedios.uniconekt.model.Usuario;
-import com.dwmedios.uniconekt.view.viewmodel.MainViewController;
 import com.dwmedios.uniconekt.view.viewmodel.RegistroViewController;
 
 import java.util.List;
@@ -19,6 +17,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.dwmedios.uniconekt.view.util.Utils.ConvertModelToStringGson;
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 /**
  * Created by mYam on 16/04/2018.
@@ -42,7 +41,18 @@ public class RegistroPresenter {
         }
         mAllController = new AllController(mContext);
     }
+    public void getTerminos() {
+        try {
+            Configuraciones mConfiguraciones = mAllController.getConfiguraciones();
+            if (mConfiguraciones != null) {
+                if (!isNullOrEmpty(mConfiguraciones.terminos)) {
+                    mRegistroViewController.setTerminos(mConfiguraciones.terminos);
+                }
+            }
+        } catch (Exception ex) {
 
+        }
+    }
     // TODO: 16/04/2018 va recibir la informacion de el activity
     public void registerUser(Usuario mUsuario) {
         mRegistroViewController.showProgress(true);

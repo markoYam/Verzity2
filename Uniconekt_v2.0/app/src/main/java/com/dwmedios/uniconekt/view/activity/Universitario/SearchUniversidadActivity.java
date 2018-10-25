@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.model.Banners;
 import com.dwmedios.uniconekt.model.ClasViewModel;
@@ -37,7 +44,6 @@ import com.dwmedios.uniconekt.view.util.BannerViewImage;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.SearchUniversidadViewController;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +52,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
-import static com.dwmedios.uniconekt.view.util.ImageUtils.OptionsImageLoaderDark;
 import static com.dwmedios.uniconekt.view.util.ImageUtils.getUrlImage;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
@@ -122,15 +127,20 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
     public void onBackPressed() {
         super.onBackPressed();
         BannerViewImage.getInstance(getApplicationContext()).finishBanner();
-        finish();
+        back();
     }
 
+    private void back() {
+        Intent intent = new Intent(getApplicationContext(), MainUniversitarioActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                back();
                 break;
             case R.id.menu_inicio_universidad:
                 Intent intent = new Intent(SearchUniversidadActivity.this, MainUniversitarioActivity.class);
@@ -161,6 +171,7 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(menuAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(),R.anim.layout_animation,mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmpyRecycler();
@@ -309,7 +320,21 @@ public class SearchUniversidadActivity extends BaseActivity implements SearchUni
             @Override
             public int onsuccess(Object mObject) {
                 final Banners mBanners = (Banners) mObject;
-                ImageLoader.getInstance().displayImage(getUrlImage(((Banners) mObject).foto, SearchUniversidadActivity.this), mImageView, OptionsImageLoaderDark);
+                Glide.with(getApplicationContext()).load(getUrlImage(((Banners) mObject).foto, SearchUniversidadActivity.this))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                               mImageView.setImageResource(R.drawable.defaultt);
+                                return true;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        })
+                        .into(mImageView);
+                //ImageLoader.getInstance().displayImage(getUrlImage(((Banners) mObject).foto, SearchUniversidadActivity.this), mImageView, OptionsImageLoaderDark);
                 mSearchUniversidadesPresenter.RegistrarVisitaBanner(mBanners);
                 mImageView.setOnClickListener(new View.OnClickListener() {
                     @Override

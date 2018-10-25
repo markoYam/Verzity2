@@ -1,9 +1,8 @@
 package com.dwmedios.uniconekt.view.activity.Universidad_v2;
 
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,12 +14,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.NivelAcademico;
 import com.dwmedios.uniconekt.model.TipoPostulacion;
 import com.dwmedios.uniconekt.presenter.TipoPostulacionPresenter;
 import com.dwmedios.uniconekt.view.activity.Universidad.PostuladosActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.TipoPostulacionViewController;
 
 import java.util.List;
@@ -91,6 +90,8 @@ public class TipoPostuladosActivity extends BaseActivity implements TipoPostulac
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mCustomAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(),R.anim.layout_animation,mRecyclerView);
+
         } else {
             mRecyclerView.setAdapter(null);
 

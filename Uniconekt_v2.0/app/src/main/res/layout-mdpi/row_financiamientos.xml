@@ -68,6 +68,7 @@
                         android:layout_height="wrap_content"
                         android:text="Universidad que ofrece el financiamiento"
                         android:textColor="#000"
+                        android:layout_marginLeft="2sp"
                         android:textSize="13dp"
                          />
 
@@ -77,6 +78,7 @@
                         android:layout_height="wrap_content"
                         android:text="Nombre Universidad"
                         android:textColor="#000"
+                        android:layout_marginLeft="2sp"
                         android:textStyle="bold"
                         android:textSize="14dp" />
                 </LinearLayout>

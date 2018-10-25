@@ -54,6 +54,14 @@ public class BaseActivity extends BaseApp {
             TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
         }
     }
+    protected  String getNameParentActivity()
+    {
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        if (upIntent == null || !NavUtils.shouldUpRecreateTask(this, upIntent)) {
+          return upIntent.getClass().getSimpleName();
+        }
+        return null;
+    }
     public boolean validatePermison(String permison, Activity onresult, int CodeResult) {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), permison) == PackageManager.PERMISSION_GRANTED) {
             return true;

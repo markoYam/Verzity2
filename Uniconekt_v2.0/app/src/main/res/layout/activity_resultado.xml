@@ -28,8 +28,8 @@
                 <ImageButton
                     android:id="@+id/buttonOk"
                     android:layout_width="30sp"
-                    android:layout_alignParentRight="true"
                     android:layout_height="30sp"
+                    android:layout_alignParentRight="true"
                     android:background="@color/colorTrasparente"
                     android:src="@drawable/ic_action_transit_enterexit" />
 
@@ -40,7 +40,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/profile_image"
                     android:layout_toRightOf="@+id/profile_image"
-                    android:text="Demo Evaluacion"
+                    android:text=""
                     android:textAlignment="center"
                     android:textColor="@color/colorBlanco"
                     android:textSize="18sp" />
@@ -59,18 +59,20 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Puntaje obtenido:" />
+
+                    <TextView
                         android:id="@+id/textViewPuntaje"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="100"
+                        android:layout_marginTop="3sp"
+                        android:text="0.0"
                         android:textSize="19sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="Puntaje obtenido" />
 
                 </LinearLayout>
 

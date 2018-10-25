@@ -27,6 +27,7 @@ import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.presenter.FinanciamientoPresenter;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.FinanciamientoAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.FinanciamientoViewController;
 
 import java.util.List;
@@ -85,6 +86,7 @@ public class FinanciamientoActivity extends BaseActivity implements Financiamien
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                //Utils.startActivityUp(getApplicationContext(), MainUniversitarioActivity.class);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -231,6 +233,8 @@ public class FinanciamientoActivity extends BaseActivity implements Financiamien
             mSearchView.onActionViewCollapsed();
         } else {
             super.onBackPressed();
+            finish();
+            // Utils.startActivityUp(getApplicationContext(), MainUniversitarioActivity.class);
         }
     }
 
@@ -258,6 +262,7 @@ public class FinanciamientoActivity extends BaseActivity implements Financiamien
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(financiamientoAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmptyRecyclerView();

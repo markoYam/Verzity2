@@ -19,6 +19,7 @@ public class Configuraciones implements Parcelable {
     public static final String USUARIO = "nbUsuarioFTP";
     public static final String PASS = "pdwContraseniaFTP";
     public static final String ROOT = "desCarpetaMultimediaFTP";
+    public static final String TERMINOS = "desRutaTerminos";
 
     @DatabaseField(id = true, columnName = ID, index = true)
     @SerializedName(ID)
@@ -50,6 +51,9 @@ public class Configuraciones implements Parcelable {
     @DatabaseField(columnName = ROOT)
     public String root_folder;
 
+    @DatabaseField(columnName = TERMINOS)
+    @SerializedName(TERMINOS)
+    public String terminos;
 
     protected Configuraciones(Parcel in) {
         id = in.readInt();
@@ -60,6 +64,7 @@ public class Configuraciones implements Parcelable {
         usuario = in.readString();
         password = in.readString();
         root_folder = in.readString();
+        terminos = in.readString();
     }
 
     public Configuraciones() {
@@ -75,6 +80,7 @@ public class Configuraciones implements Parcelable {
         dest.writeString(usuario);
         dest.writeString(password);
         dest.writeString(root_folder);
+        dest.writeString(terminos);
     }
 
     @Override

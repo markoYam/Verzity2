@@ -33,6 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
+import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class SearchLicenciaturasActivity extends BaseActivity implements LicenciaturaViewController {
     public static final String KEY_NIVEL = "jksgvjnsgkjkjgskjgs";
@@ -58,6 +60,11 @@ public class SearchLicenciaturasActivity extends BaseActivity implements Licenci
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Programas académicos");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();
+        if (extranjero) {
+            setStatusBarGradiant(SearchLicenciaturasActivity.this, R.drawable.status_uni_extra);
+            changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, SearchLicenciaturasActivity.this);
+        }
         mLicenciaturasPresenter = new LicenciaturasPresenter(this, getApplicationContext());
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -145,7 +152,7 @@ public class SearchLicenciaturasActivity extends BaseActivity implements Licenci
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mLicenciaturasAdapter);
             mRecyclerView.addItemDecoration(headersDecor);
-            mLicenciaturasAdapter.notifyDataSetChanged();
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmpyRecycler();

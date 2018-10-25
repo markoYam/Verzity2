@@ -33,7 +33,7 @@
             android:layout_toRightOf="@id/radio"
             android:layout_centerVertical="true"
             android:layout_marginRight="5sp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginTop="5sp"
             android:layout_marginBottom="5sp"
             android:layout_height="wrap_content" />

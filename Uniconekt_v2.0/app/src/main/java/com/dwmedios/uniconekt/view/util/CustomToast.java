@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,6 +88,8 @@ public class CustomToast {
             mImageView.startAnimation(in);
             mImageView.setVisibility(View.VISIBLE);
         }
+
+        master.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Toast toast = new Toast(mCustomToast.mActivity);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(mCustomToast.duration);

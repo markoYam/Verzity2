@@ -1,9 +1,8 @@
 package com.dwmedios.uniconekt.view.activity.Universitario_v2;
 
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,17 +18,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
-import com.dwmedios.uniconekt.model.ClasViewModel;
 import com.dwmedios.uniconekt.model.CodigoPostal;
 import com.dwmedios.uniconekt.model.Estados;
 import com.dwmedios.uniconekt.model.Paises;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.SearchUniversidades;
 import com.dwmedios.uniconekt.presenter.GetPaisesPresenter;
-import com.dwmedios.uniconekt.view.activity.Universitario.SearchUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
-import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
-import com.dwmedios.uniconekt.view.util.Dialog.CustomDialogReyclerView;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.GetPaisesViewController;
@@ -42,6 +37,7 @@ import butterknife.ButterKnife;
 
 import static com.dwmedios.uniconekt.view.activity.Universitario_v2.VisualizarUniversidadesActivity.KEY_BUSQUEDA;
 import static com.dwmedios.uniconekt.view.util.Utils.changeColorToolbar;
+import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class FiltrarEstadosActivity extends BaseActivity implements GetPaisesViewController {
     GetPaisesPresenter mGetPaisesPresenter;
@@ -68,7 +64,9 @@ public class FiltrarEstadosActivity extends BaseActivity implements GetPaisesVie
         mToolbar.setTitle("Buscar por ubicación");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero()) {
+            setStatusBarGradiant(FiltrarEstadosActivity.this, R.drawable.status_uni_extra);
             changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, this);
         } else {
             changeColorToolbar(getSupportActionBar(), R.color.Color_buscarUniversidad, this);
@@ -144,6 +142,7 @@ public class FiltrarEstadosActivity extends BaseActivity implements GetPaisesVie
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mcustomAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.empyRecycler();

@@ -148,6 +148,7 @@ public class FirebaseMesassingReciver extends BroadcastReceiver {
 
                         }
                     }
+
                     if (finalCurrentActivity instanceof NotificacionesUniversitarioActivity) {
 
                         if (((NotificacionesUniversitarioActivity) finalCurrentActivity).mNotificacionUniversitarioPresenter != null) {
@@ -177,7 +178,7 @@ public class FirebaseMesassingReciver extends BroadcastReceiver {
                 try {
                     if (finalCurrentActivity instanceof NotificacionesUniversidadActivity) {
                         if (((NotificacionesUniversidadActivity) finalCurrentActivity).mNotificacionesUniPresenter != null) {
-                            ((NotificacionesUniversidadActivity) finalCurrentActivity).mNotificacionesUniPresenter.mNotificacionesUniPresenter();
+                            ((NotificacionesUniversidadActivity) finalCurrentActivity).cargarNot();
 
                         }
                     }

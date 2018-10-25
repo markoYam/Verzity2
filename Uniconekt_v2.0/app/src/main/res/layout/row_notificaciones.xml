@@ -4,9 +4,11 @@
     android:id="@+id/idCardviewnotificaciones"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="70dp"
     android:clickable="true"
+    app:contentPadding="10sp"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="70dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -17,13 +19,16 @@
             android:id="@+id/imageviewIconoNotificaciones"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:contentDescription="TODO"
             android:src="@drawable/ic_action_notifications"
             android:tint="@color/colorPrimaryDark" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/imagebuttom"
             android:layout_toLeftOf="@+id/imagebuttom"
+            android:layout_toEndOf="@+id/imageviewIconoNotificaciones"
             android:layout_toRightOf="@+id/imageviewIconoNotificaciones"
             android:orientation="vertical">
 

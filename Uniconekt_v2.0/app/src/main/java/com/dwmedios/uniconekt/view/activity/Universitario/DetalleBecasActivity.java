@@ -140,7 +140,7 @@ public class DetalleBecasActivity extends BaseActivity implements BecasDetalleVi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                this.onBackPressed();
                 break;
             case R.id.menu_inicio_universidad:
                 Intent intent = new Intent(getApplicationContext(), MainUniversitarioActivity.class);

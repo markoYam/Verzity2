@@ -15,7 +15,9 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,6 +109,8 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
     FloatingActionButton mFloatingActionButton;
     @BindView(R.id.checkbox_terminos)
     CheckBox mCheckBox;
+    @BindView(R.id.texviewTerminos)
+    TextView mTextViewTerminos;
     private ValidateField mValidateField;
     private List<Rules_Dw> mRules_dwList;
     private String patchPhoto = null;
@@ -129,11 +133,12 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
         mUploadImage = new UploadImage(RegistroUniversitarioActivity.this, mResultInfo);
 
         mGetPaisesPresenter.getPaises();
+        mRegistroUniversitarioPresenter.getTerminos();
     }
 
     UploadImage.resultInfo mResultInfo = new UploadImage.resultInfo() {
         @Override
-        public void Onsucces(String patch,String mensaje) {
+        public void Onsucces(String patch, String mensaje) {
             patchPhoto = patch;
             showMessage(mensaje);
 
@@ -507,6 +512,19 @@ public class RegistroUniversitarioActivity extends BaseActivity implements GetPa
             showOnProgressDialog("Cargando...");
         } else {
             dismissProgressDialog();
+        }
+    }
+
+    @Override
+    public void setTerminos(String contenido) {
+        try {
+            mTextViewTerminos.setText(Html.fromHtml(
+                    "<a href='" + contenido + "'>Acepto términos y condiciones.</a>"));
+            mTextViewTerminos.setClickable(true);
+            mTextViewTerminos.setMovementMethod(LinkMovementMethod.getInstance());
+
+        } catch (Exception ex) {
+
         }
     }
 

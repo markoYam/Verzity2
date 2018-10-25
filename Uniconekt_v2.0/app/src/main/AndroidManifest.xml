@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
 
     <application
         android:name=".UniconektApplication"
@@ -70,8 +71,12 @@
         </activity>
 
         <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key_release" />
 
         <activity
             android:name=".view.activity.Universitario.SearchUniversidadActivity"
@@ -150,21 +155,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimaryDark" />
 
-        <receiver android:name=".view.widgets.NotificatiosAppWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/notificatios_app_widget_info" />
-        </receiver>
-
-        <activity android:name=".view.widgets.NotificatiosAppWidgetConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".view.activity.Universidad.DetalleNotificacionActivity"
             android:exported="true"
@@ -280,14 +270,19 @@
         <activity
             android:name=".view.activity.Universitario_v2.NotificacionUniversitarioActivity"
             android:exported="true"
-            android:theme="@style/NewDialogNot"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/NewDialogNot">
             <intent-filter>
                 <action android:name="ACTIVITY_NOTIFICATIONS_UNIVERSITARIO" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.activity.Universitario_v2.MisAsesorActivity"
+            android:label="@string/title_activity_mis_asesor"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

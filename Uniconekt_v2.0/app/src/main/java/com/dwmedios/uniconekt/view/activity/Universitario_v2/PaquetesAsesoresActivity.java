@@ -24,6 +24,7 @@ import com.dwmedios.uniconekt.view.activity.View_Utils.ConfirmBuyActivity;
 import com.dwmedios.uniconekt.view.activity.View_Utils.DialogActivity;
 import com.dwmedios.uniconekt.view.activity.base.BaseActivity;
 import com.dwmedios.uniconekt.view.adapter.CustomAdapter;
+import com.dwmedios.uniconekt.view.util.Utils;
 import com.dwmedios.uniconekt.view.viewmodel.PaquetesAsesorViewController;
 import com.google.gson.Gson;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -83,7 +84,7 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
     private void iniciarServicioPaypal() {
         Intent mIntent = new Intent(this, PayPalService.class);
         mPayPalConfiguration = new PayPalConfiguration()
-                .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+                .environment(PayPalConfiguration.ENVIRONMENT_PRODUCTION)
                 .clientId(getTokenPaypal(getApplicationContext()));
         mIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, mPayPalConfiguration);
         startService(mIntent);
@@ -95,7 +96,7 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
 
     public void PagarPaypal(PaqueteAsesor mPaqueteAsesor) {
 
-        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaqueteAsesor.costo), "MXN", mPaqueteAsesor.nombre + " \n Asesor: " + asesorSeleccionado.nombre, PayPalPayment.PAYMENT_INTENT_ORDER);
+        PayPalPayment mPayPalPayment = new PayPalPayment(new BigDecimal(mPaqueteAsesor.costo), "MXN", mPaqueteAsesor.nombre + " \n - Asesor: " + asesorSeleccionado.nombre, PayPalPayment.PAYMENT_INTENT_SALE);
         Intent mIntent = new Intent(this, PaymentActivity.class);
         mIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, mPayPalConfiguration);
         mIntent.putExtra(PaymentActivity.EXTRA_PAYMENT, mPayPalPayment);
@@ -196,6 +197,7 @@ public class PaquetesAsesoresActivity extends BaseActivity implements PaquetesAs
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mCustomAdapter);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
 
