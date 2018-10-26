@@ -55,7 +55,7 @@ public class SplashActivity extends BaseActivity implements SplashViewController
             mImageView.startAnimation(in);
             mImageView.setVisibility(View.VISIBLE);
         }
-     //  System.out.print("Key"+generarHash());
+       //System.out.print("Key"+generarHash());
     }
 
     public String generarHash() {

@@ -86,7 +86,7 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
         });
         Intent mIntent = new Intent(this, PayPalService.class);
         mPayPalConfiguration = new PayPalConfiguration()
-                .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+                .environment(PayPalConfiguration.ENVIRONMENT_PRODUCTION)
                 .clientId(getTokenPaypal(getApplicationContext()));
         mIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, mPayPalConfiguration);
         startService(mIntent);
