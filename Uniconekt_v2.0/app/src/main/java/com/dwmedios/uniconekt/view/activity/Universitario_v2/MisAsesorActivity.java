@@ -188,7 +188,7 @@ public class MisAsesorActivity extends BaseActivity implements AsesoresViewContr
 
     @Override
     public void Onfailed(String mensaje) {
-        showMessage(mensaje);
+        //showMessage(mensaje);
         mCardViewGeneral.setVisibility(View.GONE);
         mCardViewDescripcion.setVisibility(View.GONE);
         mImageView.setVisibility(View.GONE);
