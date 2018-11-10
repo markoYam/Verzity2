@@ -586,10 +586,11 @@ public class DatosUniversidad3Activity extends BaseActivity implements DatosUniv
                     mImageViewVerUbicacion.setImageResource(R.drawable.ic_prohibido_24);
                 }
             }
-            if (DatosUniversidad3Activity.mPaisesList != null && DatosUniversidad3Activity.mPaisesList.size() > 0)
-                onSucces(DatosUniversidad3Activity.mPaisesList);
-            else
-                mGetPaisesPresenter.getPaises();
+            if (DatosUniversidad3Activity.mUniversidad != null)
+                if (DatosUniversidad3Activity.mPaisesList != null && DatosUniversidad3Activity.mPaisesList.size() > 0)
+                    onSucces(DatosUniversidad3Activity.mPaisesList);
+                else
+                    mGetPaisesPresenter.getPaises();
             return master;
         }
 
@@ -797,6 +798,7 @@ public class DatosUniversidad3Activity extends BaseActivity implements DatosUniv
                 if (DatosUniversidad3Activity.mUniversidad != null) {
                     if (DatosUniversidad3Activity.mUniversidad.mDireccion != null) {
                         if (DatosUniversidad3Activity.mUniversidad.mDireccion.pais.equals("México")) {
+                            mTextInputEditTextCodigo.requestFocus();
                             mTextInputEditTextCodigo.setText(DatosUniversidad3Activity.mUniversidad.mDireccion.codigo_postal);
                             LinearLayout codigo = (LinearLayout) mTextInputEditTextCodigo.getParent().getParent().getParent();
                             LinearLayout estado = (LinearLayout) mTextInputEditTextEstado.getParent().getParent().getParent();
