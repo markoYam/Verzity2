@@ -8,6 +8,7 @@ import com.dwmedios.uniconekt.model.Configuraciones;
 import com.dwmedios.uniconekt.model.Direccion;
 import com.dwmedios.uniconekt.model.Dispositivo;
 import com.dwmedios.uniconekt.model.Item;
+import com.dwmedios.uniconekt.model.Paquetes;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.Usuario;
@@ -70,7 +71,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
         onCreate(getWritableDatabase(), connectionSource);
     }
 
-    private static Class<?>[] mDbClasses = {Item.class, Direccion.class, Dispositivo.class, Persona.class, Universidad.class, Usuario.class, VentasPaquetes.class, Configuraciones.class, VentaPaqueteAsesor.class};
+    private static Class<?>[] mDbClasses = {Item.class, Direccion.class, Dispositivo.class, Persona.class, Universidad.class, Usuario.class, VentasPaquetes.class, Configuraciones.class, VentaPaqueteAsesor.class,Paquetes.class};
 
     private static final String DATABASE_NAME = "uniconekt.db";
     private static final int DATABASE_VERSION = 1;

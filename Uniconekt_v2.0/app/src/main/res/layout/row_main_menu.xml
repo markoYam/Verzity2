@@ -18,15 +18,17 @@
             android:id="@+id/imageMenu"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:padding="2dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_action_ic_home" />
+            android:padding="3dp"
+            android:src="@drawable/ic_action_ic_home"
+            android:tint="@color/colorPrimaryDark" />
+
         <TextView
             android:id="@+id/texviewNombrMenu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/imagebuttom"
             android:layout_toRightOf="@+id/imageMenu"
+            android:fontFamily="@font/opensanslight"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:text="Nombre del item del menu"
@@ -39,8 +41,18 @@
             android:layout_height="70dp"
             android:layout_alignParentRight="true"
             android:background="@color/colorTrasparente"
-            android:tint="#000000"
-            android:src="@drawable/ic_action_ic_rightarrow" />
+            android:src="@drawable/ic_action_ic_rightarrow"
+            android:tint="#000000" />
+
+        <TextView
+            android:id="@+id/texviewDesItemMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5sp"
+            android:fontFamily="@font/opensanslight"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

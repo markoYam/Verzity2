@@ -43,17 +43,24 @@ public class DialogPreviewMapsActivity extends BaseActivity {
     }
 
     private void loadDialog() {
-        mUniversidad = getIntent().getExtras().getParcelable(KEY_UNIVERSIDAD_DIALOGO);
-        mTextViewNombre.setText(mUniversidad.nombre);
-        if (!isNullOrEmpty(mUniversidad.mDireccion.toString())) {
-            String des = mUniversidad.descripcion.replace("\r", "");
-            String des2 = des.replace("\n", "");
-            mTextViewDescripcion.setText(des2);
-        } else {
-            mTextViewDescripcion.setText("");
+        try {
+            mUniversidad = getIntent().getExtras().getParcelable(KEY_UNIVERSIDAD_DIALOGO);
+            mTextViewNombre.setText(mUniversidad.nombre);
+            if (!isNullOrEmpty(mUniversidad.descripcion)) {
+                String des = mUniversidad.descripcion.replace("\r", "");
+                String des2 = des.replace("\n", "");
+                mTextViewDescripcion.setText(des2);
+            } else {
+                mTextViewDescripcion.setText("");
+            }
+            mButtonCancelar.setOnClickListener(mOnClickListener);
+            mButtonVer.setOnClickListener(mOnClickListener);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showMessage("No es posible visualizar el detalle de la universidad");
+            finish();
         }
-        mButtonCancelar.setOnClickListener(mOnClickListener);
-        mButtonVer.setOnClickListener(mOnClickListener);
+
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {

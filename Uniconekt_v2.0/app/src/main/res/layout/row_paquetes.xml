@@ -28,9 +28,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="2dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
+                    android:layout_marginBottom="2dp"
                     android:background="#fff"
                     android:orientation="vertical"
                     android:visibility="visible">
@@ -65,6 +65,7 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal"
                         android:text="0 dias"
+                        android:fontFamily="@font/opensansregular"
                         android:textAlignment="center"
                         android:textColor="#000" />
 
@@ -74,8 +75,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
+                        android:fontFamily="@font/opensanslight"
                         android:layout_marginTop="10dp"
+                        android:elegantTextHeight="true"
+                        android:layout_marginRight="15dp"
                         android:text="Plan de alojamiento  casi ilimitado para variAS universidades medianos y en crecimiento."
                         android:textAlignment="center"
                         android:textColor="#000"
@@ -85,6 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5sp"
                         android:layout_marginRight="2dp"
                         android:background="@color/colorPrimary">
 
@@ -94,123 +98,23 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text=" Características"
+                            android:fontFamily="@font/opensanslight"
                             android:textColor="#ffff" />
                     </LinearLayout>
 
-                    <LinearLayout
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycleViewItemsAplica"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                    </android.support.v7.widget.RecyclerView>
 
-                            <CheckBox
-                                android:id="@+id/checkboxFinanciamiento"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:background="@null"
-                                android:backgroundTint="@color/colorPrimaryDark"
-                                android:button="@drawable/check_fondo"
 
-                                android:checked="true"
-                                android:clickable="false"
-                                android:textColor="@color/colorPrimaryDark" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text=" Aplica financiamiento. "
-                                android:textColor="#000" />
-                        </LinearLayout>
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <CheckBox
-                                android:id="@+id/checkboxBeca"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:background="@null"
-                                android:backgroundTint="@color/colorPrimaryDark"
-                                android:button="@drawable/check_fondo"
-                                android:checked="true"
-                                android:clickable="false"
-                                android:textColor="@color/colorPrimaryDark"></CheckBox>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Aplica becas."
-                                android:textColor="#000" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <CheckBox
-                                android:id="@+id/checkboxPostulacion"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:background="@null"
-                                android:backgroundTint="@color/colorPrimaryDark"
-                                android:button="@drawable/check_fondo"
-                                android:checked="true"
-                                android:clickable="false"
-                                android:textColor="@color/colorPrimaryDark" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Aplica postulación "
-                                android:textColor="#000" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <CheckBox
-                                android:id="@+id/checkboxProspectus"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:background="@null"
-                                android:backgroundTint="@color/colorPrimaryDark"
-                                android:button="@drawable/check_fondo"
-                                android:checked="true"
-                                android:clickable="false"
-                                android:textColor="@color/colorPrimaryDark" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Aplica prospectus"
-                                android:textColor="#000" />
-                        </LinearLayout>
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -261,6 +165,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="PAQUETE PREMIUM"
+                    android:fontFamily="@font/opensansregular"
                     android:textAlignment="center"
                     android:textColor="#fff" />
             </RelativeLayout>

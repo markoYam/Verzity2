@@ -1,14 +1,11 @@
 package com.dwmedios.uniconekt.view.adapter.holder;
 
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dwmedios.uniconekt.R;
@@ -17,6 +14,8 @@ import com.dwmedios.uniconekt.view.adapter.MenuAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.facebook.internal.Utility.isNullOrEmpty;
 
 public class MenuHolder extends RecyclerView.ViewHolder {
 
@@ -28,8 +27,9 @@ public class MenuHolder extends RecyclerView.ViewHolder {
     protected CardView mCardView;
     @BindView(R.id.imagebuttom)
     ImageButton mImageButton;
-    @BindView(R.id.relative_menu)
-    RelativeLayout mRelativeLayout;
+
+    @BindView(R.id.texviewDesItemMenu)
+    TextView mTextViewDesItem;
 
     public MenuHolder(View itemView) {
         super(itemView);
@@ -39,12 +39,13 @@ public class MenuHolder extends RecyclerView.ViewHolder {
     public void ConfigureMenu(final ClasViewModel.menu menu, final MenuAdapter.onclick mOnclick, int type) {
         if (menu.drawableImage != 0)
             mImageView.setImageResource(menu.drawableImage);
-     /*   ClasViewModel.tipoMenu validate = ClasViewModel.tipoMenu.valueOf(menu.tipo.toString());
-        switch (validate) {
-            case Becas:
-                mRelativeLayout.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.colorPrimaryDark));
-                break;
-        }*/
+        if (type == 1) {
+            if (menu.drawableBaground != 0)
+                mImageView.setBackgroundResource(menu.drawableBaground);
+            if (!isNullOrEmpty(menu.descripcion)) {
+                mTextViewDesItem.setText(menu.descripcion);
+            }
+        }
         mTextView.setText(menu.nombre);
         mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,17 +63,20 @@ public class MenuHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
+
       /*  if (menu.color != null) {
             mCardView.setBackgroundColor(Color.parseColor(menu.color));
         }*/
         if (type == 1) {
             if (menu.color != null) {
                 // mImageView.setColorFilter(Color.parseColor(menu.color), android.graphics.PorterDuff.Mode.MULTIPLY);
-                mCardView.setCardBackgroundColor(Color.parseColor(menu.color));
+                //   mImageView.setColorFilter(Color.parseColor(menu.color));
             }
         } else {
-            if (menu.color != null)
+            if (menu.color != null) {
                 mImageView.setColorFilter(Color.parseColor(menu.color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                mImageView.setColorFilter(Color.parseColor(menu.color), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
         }
     }
 }

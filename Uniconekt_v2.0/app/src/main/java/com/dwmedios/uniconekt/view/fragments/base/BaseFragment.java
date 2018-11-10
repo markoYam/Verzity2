@@ -1,17 +1,17 @@
 package com.dwmedios.uniconekt.view.fragments.base;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
 public class BaseFragment extends android.support.v4.app.Fragment {
-    public void showMessaje(String mensaje)
-    {
+    public void showMessaje(String mensaje) {
         Toast.makeText(getActivity(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
     private ProgressDialog mProgressDialog;
+
     public void showOnProgressDialog(String message) {
+        dismissProgressDialog();
         try {
             mProgressDialog = new ProgressDialog(getActivity());
             mProgressDialog.setMessage(message);
@@ -22,6 +22,14 @@ public class BaseFragment extends android.support.v4.app.Fragment {
             mProgressDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void showMessage(String mensaje) {
+        try {
+            Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -46,8 +46,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:fontFamily="@font/opensansbold"
                 android:text="Nombre Universidad"
                 android:textAlignment="center"
                 android:textColor="@color/uvv_black"
@@ -58,17 +59,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7sp"
+                android:layout_marginTop="5sp"
                 android:layout_marginRight="7sp"
-                android:layout_marginTop="7sp"
-                android:maxLines="3"
-                android:text=""
-                android:singleLine="true"
-                android:inputType="textMultiLine"
                 android:ellipsize="end"
+                android:elegantTextHeight="true"
+                android:fontFamily="@font/opensanslight"
+                android:maxLines="3"
+                android:singleLine="false"
                 android:textAlignment="center"
                 android:textColor="@color/uvv_black"
-                android:textSize="12sp"
-                 />
+                android:textSize="12sp" />
 
 
         </LinearLayout>

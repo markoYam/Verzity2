@@ -8,14 +8,10 @@ import com.dwmedios.uniconekt.data.service.ClientService;
 import com.dwmedios.uniconekt.data.service.api.apiConfiguraciones;
 import com.dwmedios.uniconekt.data.service.response.ConfiguracionesResponse;
 import com.dwmedios.uniconekt.data.service.response.UniversidadDetalleResponse;
-import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Universidad;
-import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.SplashViewController;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,14 +132,14 @@ public class SplashPresenter {
 
     public void updatePaquete(VentasPaquetes mVentasPaquetes) {
         if (mAllController.updatePaquete(mVentasPaquetes)) {
-            Log.e("Paquetes", "Informacion actualizada");
+            Log.e("Venta Paquetes", "Informacion actualizada");
         } else {
             mAllController.deletePaquetes();
             if (mAllController.addPaquetes(mVentasPaquetes)) {
-                Log.e("Paquetes", "Informacion actualizada");
+                Log.e("Venta Paquetes", "Informacion actualizada");
             } else
 
-                Log.e("Paquetes", "Erorr al actualizar la informacion");
+                Log.e("VentaPaquetes", "Error al actualizar la informacion");
         }
 
     }

@@ -9,9 +9,9 @@
     tools:context=".view.activity.Universitario_v2.PresentarCuestionarioActivity">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/contenedorNest"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/contenedorNest"
         android:layout_above="@+id/contenedorprogres">
 
         <LinearLayout
@@ -81,8 +81,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5sp"
-                android:layout_marginTop="5sp">
+                android:layout_marginTop="5sp"
+                android:layout_marginBottom="5sp">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerview_utils"
@@ -90,10 +90,10 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginBottom="5dp">
 
                 </android.support.v7.widget.RecyclerView>
 
@@ -103,6 +103,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
+                    android:fontFamily="@font/opensanslight"
                     android:gravity="center_vertical"
                     android:text="No se encontraron elementos."
                     android:textAlignment="center"
@@ -162,6 +163,7 @@
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
                 android:id="@+id/cardResponder"
                 android:layout_width="0dp"

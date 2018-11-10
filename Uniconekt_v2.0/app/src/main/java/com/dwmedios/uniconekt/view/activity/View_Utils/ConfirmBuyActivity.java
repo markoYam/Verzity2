@@ -13,7 +13,7 @@ import com.dwmedios.uniconekt.model.Universidad;
 import com.dwmedios.uniconekt.model.VentaPaqueteAsesor;
 import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.presenter.ConfirmBuyPresenter;
-import com.dwmedios.uniconekt.view.activity.Universidad.DatosUniversidadActivity;
+import com.dwmedios.uniconekt.view.activity.Universidad_v2.DatosUniversidad3Activity;
 import com.dwmedios.uniconekt.view.activity.Universitario.MainUniversitarioActivity;
 
 import butterknife.BindView;
@@ -135,7 +135,7 @@ public class ConfirmBuyActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                startActivity(new Intent(getApplicationContext(), DatosUniversidadActivity.class));
+                startActivity(new Intent(getApplicationContext(), DatosUniversidad3Activity.class));
                 finish();
             }
         } else finish();

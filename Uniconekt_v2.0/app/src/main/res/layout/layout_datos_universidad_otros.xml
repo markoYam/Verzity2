@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20sp"
+    android:layout_marginRight="5sp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10sp"
+            android:tint="#734c3a"
+            app:srcCompat="@drawable/ic_folleto_24" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeLayout">
+
+            <AutoCompleteTextView
+                android:id="@+id/editTextfolleto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:hint="URL folletos digitales"
+                android:imeOptions="actionNext"
+                android:inputType="textUri"
+                android:textSize="16sp"></AutoCompleteTextView>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10sp"
+            android:tint="#3b5998"
+            app:srcCompat="@drawable/ic_facebook_24" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:theme="@style/ThemeLayout">
+
+            <AutoCompleteTextView
+                android:id="@+id/editTextFacebook"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="true"
+                android:hint="URL Facebook"
+                android:imeOptions="actionNext"
+                android:inputType="textUri"
+                android:textSize="16sp"></AutoCompleteTextView>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10sp"
+            android:tint="#f46f30"
+            app:srcCompat="@drawable/ic_instagram_24" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeLayout">
+
+            <AutoCompleteTextView
+                android:id="@+id/editTextInstagram"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:hint="URL Instagram"
+                android:imeOptions="actionNext"
+                android:inputType="textUri"
+                android:textSize="16sp"></AutoCompleteTextView>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10sp"
+            android:tint="#1da1f2"
+            app:srcCompat="@drawable/ic_twitter_24" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeLayout">
+
+            <AutoCompleteTextView
+                android:id="@+id/editTextTwitter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:hint="URL Twitter"
+                android:imeOptions="actionDone"
+                android:inputType="textUri"
+                android:textSize="16sp"></AutoCompleteTextView>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+</LinearLayout>

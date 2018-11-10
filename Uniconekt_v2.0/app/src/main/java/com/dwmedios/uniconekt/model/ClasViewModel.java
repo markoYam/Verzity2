@@ -8,7 +8,9 @@ public class ClasViewModel {
         public tipoMenu tipo;
         public String nombre;
         public int drawableImage;
+        public int drawableBaground;
         public String color;
+        public String descripcion;
     }
 
     public static enum tipoMenu {

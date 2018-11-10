@@ -313,6 +313,8 @@ public class PaquetesActivity extends BaseActivity implements PaquetesViewContro
 
     @Override
     public void OnFailed(String mensaje) {
+        mTextView.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(false);
         showMessage(mensaje);
     }
 

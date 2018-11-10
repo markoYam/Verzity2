@@ -37,4 +37,5 @@
     <color name="Color_euu">#b47102</color>
     <color name="Color_skype">#12A5F4</color>
     <color name="Color_fondo_Confirm">#a8ffffff</color>
+    <color name="color_semitransparente">#55efebeb</color>
 </resources>

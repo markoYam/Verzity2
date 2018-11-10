@@ -117,7 +117,7 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(mPostuladosAdapter);
             mRecyclerView.addItemDecoration(mStickyRecyclerHeadersDecoration);
-            Utils.setAnimRecyclerView(getApplicationContext(),R.anim.layout_animation,mRecyclerView);
+            Utils.setAnimRecyclerView(getApplicationContext(), R.anim.layout_animation, mRecyclerView);
         } else {
             mRecyclerView.setAdapter(null);
             this.EmptyRecyclerView();
@@ -146,9 +146,7 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
 
     @Override
     public void OnFailed(String mensaje) {
-        showMessage(mensaje);
-        mTextView.setVisibility(View.VISIBLE);
-        mSwipeRefreshLayout.setRefreshing(false);
+        EmptyRecyclerView();
     }
 
     @Override
@@ -164,5 +162,6 @@ public class PostuladosActivity extends BaseActivity implements PostuladosGenera
     public void EmptyRecyclerView() {
         mTextView.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(false);
+        mRecyclerView.setAdapter(null);
     }
 }

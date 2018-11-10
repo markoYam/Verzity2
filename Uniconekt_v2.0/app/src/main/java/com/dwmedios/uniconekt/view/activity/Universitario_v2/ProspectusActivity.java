@@ -61,14 +61,15 @@ public class ProspectusActivity extends BaseActivity implements ProspectusViewCo
             changeColorToolbar(getSupportActionBar(), R.color.Color_extranjero, ProspectusActivity.this);
         }
         mProspectusPresenter = new ProspectusPresenter(this, getApplicationContext());
-        mProspectusPresenter.crearMenu();
         loadInfo();
+        mProspectusPresenter.crearMenu(mUniversidad);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mSwipeRefreshLayout.setRefreshing(true);
-                mProspectusPresenter.crearMenu();
                 loadInfo();
+                mProspectusPresenter.crearMenu(mUniversidad);
+
             }
         });
     }
@@ -118,6 +119,7 @@ public class ProspectusActivity extends BaseActivity implements ProspectusViewCo
     private void EmpyRecycler() {
         mTextView.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(false);
+        mRecyclerView.setAdapter(null);
     }
 
     MenuAdapter.onclick mOnclick = new MenuAdapter.onclick() {
@@ -150,6 +152,6 @@ public class ProspectusActivity extends BaseActivity implements ProspectusViewCo
 
     @Override
     public void OnFailed(String mensaje) {
-
+        EmpyRecycler();
     }
 }

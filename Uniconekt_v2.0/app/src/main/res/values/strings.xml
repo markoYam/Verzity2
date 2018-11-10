@@ -134,6 +134,12 @@
     <string name="ver_prospectus">Ver prospectus</string>
     <string name="title_activity_universidad_detalle">UniversidadDetalleActivity</string>
     <string name="title_activity_mis_asesor">MisAsesorActivity</string>
+    <string name="sin_informacion">Sin información para mostrar.</string>
+    <string name="datos_contacto">Datos de contacto</string>
+    <string name="title_activity_datos_universidad3">DatosUniversidad3Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 
 </resources>

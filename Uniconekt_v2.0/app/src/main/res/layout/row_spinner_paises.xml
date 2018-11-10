@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:fontFamily="@font/opensanslight"
+    android:gravity="center_vertical"
+    android:paddingLeft="5dp"
     android:text="--Seleccione su país--"
     android:textAlignment="gravity"
-    android:paddingLeft="5dp"
-    android:textSize="16dp"
     android:textColor="@color/colorPrimaryDark"
-    android:gravity="center_vertical"
-    android:layout_height="40dp">
-</TextView>
+    android:textSize="16dp"></TextView>

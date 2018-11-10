@@ -47,27 +47,28 @@ public class MenuPresenter {
         if (typeUser == 1) {
 
             ClasViewModel.menu menu = new ClasViewModel.menu();
-            menu.nombre = "Buscar universidades";
+            menu.nombre = "Universidades";
+            menu.descripcion = "Buscar universidades";
             menu.tipo = ClasViewModel.tipoMenu.Universidad;
-            //menu.drawableImage = getDrawable("ic_search_2", mContext);
             menu.drawableImage = R.drawable.ic_search_2;
-            menu.color = mContext.getString(R.color.Color_buscarUniversidad);
+            menu.drawableBaground = R.drawable.item_menu_universidades;
             lisMen.add(menu);
 
 
             ClasViewModel.menu menu1 = new ClasViewModel.menu();
             menu1.nombre = "Becas";
             menu1.tipo = ClasViewModel.tipoMenu.Becas;
-            //menu1.drawableImage = getDrawable("ic_becas", mContext);
+            menu1.descripcion = "Buscar becas";
             menu1.drawableImage = R.drawable.ic_becas;
-            menu1.color = mContext.getString(R.color.Color_becas);
+            menu1.drawableBaground = R.drawable.item_menu_becas;
             lisMen.add(menu1);
 
             ClasViewModel.menu menu3 = new ClasViewModel.menu();
             menu3.nombre = "Examen Vocacional";
             menu3.tipo = ClasViewModel.tipoMenu.examen;
             menu3.drawableImage = R.drawable.ic_examen;
-            menu3.color = mContext.getString(R.color.Color_examen);
+            menu3.descripcion = "Consultar exámenes";
+            menu3.drawableBaground = R.drawable.item_menu_examen;
             lisMen.add(menu3);
 
 
@@ -75,7 +76,8 @@ public class MenuPresenter {
             menu4.nombre = "Estudia en el Extranjero";
             menu4.tipo = ClasViewModel.tipoMenu.extranjero;
             menu4.drawableImage = R.drawable.aeroplane;
-            menu4.color = mContext.getString(R.color.Color_extranjero);
+            menu4.descripcion = "Buscar universidades";
+            menu4.drawableBaground = R.drawable.item_menu_extranjero;
             lisMen.add(menu4);
 
 

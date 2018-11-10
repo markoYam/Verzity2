@@ -49,7 +49,7 @@ public class FiltrarNivelAcademicoActivity extends BaseActivity implements Nivel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtrar_nivel_academico);
         ButterKnife.bind(this);
-        mToolbar.setTitle("Seleccionar Nivel académico");
+        mToolbar.setTitle("Seleccionar nivel académico");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         boolean extranjero = SharePrefManager.getInstance(getApplicationContext()).isSeachExtranjero();

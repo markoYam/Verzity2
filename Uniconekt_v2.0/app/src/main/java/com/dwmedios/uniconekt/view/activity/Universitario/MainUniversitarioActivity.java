@@ -38,7 +38,7 @@ import com.dwmedios.uniconekt.model.Notificaciones;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Usuario;
 import com.dwmedios.uniconekt.presenter.MenuPresenter;
-import com.dwmedios.uniconekt.view.activity.Universidad.DatosUniversidadActivity;
+import com.dwmedios.uniconekt.view.activity.Universidad_v2.DatosUniversidad3Activity;
 import com.dwmedios.uniconekt.view.activity.Universidad_v2.NotificacionesUniversidadActivity;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.LoginActivity2;
 import com.dwmedios.uniconekt.view.activity.Universitario_v2.MisAsesorActivity;
@@ -198,7 +198,7 @@ public class MainUniversitarioActivity extends BaseActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(getApplicationContext(), DatosUniversidadActivity.class));
+                    startActivity(new Intent(getApplicationContext(), DatosUniversidad3Activity.class));
                 }
             }, delay);
         }

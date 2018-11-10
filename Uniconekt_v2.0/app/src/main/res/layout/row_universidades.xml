@@ -3,15 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardviewUniversidad"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_menu"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="@dimen/item_menu"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#ffffff">
+
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/imageUniversidad"
             android:layout_width="70dp"
@@ -24,9 +26,13 @@
         <TextView
             android:id="@+id/texviewNombreUniversidad"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="2sp"
+            android:layout_marginBottom="2sp"
             android:layout_toLeftOf="@+id/imagebuttom"
             android:layout_toRightOf="@+id/imageUniversidad"
+            android:fontFamily="@font/opensanslight"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:text="Nombre del item de la universidad"
@@ -38,9 +44,9 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentRight="true"
-            android:tint="@color/uvv_black"
             android:background="@color/colorTrasparente"
-            android:src="@drawable/ic_action_ic_rightarrow" />
+            android:src="@drawable/ic_action_ic_rightarrow"
+            android:tint="@color/uvv_black" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

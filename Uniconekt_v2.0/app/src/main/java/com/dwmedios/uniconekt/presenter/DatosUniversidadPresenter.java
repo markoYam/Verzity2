@@ -7,7 +7,11 @@ import com.dwmedios.uniconekt.data.service.ClientService;
 import com.dwmedios.uniconekt.data.service.response.UniversidadDetalleResponse;
 import com.dwmedios.uniconekt.model.Direccion;
 import com.dwmedios.uniconekt.model.Universidad;
+import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.view.viewmodel.DatosUniversidadViewController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +38,12 @@ public class DatosUniversidadPresenter {
         if (mUniversidad != null) {
             Direccion mDireccion = mAllController.getDireccionUniversidad(mUniversidad.id_direccion);
             if (mDireccion != null) mUniversidad.mDireccion = mDireccion;
+            final VentasPaquetes mVentasPaquetes = mAllController.getPaqueteUniversidad();
+            if (mVentasPaquetes != null) {
+                List<VentasPaquetes> mVentasPaquetesList = new ArrayList<>();
+                mVentasPaquetesList.add(mVentasPaquetes);
+                mUniversidad.mVentasPaquetesList = mVentasPaquetesList;
+            }
         }
         return mUniversidad;
     }
@@ -75,8 +85,8 @@ public class DatosUniversidadPresenter {
     }
 
     public boolean updateUniversidad(Universidad mUniversidad) {
-         return mAllController.updateDatosUniversidad(mUniversidad);
-       // mAllController.updateDatosUniversidad(mUniversidad);
+        return mAllController.updateDatosUniversidad(mUniversidad);
+        // mAllController.updateDatosUniversidad(mUniversidad);
        /* if (mUniversidad.mDireccion != null) {
             mAllController.updateDireccion(mUniversidad.mDireccion);
         }*/

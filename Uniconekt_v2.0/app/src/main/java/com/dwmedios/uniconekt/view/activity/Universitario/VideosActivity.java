@@ -204,9 +204,10 @@ public class VideosActivity extends BaseActivity implements VideoViewController 
 
     @Override
     public void Onfailed(String mensaje) {
-        showToastMessage(mensaje);
+        // showToastMessage(mensaje);
         mTextView.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(false);
+        mRecyclerView.setAdapter(null);
     }
 
     @Override

@@ -29,6 +29,9 @@ public class Universidad implements Parcelable {
     public static final String LICENCIATURAS = "Licenciaturas";
     public static final String PERSONAS = "Personas";
     public static final String FOLLETOS = "urlFolletosDigitales";
+    public static final String FACEBOOK = "urlFaceBook";
+    public static final String INSTAGRAM = "urlInstagram";
+    public static final String TWITTER = "urlTwitter";
 
 
     @SerializedName(ID)
@@ -70,7 +73,20 @@ public class Universidad implements Parcelable {
     public Direccion mDireccion;
 
     @SerializedName(FOLLETOS)
+    @DatabaseField(columnName = FOLLETOS)
     public String folleto;
+
+    @SerializedName(FACEBOOK)
+    @DatabaseField(columnName = FACEBOOK)
+    public String facebook;
+
+    @SerializedName(INSTAGRAM)
+    @DatabaseField(columnName = INSTAGRAM)
+    public String instagram;
+
+    @SerializedName(TWITTER)
+    @DatabaseField(columnName = TWITTER)
+    public String twitter;
 
     @SerializedName(PERSONAS)
     public Persona mPersona;
@@ -98,6 +114,9 @@ public class Universidad implements Parcelable {
         logo = in.readString();
         mDireccion = in.readParcelable(Direccion.class.getClassLoader());
         folleto = in.readString();
+        facebook = in.readString();
+        instagram = in.readString();
+        twitter = in.readString();
         mPersona = in.readParcelable(Persona.class.getClassLoader());
         mVentasPaquetesList = in.createTypedArrayList(VentasPaquetes.CREATOR);
         id_direccion = in.readInt();
@@ -120,6 +139,9 @@ public class Universidad implements Parcelable {
         dest.writeString(logo);
         dest.writeParcelable(mDireccion, flags);
         dest.writeString(folleto);
+        dest.writeString(facebook);
+        dest.writeString(instagram);
+        dest.writeString(twitter);
         dest.writeParcelable(mPersona, flags);
         dest.writeTypedList(mVentasPaquetesList);
         dest.writeInt(id_direccion);

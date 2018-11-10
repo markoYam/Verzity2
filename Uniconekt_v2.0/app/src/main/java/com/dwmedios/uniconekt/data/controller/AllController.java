@@ -6,6 +6,7 @@ import android.util.Log;
 import com.dwmedios.uniconekt.data.database.ConfiguracionesOrmlite;
 import com.dwmedios.uniconekt.data.database.DireccionOrmlite;
 import com.dwmedios.uniconekt.data.database.DispositivoOrmlite;
+import com.dwmedios.uniconekt.data.database.PaquetesOrmLite;
 import com.dwmedios.uniconekt.data.database.PersonaOrmlite;
 import com.dwmedios.uniconekt.data.database.UniversidadOrmlite;
 import com.dwmedios.uniconekt.data.database.UsuarioOrmLite;
@@ -39,6 +40,7 @@ public class AllController {
     private VentasPaquetesOrmlite mVentasPaquetesController;
     private ConfiguracionesOrmlite mConfiguracionesOrmlite;
     private VentaPaqueteAsesorOrmLite mVentaPaqueteAsesorOrmLite;
+    private PaquetesOrmLite mPaquetesOrmLite;
 
     public AllController(Context mContext) {
         this.mContext = mContext;
@@ -51,6 +53,7 @@ public class AllController {
         mVentasPaquetesController = new VentasPaquetesOrmlite(mOrmLiteDatabaseHelper);
         mConfiguracionesOrmlite = new ConfiguracionesOrmlite(mOrmLiteDatabaseHelper);
         mVentaPaqueteAsesorOrmLite = new VentaPaqueteAsesorOrmLite(mOrmLiteDatabaseHelper);
+        mPaquetesOrmLite = new PaquetesOrmLite(mOrmLiteDatabaseHelper);
     }
 
     // TODO: 18/04/2018 Direccion
@@ -136,6 +139,8 @@ public class AllController {
             Log.e("Borrar Paquetes", "Correcto");
         if (mVentaPaqueteAsesorOrmLite.deleteElements(mVentaPaqueteAsesorOrmLite.selectAll()) > 0)
             Log.e("Borrar Paquetes asesor", "Correcto");
+        if (mPaquetesOrmLite.deleteElements(mPaquetesOrmLite.selectAll()) > 0)
+            Log.e("Borrar paquetes", "Correcto");
         return true;
     }
 
@@ -164,14 +169,15 @@ public class AllController {
         return (mUsuarioOrmLite.selectAll() != null && mUsuarioOrmLite.selectAll().size() > 0 ? mUsuarioOrmLite.selectAll().get(0) : null);
     }
 
-    public boolean VerificarCompraPaquete() {
+ /*   public boolean VerificarCompraPaquete() {
         List<VentasPaquetes> ventasPaquetes = mVentasPaquetesController.selectAll();
         return (ventasPaquetes != null && ventasPaquetes.size() > 0);
-    }
+    }*/
 
     public boolean SavePaquete(VentasPaquetes mVentasPaquetes) {
+        if (mVentasPaquetes.mPaquetes != null)
+            mPaquetesOrmLite.addElement(mVentasPaquetes.mPaquetes);
         return (mVentasPaquetesController.addElement(mVentasPaquetes) > 0);
-
     }
 
     public boolean updatePaquete(VentasPaquetes mVentasPaquetes) {
@@ -189,7 +195,7 @@ public class AllController {
     }
 
     public boolean deletePaquetes() {
-        return (mVentasPaquetesController.deleteElements(mVentasPaquetesController.selectAll()) > 0);
+        return (mVentasPaquetesController.deleteElements(mVentasPaquetesController.selectAll()) > 0 && mPaquetesOrmLite.deleteElements(mPaquetesOrmLite.selectAll()) > 0);
     }
 
     public boolean addPaquetes(VentasPaquetes mVentasPaquetes) {
@@ -232,6 +238,16 @@ public class AllController {
             if (mUniversidad.mPersona != null) {
                 updateDatosPersona(mUniversidad.mPersona);
             }
+            if (mUniversidad.mVentasPaquetesList != null && mUniversidad.mVentasPaquetesList.size() > 0) {
+                if (mPaquetesOrmLite.updateElement(mUniversidad.mVentasPaquetesList.get(0).mPaquetes) > 0) {
+                    Log.e("Paquete", "Actualizado correctamente");
+                } else {
+                    if (mPaquetesOrmLite.addElement(mUniversidad.mVentasPaquetesList.get(0).mPaquetes) > 0)
+                        Log.e("Paquete", "Agregado correctamente");
+                    else
+                        Log.e("Paquete", "Ocurrio un error al agregar");
+                }
+            }
         } else {
             mUniversidadOrmlite.deleteElements(mUniversidadOrmlite.selectAll());
             if (mUniversidadOrmlite.addElement(mUniversidad) > 0) {
@@ -254,6 +270,17 @@ public class AllController {
             }
             if (mUniversidad.mPersona != null) {
                 updateDatosPersona(mUniversidad.mPersona);
+            }
+
+            if (mUniversidad.mVentasPaquetesList != null && mUniversidad.mVentasPaquetesList.size() > 0) {
+                if (mPaquetesOrmLite.updateElement(mUniversidad.mVentasPaquetesList.get(0).mPaquetes) > 0) {
+                    Log.e("Paquete", "Actualizado correctamente");
+                } else {
+                    if (mPaquetesOrmLite.addElement(mUniversidad.mVentasPaquetesList.get(0).mPaquetes) > 0)
+                        Log.e("Paquete", "Agregado correctamente");
+                    else
+                        Log.e("Paquete", "Ocurrio un error al agregar");
+                }
             }
         }
         return true;
@@ -332,7 +359,7 @@ public class AllController {
                     }
                 }
             } else {
-                Log.e("Datos direccion", "No se encontraron datos");
+                Log.e("Datos direccion P", "No se encontraron datos");
             }
         } else {
             mPersonaOrmlite.deleteElements(mPersonaOrmlite.selectAll());
@@ -349,7 +376,7 @@ public class AllController {
                         }
                     }
                 } else {
-                    Log.e("Datos direccion", "No se encontraron datos");
+                    Log.e("Datos direccion P", "No se encontraron datos");
                 }
             } else {
                 Log.e("info Persona", "Ocurrio un error al agregar");
@@ -387,5 +414,17 @@ public class AllController {
             return mVentaPaqueteAsesorOrmLite.addElement(mVentaPaqueteAsesor) > 0;
         } else
             return mVentaPaqueteAsesorOrmLite.addElement(mVentaPaqueteAsesor) > 0;
+    }
+
+    public VentasPaquetes getPaqueteUniversidad() {
+        if (mVentasPaquetesController.selectAll() != null && mVentasPaquetesController.selectAll().size() > 0) {
+            VentasPaquetes mVentasPaquetes = mVentasPaquetesController.selectAll().get(0);
+            if (mVentasPaquetes != null) {
+                mVentasPaquetes.mPaquetes = mPaquetesOrmLite.selectAll() != null && mPaquetesOrmLite.selectAll().size() > 0 ? mPaquetesOrmLite.selectAll().get(0) : null;
+                return mVentasPaquetes;
+            } else
+                return null;
+
+        } else return null;
     }
 }

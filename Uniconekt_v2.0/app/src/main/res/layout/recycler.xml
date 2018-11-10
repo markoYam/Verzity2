@@ -11,14 +11,13 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_utils"
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
             android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            >
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -28,6 +27,7 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:fontFamily="@font/opensanslight"
             android:gravity="center_vertical"
             android:text="No se encontraron elementos."
             android:textAlignment="center"

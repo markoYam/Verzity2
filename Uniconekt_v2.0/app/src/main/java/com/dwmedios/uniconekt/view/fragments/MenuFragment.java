@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -80,9 +82,12 @@ public class MenuFragment extends BaseFragment implements MenuController {
                 menuPresenter.ConfigureMenu();
             }
         });
-
+        mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_bottom_to_up);
         return master;
+
     }
+
+    Animation mAnimation;
 
     @Override
     public void onStart() {
@@ -95,7 +100,7 @@ public class MenuFragment extends BaseFragment implements MenuController {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.cardviewCuponMenu:
-                   startActivity(new Intent(getActivity(), CuponesViewActivity.class));
+                    startActivity(new Intent(getActivity(), CuponesViewActivity.class));
 
                     break;
                 case R.id.cardviewFinanciamientoMenu:
@@ -129,13 +134,14 @@ public class MenuFragment extends BaseFragment implements MenuController {
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setAdapter(menuAdapter);
-            if(typeUser==2)
-            {
-                Utils.setAnimRecyclerView(getActivity(),R.anim.layout_animation,mRecyclerView);
-            }else
-            {
-                Utils.setAnimRecyclerView(getActivity(),R.anim.layout_menu_anim,mRecyclerView);
+            if (typeUser == 2) {
+                Utils.setAnimRecyclerView(getActivity(), R.anim.layout_animation, mRecyclerView);
+            } else {
+                Utils.setAnimRecyclerView(getActivity(), R.anim.layout_menu_anim, mRecyclerView);
+                mLinearLayout.startAnimation(mAnimation);
+                mLinearLayout.setVisibility(View.VISIBLE);
             }
+
         } else {
             mRecyclerView.setAdapter(null);
             this.empyRecycler();
@@ -161,7 +167,7 @@ public class MenuFragment extends BaseFragment implements MenuController {
                     break;
                 case examen:
                     startActivity(new Intent(getActivity(), EvaluacionesActivity.class));
-                   // showMessaje("Modulo en construcción");
+                    // showMessaje("Modulo en construcción");
                     break;
                 case paquetes:
                     startActivity(new Intent(getActivity(), PaquetesActivity.class));

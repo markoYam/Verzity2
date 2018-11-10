@@ -239,8 +239,10 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
             } else {
                 Usuario mUsuario = mAllController.getusuarioPersona();
                 if (mUsuario != null) {
-                    mUri.uri = getUrlFacebook(mUsuario.cv_facebook);
-                    mUri.nombre = "PefilFacebook.jpg";
+                    if(!isNullOrEmpty(mUsuario.cv_facebook)) {
+                        mUri.uri = getUrlFacebook(mUsuario.cv_facebook);
+                        mUri.nombre = "PefilFacebook.jpg";
+                    }
                 }
             }
         } else {

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -14,10 +15,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dwmedios.uniconekt.data.service.api.apiConfiguraciones;
@@ -98,6 +101,15 @@ public class Utils {
             e.printStackTrace();
             return null;
 
+        }
+    }
+
+    public static void setTypeFace(TextView textView, Context mContext) {
+        try {
+            Typeface type = Typeface.createFromAsset(mContext.getAssets(), "fonts/OpenSans-Light.ttf");
+            textView.setTypeface(type);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

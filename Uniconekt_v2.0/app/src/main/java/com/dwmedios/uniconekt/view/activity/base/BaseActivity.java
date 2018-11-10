@@ -54,14 +54,15 @@ public class BaseActivity extends BaseApp {
             TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
         }
     }
-    protected  String getNameParentActivity()
-    {
+
+    protected String getNameParentActivity() {
         Intent upIntent = NavUtils.getParentActivityIntent(this);
         if (upIntent == null || !NavUtils.shouldUpRecreateTask(this, upIntent)) {
-          return upIntent.getClass().getSimpleName();
+            return upIntent.getClass().getSimpleName();
         }
         return null;
     }
+
     public boolean validatePermison(String permison, Activity onresult, int CodeResult) {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), permison) == PackageManager.PERMISSION_GRANTED) {
             return true;
@@ -271,6 +272,21 @@ public class BaseActivity extends BaseApp {
                 .setPositiveButton("Habilitar", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                }).setCancelable(false);
+
+        alert = builder.create();
+        alert.show();
+    }
+
+    public static void AlertNoGps(final Context mContext) {
+        AlertDialog alert = null;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Habilidar servicios de ubicación")
+                .setCancelable(false)
+                .setPositiveButton("Habilitar", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        mContext.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 }).setCancelable(false);
 

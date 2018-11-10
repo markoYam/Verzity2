@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20sp">
+
+    <LinearLayout
+        android:id="@+id/layoutDireccion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10sp"
+                android:src="@drawable/ic_action_pais"
+                android:tint="@color/colorGris" />
+
+            <Spinner
+                android:id="@+id/spinnerPaises"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:tooltipText="País"></Spinner>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10sp"
+                android:src="@drawable/ic_action_ic_school"
+                android:tint="@color/colorGris" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layoutCodigo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeLayout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTexCodigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Código postal"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:textSize="16sp"></android.support.design.widget.TextInputEditText>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10sp"
+                android:src="@drawable/ic_action_estado"
+                android:tint="@color/colorGris" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layoutEstado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeLayout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:enabled="false"
+                    android:hint="Estado"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="16sp"></android.support.design.widget.TextInputEditText>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10sp"
+                android:src="@drawable/ic_action_ciudad"
+                android:tint="@color/colorGris" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layoutMunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeLayout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextMunicipio"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:enabled="false"
+                    android:hint="Municipio"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="16sp"></android.support.design.widget.TextInputEditText>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10sp"
+                android:src="@drawable/ic_action_ciudad"
+                android:tint="@color/colorGris" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layoutCiudad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeLayout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextCiudad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:enabled="false"
+                    android:hint="Ciudad"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="16sp"></android.support.design.widget.TextInputEditText>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10sp"
+                android:src="@drawable/ic_action_ciudad"
+                android:tint="@color/colorGris" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeLayout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edittextCalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Dirección"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:textSize="16sp"></android.support.design.widget.TextInputEditText>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45sp"
+            android:fontFamily="@font/opensanslight"
+            android:text="Ubicación"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="10sp"
+                    android:src="@drawable/ic_action_location_on"
+                    android:tint="@color/colorGris" />
+
+                <TextView
+                    android:id="@+id/textViewUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/ImageViewverUbicacion"
+                    android:layout_toRightOf="@+id/icono"
+                    android:fontFamily="@font/opensanslight"
+                    android:text="Buscando ubicación…"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ImageViewverUbicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_visitarweb"
+                    android:tint="@color/colorGris" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

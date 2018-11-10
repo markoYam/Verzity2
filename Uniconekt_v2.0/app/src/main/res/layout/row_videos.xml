@@ -4,54 +4,44 @@
     android:id="@+id/cardviewVideo"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="5sp"
+    android:layout_marginRight="5sp"
     android:clickable="true"
-    android:elevation="5dp"
+    android:elevation="5sp"
     android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="300sp"
+    app:cardBackgroundColor="@color/colorBlanco"
+    app:cardCornerRadius="5sp"
+    app:cardElevation="2sp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark">
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-            <RelativeLayout
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:padding="2dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimaryDark">
-                <TextView
-                    android:id="@+id/texviewNombreVideo"
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_width="match_parent"
-                    android:paddingLeft="5dp"
-                    android:textSize="16dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
-                    android:text="Titulo del video"
-                    android:textColor="#ffff" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/contenedor5"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:layout_below="@+id/texviewNombreVideo"
+                    android:layout_height="190sp"
                     android:background="#fff">
 
                     <ImageView
                         android:id="@+id/imageviewFrmme"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/defaultt" />
 
                     <ImageView
@@ -63,20 +53,34 @@
                         android:src="@drawable/ic_play" />
                 </RelativeLayout>
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/texviewNombreVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginRight="5sp"
+                    android:fontFamily="@font/opensansbold"
+                    android:paddingLeft="5dp"
+                    android:text="Titulo del video"
+                    android:textColor="#000000"></TextView>
+
+
+                <TextView
+                    android:id="@+id/textViewDescripcionVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="5sp"
+                    android:fontFamily="@font/opensanslight"
+                    android:paddingLeft="5dp"
+                    android:text="Descripción"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/textViewDescripcionVideo"
-            style="@style/TextAppearance.AppCompat.Body2"
-            android:layout_width="match_parent"
-            android:paddingLeft="5dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimaryDark"
-            android:text="Descripción"
-            android:textColor="#fff" />
     </LinearLayout>
 
 

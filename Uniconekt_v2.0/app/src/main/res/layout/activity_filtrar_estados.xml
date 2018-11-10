@@ -60,6 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Estados"
+                    android:fontFamily="@font/opensansbold"
                     android:layout_marginLeft="5dp"
                     android:textSize="16dp"
                     android:textColor="#000000"

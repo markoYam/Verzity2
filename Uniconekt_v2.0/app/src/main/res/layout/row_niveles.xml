@@ -29,6 +29,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/imagebuttom"
             android:layout_toRightOf="@+id/imageUniversidad"
+            android:fontFamily="@font/opensanslight"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:text="Nombre del item"
