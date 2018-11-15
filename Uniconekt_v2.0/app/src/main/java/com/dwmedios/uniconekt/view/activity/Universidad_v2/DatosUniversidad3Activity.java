@@ -396,18 +396,29 @@ public class DatosUniversidad3Activity extends BaseActivity implements DatosUniv
                     } else {
                         mSitio.setEnabled(false);
                         mTextInputEditTextTelefono.setEnabled(false);
+                        mTextInputEditTextTelefono.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
                         mTextInputEditTextCorreo.setEnabled(false);
+                        mTextInputEditTextCorreo.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+
                     }
                     if (DatosUniversidad3Activity.mPaquetes.aplica_descripcion) {
                         mTextInputEditTextDescripcion.setEnabled(true);
+                        if (!DatosUniversidad3Activity.mPaquetes.aplica_contacto) {
+                            mTextInputEditTextDescripcion.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                        }
                     } else {
                         mTextInputEditTextDescripcion.setEnabled(false);
+                        mTextInputEditTextDescripcion.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
                     }
                     if (DatosUniversidad3Activity.mPaquetes.aplica_logo) {
                         mFloatingActionButton.setEnabled(true);
                     } else {
                         mFloatingActionButton.setEnabled(false);
                         mFloatingActionButton.setImageResource(R.drawable.ic_prohibido_24);
+                    }
+
+                    if (!DatosUniversidad3Activity.mPaquetes.aplica_direccion && !DatosUniversidad3Activity.mPaquetes.aplica_contacto) {
+                        mTextInputEditTextNombre.setImeOptions(EditorInfo.IME_ACTION_DONE);
                     }
                 }
                 Universidad mUniversidadLocal = DatosUniversidad3Activity.mUniversidad;
@@ -455,9 +466,24 @@ public class DatosUniversidad3Activity extends BaseActivity implements DatosUniv
             mUploadImage = new UploadImage(getActivity(), mResultInfo);
             getActivity().getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            mTextInputEditTextNombre.setOnEditorActionListener(mOnEditorActionListener);
             return master;
         }
 
+        TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    if (DatosUniversidad3Activity.mPaquetes.aplica_contacto && !DatosUniversidad3Activity.mPaquetes.aplica_descripcion) {
+                        mSitio.requestFocus();
+                        return true;
+                    }
+                   return false;
+                }
+                return false;
+            }
+        };
 
         @Override
         public void onStart() {
@@ -578,6 +604,11 @@ public class DatosUniversidad3Activity extends BaseActivity implements DatosUniv
                     mSpinnerPais.setEnabled(false);
                     mTextInputEditTextCalle.setEnabled(false);
                     mTextInputEditTextCodigo.setEnabled(false);
+                    mTextInputEditTextCalle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+                    mTextInputEditTextCodigo.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+                    mTextInputEditTextEstado.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+                    mTextInputEditTextMunicipio.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+                    mTextInputEditTextCiudad.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
                 }
                 if (DatosUniversidad3Activity.mPaquetes.aplica_geolocalizacion) {
                     mImageViewVerUbicacion.setEnabled(true);
@@ -1013,8 +1044,13 @@ public class DatosUniversidad3Activity extends BaseActivity implements DatosUniv
                 if (DatosUniversidad3Activity.mPaquetes != null) {
                     if (DatosUniversidad3Activity.mPaquetes.aplica_Prospectus) {
                         mTextInputEditTextFolleto.setEnabled(true);
-                    } else
+                        if (!DatosUniversidad3Activity.mPaquetes.aplica_redes) {
+                            mTextInputEditTextFolleto.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                        }
+                    } else {
                         mTextInputEditTextFolleto.setEnabled(false);
+                        mTextInputEditTextFolleto.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+                    }
                     if (DatosUniversidad3Activity.mPaquetes.aplica_redes) {
                         mTextInputEditTextFacebook.setEnabled(true);
                         mTextInputEditTextInstagram.setEnabled(true);
@@ -1023,6 +1059,9 @@ public class DatosUniversidad3Activity extends BaseActivity implements DatosUniv
                         mTextInputEditTextFacebook.setEnabled(false);
                         mTextInputEditTextInstagram.setEnabled(false);
                         mTextInputEditTextTwitter.setEnabled(false);
+                        mTextInputEditTextFacebook.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+                        mTextInputEditTextInstagram.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
+                        mTextInputEditTextTwitter.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_prohibido_24, 0);
                     }
                 }
 

@@ -206,7 +206,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardContenedorPrincipal"
+                android:id="@+id/cardContenedorDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
@@ -217,7 +217,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -227,7 +227,7 @@
                         android:layout_marginTop="5sp"
                         android:layout_marginBottom="5sp"
                         android:fontFamily="@font/opensanslight"
-                        android:text="@string/datos_contacto"
+                        android:text="Dirección"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -237,7 +237,7 @@
                         android:orientation="horizontal"
                         android:paddingLeft="12dp"
                         android:paddingRight="12dp"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <ImageView
                             android:layout_width="0dp"
@@ -262,6 +262,34 @@
                             android:textStyle="bold" />
 
                     </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardContenedorPrincipal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
+                android:visibility="gone"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15sp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginBottom="5sp"
+                        android:fontFamily="@font/opensanslight"
+                        android:text="@string/datos_contacto"
+                        android:textSize="16sp" />
+
 
                     <LinearLayout
                         android:layout_width="match_parent"

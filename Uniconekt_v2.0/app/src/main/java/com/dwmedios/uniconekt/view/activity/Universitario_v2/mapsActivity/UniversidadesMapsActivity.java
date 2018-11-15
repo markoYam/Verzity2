@@ -158,8 +158,21 @@ public class UniversidadesMapsActivity extends BaseActivity implements OnMapRead
     }
 
     @Override
+    protected void onStop() {
+        if (mGoogleApiClient != null) {
+            if (mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
+                mGoogleApiClient.unregisterConnectionCallbacks(this);
+                mGoogleApiClient.unregisterConnectionFailedListener(this);
+                mGoogleApiClient = null;
+            }
+        }
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
-        if (mGoogleApiClient != null) mGoogleApiClient.disconnect();
+       // if (mGoogleApiClient != null) mGoogleApiClient.disconnect();
         super.onDestroy();
     }
 

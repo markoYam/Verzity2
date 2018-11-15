@@ -195,7 +195,9 @@ public class AllController {
     }
 
     public boolean deletePaquetes() {
-        return (mVentasPaquetesController.deleteElements(mVentasPaquetesController.selectAll()) > 0 && mPaquetesOrmLite.deleteElements(mPaquetesOrmLite.selectAll()) > 0);
+        boolean venta = mVentasPaquetesController.deleteElements(mVentasPaquetesController.selectAll()) > 0;
+        boolean paquete = mPaquetesOrmLite.deleteElements(mPaquetesOrmLite.selectAll()) > 0;
+        return (venta && paquete);
     }
 
     public boolean addPaquetes(VentasPaquetes mVentasPaquetes) {

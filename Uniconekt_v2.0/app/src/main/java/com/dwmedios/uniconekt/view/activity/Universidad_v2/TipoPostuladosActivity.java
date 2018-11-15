@@ -48,7 +48,7 @@ public class TipoPostuladosActivity extends BaseActivity implements TipoPostulac
         mToolbar.setTitle("Seleccionar tipo postulación");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mTipoPostulacionPresenter = new TipoPostulacionPresenter(this);
+        mTipoPostulacionPresenter = new TipoPostulacionPresenter(this,getApplicationContext());
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

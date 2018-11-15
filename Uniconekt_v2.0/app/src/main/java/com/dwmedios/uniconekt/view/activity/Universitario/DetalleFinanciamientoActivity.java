@@ -43,6 +43,7 @@ import static com.dwmedios.uniconekt.view.activity.PDFViewerActivity.KEY_VIEWER_
 import static com.dwmedios.uniconekt.view.activity.Universitario.DatosUniversitarioActivity.KEY_REGISTRO_UNIVERSITARIO;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleBecasActivity.CODE_RESULT;
 import static com.dwmedios.uniconekt.view.activity.Universitario.DetalleUniversidadActivity.KEY_DETALLE_UNIVERSIDAD;
+import static com.dwmedios.uniconekt.view.activity.Universitario.FinanciamientoActivity.TYPE_VIEW_F;
 import static com.dwmedios.uniconekt.view.util.Utils.setStatusBarGradiant;
 
 public class DetalleFinanciamientoActivity extends BaseActivity implements FinaciamientoDetalleView {
@@ -94,6 +95,8 @@ public class DetalleFinanciamientoActivity extends BaseActivity implements Finac
 
         mFinanciamientoDetallePresenter = new FinanciamientoDetallePresenter(this, getApplicationContext());
         mFinanciamientoDetallePresenter.LoadInfo();
+        if (TYPE_VIEW_F == 2)
+            mImageButtonUniversidad.setVisibility(View.GONE);
         mImageButtonUniversidad.setOnClickListener(mOnClickListener);
         imageButtonArchivo.setOnClickListener(mOnClickListener);
         mFloatingActionButton.setOnClickListener(mOnClickListener);
@@ -124,6 +127,18 @@ public class DetalleFinanciamientoActivity extends BaseActivity implements Finac
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        TYPE_VIEW_F=1;
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        TYPE_VIEW_F=1;
+        super.onDestroy();
     }
 
     @Override

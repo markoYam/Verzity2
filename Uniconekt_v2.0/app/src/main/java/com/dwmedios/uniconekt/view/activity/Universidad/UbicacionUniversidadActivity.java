@@ -121,8 +121,20 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
     }
 
     @Override
+    protected void onStop() {
+        if (mGoogleApiClient != null) {
+            if (mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
+                mGoogleApiClient.unregisterConnectionCallbacks(this);
+                mGoogleApiClient.unregisterConnectionFailedListener(this);
+                mGoogleApiClient = null;
+            }
+        }
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
-        if (mGoogleApiClient != null) mGoogleApiClient.disconnect();
         super.onDestroy();
     }
 
@@ -239,7 +251,7 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
             } else {
                 Usuario mUsuario = mAllController.getusuarioPersona();
                 if (mUsuario != null) {
-                    if(!isNullOrEmpty(mUsuario.cv_facebook)) {
+                    if (!isNullOrEmpty(mUsuario.cv_facebook)) {
                         mUri.uri = getUrlFacebook(mUsuario.cv_facebook);
                         mUri.nombre = "PefilFacebook.jpg";
                     }
@@ -359,7 +371,8 @@ public class UbicacionUniversidadActivity extends BaseActivity implements OnMapR
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == 1) {
             mostrarDireccion();
         }

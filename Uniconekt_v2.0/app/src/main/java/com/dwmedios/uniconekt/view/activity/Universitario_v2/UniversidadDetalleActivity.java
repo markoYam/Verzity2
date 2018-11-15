@@ -293,6 +293,8 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
         List<String> per = new ArrayList<>();
         per.add(Manifest.permission.ACCESS_FINE_LOCATION);
         per.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        per.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        per.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         if (validatePermison(per, UniversidadDetalleActivity.this, 1)) {
             startActivity(new Intent(getApplicationContext(), UbicacionUniversidadActivity.class).putExtra(KEY_UBICACION_UNIVERSIDAD, mUniversidad));
 
@@ -305,6 +307,9 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
             List<String> per = new ArrayList<>();
             per.add(Manifest.permission.ACCESS_FINE_LOCATION);
             per.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            per.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            per.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+
             if (checkPermison(per, UniversidadDetalleActivity.this, 1)) {
                 AbrirMapa();
             } else {
@@ -526,9 +531,9 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
                 //region validacion de direccion
                 // TODO: 02/11/2018 direccion
                 if (mPaquetes.aplica_direccion) {
-                    if (mCardViewPrincipal.getVisibility() == View.GONE) {
-                        mCardViewPrincipal.startAnimation(slide_out_right);
-                        mCardViewPrincipal.setVisibility(View.VISIBLE);
+                    if (cardViewDireccion.getVisibility() == View.GONE) {
+                        cardViewDireccion.startAnimation(slide_out_right);
+                        cardViewDireccion.setVisibility(View.VISIBLE);
                     }
                     LinearLayout mLinearLayout = (LinearLayout) mTextViewDireccion.getParent();
                     mLinearLayout.startAnimation(slide_out_right);
@@ -543,14 +548,16 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
                             }
                     }
                 } else {
-                    LinearLayout mLinearLayout = (LinearLayout) mTextViewDireccion.getParent();
-                    mLinearLayout.setVisibility(View.GONE);
+                    cardViewDireccion.setVisibility(View.GONE);
+                   // LinearLayout mLinearLayout = (LinearLayout) mTextViewDireccion.getParent();
+                    //mLinearLayout.setVisibility(View.GONE);
                 }
                 //endregion
 
                 //region validacion de contacto
                 // TODO: 02/11/2018 contacto
                 if (mPaquetes.aplica_contacto) {
+                    mCardViewPrincipal.setVisibility(View.VISIBLE);
                     LinearLayout telefonoParent = (LinearLayout) mTextViewTelefono.getParent();
                     LinearLayout correoParent = (LinearLayout) mTextViewCorreo.getParent();
                     LinearLayout sitioParent = (LinearLayout) mTextViewSitio.getParent();
@@ -574,6 +581,7 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
                         mTextViewTelefono.setMovementMethod(LinkMovementMethod.getInstance());
                     }
                 } else {
+                    mCardViewPrincipal.setVisibility(View.GONE);
                     LinearLayout telefonoParent = (LinearLayout) mTextViewTelefono.getParent();
                     LinearLayout correoParent = (LinearLayout) mTextViewCorreo.getParent();
                     LinearLayout sitioParent = (LinearLayout) mTextViewSitio.getParent();
@@ -618,7 +626,7 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
 
                 //region validacion prospectus
                 // TODO: 02/11/2018  prospectus
-                if (mPaquetes.aplica_Prospectus) {
+                if (mPaquetes.aplica_Prospectus || mPaquetes.aplica_video_1 || mPaquetes.aplica_video_2) {
                     if (mCardViewFlujosAlternos.getVisibility() == View.GONE) {
                         mCardViewFlujosAlternos.startAnimation(slide_out_right);
                         mCardViewFlujosAlternos.setVisibility(View.VISIBLE);
@@ -680,7 +688,8 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
             //todo --- ocultar toda la informacion...
         }
     }
-//region acciones redes sociales
+
+    //region acciones redes sociales
     public void onclickFacebook(View mView) {
         if (mUniversidad != null) {
             if (!isNullOrEmpty(mUniversidad.facebook))
@@ -710,7 +719,8 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
         } else
             showMessage("No cuenta con dirección de Twitter");
     }
-//endregion
+
+    //endregion
     NestedScrollView.OnScrollChangeListener mOnScrollChangeListener = new NestedScrollView.OnScrollChangeListener() {
         @Override
         public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -980,6 +990,9 @@ public class UniversidadDetalleActivity extends BaseActivity implements Universi
     MapView mapView;
     @BindView(R.id.contenedorFlujosAlternos)
     CardView mCardViewFlujosAlternos;
+
+    @BindView(R.id.cardContenedorDireccion)
+    CardView cardViewDireccion;
     //endregion
 
     public static boolean aplica_logo = false;

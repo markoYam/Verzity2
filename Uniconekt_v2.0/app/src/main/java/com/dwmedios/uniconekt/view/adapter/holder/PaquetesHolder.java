@@ -2,7 +2,6 @@ package com.dwmedios.uniconekt.view.adapter.holder;
 
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -93,7 +92,7 @@ public class PaquetesHolder extends RecyclerView.ViewHolder {
         mItem_aplicas.add(logo);
 /**Imagenes **/
         Item_aplica img = new Item_aplica();
-        img.textoAplica = "Aplica imagenes";
+        img.textoAplica = "Aplica imágenes";
         img.aplica = mPaquetes.aplica_imagenes;
         mItem_aplicas.add(img);
 
@@ -151,8 +150,13 @@ public class PaquetesHolder extends RecyclerView.ViewHolder {
 
 
         mCustomAdapter = new CustomAdapter(mItem_aplicas, R.layout.row_item_aplica_paquete, mConfigureHolder);
-        LinearLayoutManager layoutManager = new GridLayoutManager(itemView.getContext(), 2);
-        recyclerView.setLayoutManager(layoutManager);
+        //LinearLayoutManager layoutManager = new GridLayoutManager(itemView.getContext(), 2);
+        recyclerView.setLayoutManager(new GridLayoutManager(itemView.getContext(),2){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mCustomAdapter);

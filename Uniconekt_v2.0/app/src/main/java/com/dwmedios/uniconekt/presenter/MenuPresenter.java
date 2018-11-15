@@ -2,7 +2,6 @@ package com.dwmedios.uniconekt.presenter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 
 import com.dwmedios.uniconekt.R;
 import com.dwmedios.uniconekt.data.controller.AllController;
@@ -10,8 +9,10 @@ import com.dwmedios.uniconekt.data.service.ClientService;
 import com.dwmedios.uniconekt.data.service.response.DispositivoResponse;
 import com.dwmedios.uniconekt.model.ClasViewModel;
 import com.dwmedios.uniconekt.model.Dispositivo;
+import com.dwmedios.uniconekt.model.Paquetes;
 import com.dwmedios.uniconekt.model.Persona;
 import com.dwmedios.uniconekt.model.Usuario;
+import com.dwmedios.uniconekt.model.VentasPaquetes;
 import com.dwmedios.uniconekt.view.util.SharePrefManager;
 import com.dwmedios.uniconekt.view.viewmodel.MenuController;
 
@@ -24,7 +25,6 @@ import retrofit2.Response;
 
 import static com.dwmedios.uniconekt.view.util.Utils.ConvertModelToStringGson;
 import static com.dwmedios.uniconekt.view.util.Utils.ERROR_CONECTION;
-import static com.dwmedios.uniconekt.view.util.Utils.getDrawable;
 
 public class MenuPresenter {
     private MenuController menuController;
@@ -91,6 +91,7 @@ public class MenuPresenter {
             lisMen.add(menu5);*/
 
         } else if (typeUser == 2) {
+
             ClasViewModel.menu menu = new ClasViewModel.menu();
             menu.nombre = "Paquetes";
             menu.tipo = ClasViewModel.tipoMenu.paquetes;
@@ -99,13 +100,18 @@ public class MenuPresenter {
             menu.color = mContext.getString(R.color.Color_financiamientos);
             lisMen.add(menu);
 
-            ClasViewModel.menu menu1 = new ClasViewModel.menu();
-            menu1.nombre = "Postulados";
-            menu1.tipo = ClasViewModel.tipoMenu.postulados;
-            //menu1.drawableImage = getDrawable("ic_dollar", mContext);
-            menu1.drawableImage = R.drawable.ic_programas_academicos;
-            menu1.color = mContext.getString(R.color.Color_web);
-            lisMen.add(menu1);
+            Paquetes mPaquetes = getPaquetes();
+            if (mPaquetes != null) {
+                if (mPaquetes.aplica_Beca || mPaquetes.aplica_Financiamiento || mPaquetes.aplica_Postulacion) {
+                    ClasViewModel.menu menu1 = new ClasViewModel.menu();
+                    menu1.nombre = "Postulados";
+                    menu1.tipo = ClasViewModel.tipoMenu.postulados;
+                    //menu1.drawableImage = getDrawable("ic_dollar", mContext);
+                    menu1.drawableImage = R.drawable.ic_programas_academicos;
+                    menu1.color = mContext.getString(R.color.Color_web);
+                    lisMen.add(menu1);
+                }
+            }
         }
 
         if (lisMen != null && !lisMen.isEmpty()) {
@@ -116,6 +122,16 @@ public class MenuPresenter {
         }
 
         menuController.OnLoading(false);
+    }
+
+    public Paquetes getPaquetes() {
+        try {
+            VentasPaquetes mVentasPaquetes = mAllController.getPaqueteUniversidad();
+            return (mVentasPaquetes != null ? mVentasPaquetes.mPaquetes != null ? mVentasPaquetes.mPaquetes : null : null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public void ConfigureCabeceras() {
