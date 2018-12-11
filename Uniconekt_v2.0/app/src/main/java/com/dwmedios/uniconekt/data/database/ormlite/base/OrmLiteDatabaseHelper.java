@@ -69,6 +69,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         onCreate(getWritableDatabase(), connectionSource);
+
     }
 
     private static Class<?>[] mDbClasses = {Item.class, Direccion.class, Dispositivo.class, Persona.class, Universidad.class, Usuario.class, VentasPaquetes.class, Configuraciones.class, VentaPaqueteAsesor.class,Paquetes.class};
